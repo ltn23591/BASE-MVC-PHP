@@ -4,40 +4,39 @@
         <div>
             <?php include './includes/logo.php'; ?>
             <p class="w-full md:w-2/3 text-gray-500">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Quisquam, voluptatibus. Lorem ipsum dolor sit amet
-                consectetur adipisicing elit. Quisquam, voluptatibus.
+                Khám phá những xu hướng thời trang mới nhất, mang đến vẻ đẹp tự tin và cá tính cho bạn mỗi ngày.
             </p>
         </div>
 
         <div>
-            <p class="text-xl font-medium mb-5">COMPANY</p>
+            <p class="text-xl font-medium mb-5">CÔNG TY</p>
             <ul class="flex flex-col gap-1 text-gray-600">
-                <li>HOME</li>
-                <li>ABOUT</li>
-                <li>CONTACT</li>
-                <li>COLLECTION</li>
-                <li>DELIVERY</li>
+                <li>TRANG CHỦ</li>
+                <li>VỀ CHÚNG TÔI</li>
+                <li>LIÊN HỆ</li>
+                <li>SẢN PHẨM</li>
+                <li>VẬN CHUYỂN</li>
             </ul>
         </div>
 
         <div>
-            <p class="text-xl font-medium mb-5">GET IN TOUCH</p>
+            <p class="text-xl font-medium mb-5">LIÊN HỆ</p>
             <ul class="flex flex-col gap-1 text-gray-600">
                 <li>+1 234 567 890</li>
                 <li>info@example.com</li>
-                <li>123 Main St, City, Country</li>
+                <li>TP HCM</li>
             </ul>
         </div>
     </div>
 
     <div>
         <hr />
-        <p class='py-5 text-sm text-center'>
+        <p class="py-5 text-sm text-center">
             © 2023 Your Company. All rights reserved.
         </p>
     </div>
 </div>
+
 </div>
 </div>
 </body>

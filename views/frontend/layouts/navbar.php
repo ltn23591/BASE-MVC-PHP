@@ -34,14 +34,14 @@
         <?php include './includes/cart.php'; ?>
 
         <!-- Menu icon (mobile) -->
-        <img src="" alt="menu" class="w-5 cursor-pointer sm:hidden">
+        <img onclick="toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu" class="w-5 cursor-pointer sm:hidden">
     </div>
 
     <!-- Sidebar menu for small screen -->
-    <div id=" sidebar" class="absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all w-0">
+    <div id="sidebar" class="absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all w-0">
         <div class="flex flex-col text-gray-600">
             <div onclick="toggleMenu(false)" class="flex items-center gap-4 p-3 cursor-pointer">
-                <img class="h-4 rotate-180" src="/Forever/assets/img/frontend_assets/dropdown_icon.png" alt="">
+                <img class="h-4 rotate-180" src="<?= $assets['dropdown_icon'] ?>" alt="">
                 <p>Back</p>
             </div>
             <a href="index.php" class="py-2 pl-6 border">TRANG CHỦ</a>
@@ -53,14 +53,15 @@
 </div>
 
 <script>
-function toggleMenu(show) {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.style.width = show ? "100%" : "0";
-}
+    function toggleMenu(show) {
+        console.log("ok");
+        const sidebar = document.getElementById("sidebar");
+        sidebar.style.width = show ? "100%" : "0";
+    }
 
-function toggleSearch() {
-    // Gọi PHP để bật search bar
-    fetch("toggleSearch.php?action=show")
-        .then(() => location.reload());
-}
+    function toggleSearch() {
+        // Gọi PHP để bật search bar
+        fetch("toggleSearch.php?action=show")
+            .then(() => location.reload());
+    }
 </script>

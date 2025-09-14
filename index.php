@@ -2,7 +2,7 @@
 require './core/Database.php';
 require './models/BaseModel.php';
 require './controllers/BaseController.php';
-$controllerName = ucfirst(strtolower(($_REQUEST['controllers']) ?? 'product')) . 'Controller';
+$controllerName = ucfirst(strtolower(($_REQUEST['controllers']) ?? 'home')) . 'Controller';
 
 $actionName = ($_REQUEST['action'] ?? 'index');
 
