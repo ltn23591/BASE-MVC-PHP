@@ -5,11 +5,14 @@ class BaseController
     const MODEL_FOLDER_NAME = 'models';
     protected function view($viewPath, array $data = [])
     {
+        include __DIR__ . '/../views/frontend/layouts/header.php';
+        include __DIR__ . '/../views/frontend/layouts/navbar.php';
         foreach ($data as $key => $value) {
             $$key = $value;
         }
         $viewPath =  self::VIEW_FOLDER_NAME . '/' . str_replace('.', '/', $viewPath) . '.php';
         require($viewPath);
+        include __DIR__ . '/../views/frontend/layouts/footer.php';
     }
 
     protected function loadModel($modelPath)

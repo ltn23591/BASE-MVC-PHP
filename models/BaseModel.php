@@ -60,7 +60,17 @@ class BaseModel extends Database
 
         $this->_query($sql);
     }
-    public function delete($table,$id) {
+    public function getByQuery($sql)
+    {
+        $query = $this->_query($sql);
+        $data = [];
+        while ($row = mysqli_fetch_assoc($query)) {
+            array_push($data, $row);
+        }
+        return $data;
+    }
+    public function delete($table, $id)
+    {
         $sql = "DELETE FROM $table WHERE id = $id";
         $this->_query($sql);
     }
