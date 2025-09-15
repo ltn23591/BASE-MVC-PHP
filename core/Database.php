@@ -4,7 +4,7 @@ class Database
     const HOST = 'localhost';
     const USERNAME = 'root';
     const PASSWORD = '';
-    const DB_NAME = 'phpstore';
+    const DB_NAME = 'fashion';
 
     private $conn;
 

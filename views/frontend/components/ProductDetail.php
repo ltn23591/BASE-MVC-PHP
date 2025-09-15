@@ -1,0 +1,123 @@
+<?php
+include './public/assets/img/frontend_assets/assets.php';
+require_once './includes/title.php';
+?>
+
+<div class="border-t-2 pt-10 transition-opacity ease-in-out duration-500 opacity-100">
+
+    <!-- Product Data -->
+    <div class="flex gap-12 sm:gap-12 flex-col sm:flex-row">
+
+        <!-- Product Images -->
+        <div class="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
+            <!-- Thumbnail list -->
+            <div
+                class="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
+
+
+                <img src="<?= htmlspecialchars($product['image'][0]) ?>" alt="thumb"
+                    class="w-[24%] sm:w-full sm:mb-3 flex shrink-0 cursor-pointer"
+                    onclick="document.getElementById('mainImage').src='<?= htmlspecialchars($product['image'][0]) ?>'">
+
+            </div>
+
+            <!-- Main image -->
+            <div class="w-full sm:w-[80%]">
+                <img id="mainImage" src="<?= htmlspecialchars($product['image'][0]) ?>" class="w-full h-auto" alt="">
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="flex-1 text-left">
+            <h1 class="font-medium text-2xl mt-2">
+                <?= htmlspecialchars($product['name']) ?>
+            </h1>
+
+            <div class="flex items-center gap-1 mt-2">
+                <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
+                <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
+                <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
+                <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
+                <img src="<?= $assets['star_dull_icon'] ?>" alt="" class="w-3.5">
+                <p class="pl-2">(122)</p>
+            </div>
+
+            <p class="mt-5 text-3xl font-medium">
+                $<?= htmlspecialchars($product['price']) ?>
+            </p>
+
+            <p class="mt-3 text-gray-500 md:w-4/5">
+                <?= htmlspecialchars($product['description']) ?>
+            </p>
+            <?php $sizes = !empty($product['sizes']) ? json_decode($product['sizes'], true) : []; ?>
+            <div class="flex flex-col gap-4 my-8">
+                <p>Select Size</p>
+                <div class="flex gap-2">
+                    <?php foreach ($sizes as $size): ?>
+                    <button class="border py-2 px-4 bg-gray-100" onclick="selectSize('<?= $size ?>', this)">
+                        <?= htmlspecialchars($size) ?>
+                    </button>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <button onclick="addToCart('<?= $product['id'] ?>')"
+                class="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">
+                ADD TO CART
+            </button>
+
+            <hr class="mt-8 sm:w-4/5">
+
+            <div class="text-sm text-gray-500 mt-5 flex flex-col gap-1">
+                <p>100% Original product</p>
+                <p>Cash on delivery is available on this product.</p>
+                <p>Easy return and exchange policy within 7 days</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Description & Reviews -->
+    <div class="mt-20">
+        <div class="flex">
+            <b class="border px-5 py-3 text-sm">Description</b>
+            <p class="border px-5 py-3 text-sm">Reviews (122)</p>
+        </div>
+        <div class="flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500 text-left">
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Illum corrupti, facilis pariatur dolorem adipisci
+                aspernatur sit dignissimos. Est fugiat ipsam ad
+                necessitatibus quidem? Nostrum officia eum voluptas,
+                ipsum ex nihil?
+            </p>
+            <p>
+                Lorem ipsum, dolor sit amet consectetur adipisicing
+                elit. In aut rerum quae accusamus aspernatur libero
+                accusantium quisquam saepe mollitia animi, voluptas
+                recusandae officiis? Id illum assumenda at consequatur
+                possimus, obcaecati sequi nemo alias veniam. Officiis
+                obcaecati corrupti vitae dolorem quisquam.
+            </p>
+        </div>
+    </div>
+    <!-- <?php require_once __DIR__ . '/RelatedProduct.php' ?> -->
+
+</div>
+<script>
+let selectedSize = null;
+
+function selectSize(size, el) {
+    selectedSize = size;
+    document.querySelectorAll('button').forEach(btn => btn.classList.remove('border-orange-500'));
+    el.classList.add('border-orange-500');
+}
+
+function addToCart(productId) {
+    if (!selectedSize) {
+        alert("Vui lòng chọn size trước khi thêm vào giỏ!");
+        return;
+    }
+    // TODO: Gửi AJAX hoặc chuyển hướng đến trang thêm giỏ hàng
+    console.log("Thêm vào giỏ:", productId, "Size:", selectedSize);
+}
+</script>

@@ -1,10 +1,8 @@
 <?php
-
-include './public/assets/img/frontend_assets/assets.php';
 require_once './views/frontend/components/LastedCollection.php';
-
 require_once __DIR__ . '/ProductItem.php';
 require_once './includes/title.php';
+
 ?>
 <div class="my-10">
     <div class="text-center py-8 text-3xl">
@@ -16,8 +14,14 @@ require_once './includes/title.php';
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
         <?php
-        foreach (array_slice($products, 0, 10) as $p) {
-            ProductItem($p['_id'], $p['image'], $p['name'], $p['price']);
+
+        try {
+            foreach (array_slice($products, 0, 10) as $p) {
+                $images = json_decode($p['image'], true);
+                ProductItem($p['id'], $images, $p['name'], $p['price']);
+            }
+        } catch (Exception $e) {
+            echo "Lỗi: " . $e->getMessage();
         }
         ?>
     </div>

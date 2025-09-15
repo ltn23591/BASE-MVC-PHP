@@ -13,13 +13,15 @@ class ProductModel extends BaseModel
     }
     public function findById($id)
     {
-        return [
-            'id' => $id,
-            'name' => 'Iphone 14 Pro Max',
-            'price' => '30000000'
-        ];
+        // return [
+        //     'id' => $id,
+        //     'name' => 'Iphone 14 Pro Max',
+        //     'price' => '30000000'
+        // ];
+        return $this->find(self::TABLE, $id);
     }
-    public function updateData($id, $data) {
+    public function updateData($id, $data)
+    {
         $this->update(self::TABLE, $id, $data);
     }
     public function destroy($id)

@@ -10,22 +10,36 @@ class ProductController extends BaseController
     }
     public function index()
     {
-        $column =  ['id', 'name', 'category_id', 'price'];
+        $column =  ['id', 'name', 'price'];
         $orderBy =  ['id', 'asc'];
-        $pageTitle = "Trang danh sach san pham";
+
         $products = $this->productModel->getAll(
-            $column,
-            $orderBy
+            ['*'],
+            ['column' => 'id', 'order' => 'desc']
 
         );
         return $this->view(
-            'frontend.products.index',
+            'frontend.components.LastedCollection',
             [
-                'pageTitle' => $pageTitle,
                 'products' => $products
             ],
-
-
+        );
+    }
+    public function detail()
+    {
+        if (!isset($_GET['id'])) {
+            die('Thiếu ID sản phẩm');
+        }
+        $id = $_GET['id'];
+        $product = $this->productModel->findById($id);
+        if (!empty($product['image'])) {
+            $product['image'] = json_decode($product['image'], true);
+        }
+        return $this->view(
+            'frontend.components.ProductDetail',
+            [
+                'product' => $product,
+            ]
         );
     }
     public function store()
@@ -56,6 +70,19 @@ class ProductController extends BaseController
     }
     public function show()
     {
-        echo __METHOD__;
+        $column =  ['id', 'name', 'price'];
+        $orderBy =  ['id', 'asc'];
+
+        $products = $this->productModel->getAll(
+            ['*'],
+            ['column' => 'id', 'order' => 'desc']
+
+        );
+        return $this->view(
+            'frontend.components.LastedCollection',
+            [
+                'products' => $products
+            ],
+        );
     }
 }
