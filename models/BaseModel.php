@@ -35,6 +35,12 @@ class BaseModel extends Database
         $query = $this->_query($sql);
         return mysqli_fetch_assoc($query);
     }
+    public function findEmail($table, $email)
+    {
+        $sql = "SELECT * FROM $table WHERE email = '$email' LIMIT 1";
+        $query = $this->_query($sql);
+        return mysqli_fetch_assoc($query);
+    }
     public function create($table, $data = [])
     {
         $column = implode(',', array_keys($data));

@@ -14,10 +14,11 @@ require_once './includes/title.php';
             <div
                 class="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
 
-
-                <img src="<?= htmlspecialchars($product['image'][0]) ?>" alt="thumb"
+                <?php foreach ($product['image'] as $item): ?>
+                <img src="<?= htmlspecialchars($item) ?>" alt="thumb"
                     class="w-[24%] sm:w-full sm:mb-3 flex shrink-0 cursor-pointer"
-                    onclick="document.getElementById('mainImage').src='<?= htmlspecialchars($product['image'][0]) ?>'">
+                    onclick="document.getElementById('mainImage').src='<?= htmlspecialchars($item) ?>'">
+                <?php endforeach; ?>
 
             </div>
 

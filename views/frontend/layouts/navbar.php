@@ -19,22 +19,36 @@
         <div class="group relative">
             <img src="<?= $assets['profile_icon'] ?>" alt="profile" class="w-5 cursor-pointer">
 
-
-            <div class=" group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
+            <?php if (!empty($_SESSION['user_id'])): ?>
+            <!-- Nếu đã đăng nhập -->
+            <div class="group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
                 <div class="flex flex-col gap-2 w-36 py-3 px-5">
-                    <p class="cursor-pointer hover:text-black">My Profile</p>
-                    <p onclick="window.location.href=' orders.php'" class="cursor-pointer hover:text-black">Orders</p>
-                    <p onclick="window.location.href='logout.php'" class="cursor-pointer hover:text-black">Logout</p>
+                    <p class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
+                    </p>
+                    <p onclick="window.location.href='orders.php'" class="cursor-pointer hover:text-black">Orders</p>
+                    <p onclick="window.location.href='index.php?controllers=auth&action=logout'"
+                        class="cursor-pointer hover:text-black">Logout</p>
                 </div>
             </div>
-
+            <?php else: ?>
+            <!-- Nếu chưa đăng nhập -->
+            <div class="group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
+                <div class="flex flex-col gap-2 w-36 py-3 px-5">
+                    <p onclick="window.location.href='index.php?controllers=auth&action=login'"
+                        class="cursor-pointer hover:text-black">
+                        Đăng nhập
+                    </p>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
 
         <!-- Cart -->
         <?php include './includes/cart.php'; ?>
 
         <!-- Menu icon (mobile) -->
-        <img onclick="toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu" class="w-5 cursor-pointer sm:hidden">
+        <img onclick="toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu"
+            class="w-5 cursor-pointer sm:hidden">
     </div>
 
     <!-- Sidebar menu for small screen -->
@@ -53,15 +67,15 @@
 </div>
 
 <script>
-    function toggleMenu(show) {
-        console.log("ok");
-        const sidebar = document.getElementById("sidebar");
-        sidebar.style.width = show ? "100%" : "0";
-    }
+function toggleMenu(show) {
+    console.log("ok");
+    const sidebar = document.getElementById("sidebar");
+    sidebar.style.width = show ? "100%" : "0";
+}
 
-    function toggleSearch() {
-        // Gọi PHP để bật search bar
-        fetch("toggleSearch.php?action=show")
-            .then(() => location.reload());
-    }
+function toggleSearch() {
+    // Gọi PHP để bật search bar
+    fetch("toggleSearch.php?action=show")
+        .then(() => location.reload());
+}
 </script>

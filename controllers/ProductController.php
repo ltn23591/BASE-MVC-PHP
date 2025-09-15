@@ -42,6 +42,7 @@ class ProductController extends BaseController
             ]
         );
     }
+    
     public function store()
     {
         $data = [

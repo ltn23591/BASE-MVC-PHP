@@ -11,20 +11,33 @@ class HomeController extends BaseController
         $this->productModel = new ProductModel();
     }
 
+
     public function index()
     {
-        // Lấy 10 sản phẩm mới nhất
+        // Lấy tất cả sản phẩm
         $products = $this->productModel->getAll(
             ['*'],
             ['column' => 'id', 'order' => 'desc']
         );
 
-        // Gọi view trang home và truyền dữ liệu sang
+        // Giải mã JSON ảnh
+        foreach ($products as &$p) {
+            if (!empty($p['image'])) {
+                $p['image'] = json_decode($p['image'], true);
+            }
+        }
+
+        // Lọc ra các sản phẩm bán chạy
+        $bestsellers = array_filter($products, function ($p) {
+            return !empty($p['bestseller']) && (int)$p['bestseller'] === 1;
+        });
+
+        // Truyền sang view
         return $this->view(
             'frontend.home',
             [
                 'products' => $products,
-                'pageTitle' => 'Trang chủ'
+                'bestsellers' => $bestsellers
             ]
         );
     }

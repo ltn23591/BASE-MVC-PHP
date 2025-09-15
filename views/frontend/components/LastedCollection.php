@@ -14,11 +14,9 @@ require_once './includes/title.php';
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
         <?php
-
         try {
             foreach (array_slice($products, 0, 10) as $p) {
-                $images = json_decode($p['image'], true);
-                ProductItem($p['id'], $images, $p['name'], $p['price']);
+                ProductItem($p['id'],$p['image'], $p['name'], $p['price']);
             }
         } catch (Exception $e) {
             echo "Lỗi: " . $e->getMessage();

@@ -1,16 +1,7 @@
 <?php
 require_once './includes/title.php';
-include './public/assets/img/frontend_assets/assets.php';
-?>
-
-
-<?php
-// Lọc những sản phẩm có bestseller = true
-$bestsellers = array_filter($products, function ($p) {
-    return !empty($p['bestseller']) && $p['bestseller'] === true;
-});
-
-
+require_once './public/assets/img/frontend_assets/assets.php';
+require_once './views/frontend/components/ProductItem.php';
 ?>
 
 <div class="my-10">
@@ -22,11 +13,9 @@ $bestsellers = array_filter($products, function ($p) {
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-        <?php
-        // Lấy 5 sản phẩm đầu tiên trong danh sách đã lọc
-        foreach (array_slice($bestsellers, 0, 5) as $p) {
-            ProductItem($p['_id'], $p['image'], $p['name'], $p['price']);
-        }
-        ?>
+        <!-- Lấy 5 sản phẩm được seller -->
+        <?php foreach (array_slice($bestsellers, 0, 5) as $p): ?>
+            <?php ProductItem($p['id'], $p['image'], $p['name'], $p['price']); ?>
+        <?php endforeach; ?>
     </div>
 </div>
