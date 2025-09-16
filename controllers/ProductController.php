@@ -27,6 +27,16 @@ class ProductController extends BaseController
     }
     public function detail()
     {
+        // Lấy tất cả sản phẩm
+        $column =  ['id', 'name', 'price'];
+        $orderBy =  ['id', 'asc'];
+        $relatedProducts = $this->productModel->getAll(
+            ['*'],
+            ['column' => 'id', 'order' => 'desc']
+
+        );
+
+        ////////////////
         if (!isset($_GET['id'])) {
             die('Thiếu ID sản phẩm');
         }
@@ -35,14 +45,25 @@ class ProductController extends BaseController
         if (!empty($product['image'])) {
             $product['image'] = json_decode($product['image'], true);
         }
+        $related = [];
+        $currentCategory = $product['category'];
+        $currentSubCategory = $product['subCategory'];
+        foreach ($relatedProducts as $p) {
+            if ($p['id'] != $product['id'] && $p['category'] == $currentCategory && $p['subCategory'] ==  $currentSubCategory) {
+                array_push($related, $p);
+           
+                if (count($related) >= 5) break; // chỉ lấy tối đa 5 sản phẩm
+            }
+        }
         return $this->view(
             'frontend.components.ProductDetail',
             [
                 'product' => $product,
+                'related' => $related
             ]
         );
     }
-    
+
     public function store()
     {
         $data = [

@@ -34,7 +34,7 @@ class HomeController extends BaseController
 
         // Truyền sang view
         return $this->view(
-            'frontend.home',
+            'frontend.home.index',
             [
                 'products' => $products,
                 'bestsellers' => $bestsellers

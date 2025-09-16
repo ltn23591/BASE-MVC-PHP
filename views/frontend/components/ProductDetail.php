@@ -1,6 +1,7 @@
 <?php
 include './public/assets/img/frontend_assets/assets.php';
 require_once './includes/title.php';
+require_once __DIR__ . '/ProductItem.php';
 ?>
 
 <div class="border-t-2 pt-10 transition-opacity ease-in-out duration-500 opacity-100">
@@ -101,8 +102,19 @@ require_once './includes/title.php';
             </p>
         </div>
     </div>
-    <!-- <?php require_once __DIR__ . '/RelatedProduct.php' ?> -->
-
+    <!-- Sản phẩm liên quan -->
+    <div class='my-24'>
+        <div class="text-center text-3xl py-2">
+            <? Title("SẢN PHẨM", "LIÊN QUAN") ?>
+        </div>
+        <div class='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6 mb-5'>
+            <?php
+            foreach ($related as $p) {
+                ProductItem($p['id'], $p['image'], $p['name'], $p['price']);
+            }
+            ?>
+        </div>
+    </div>
 </div>
 <script>
 let selectedSize = null;
