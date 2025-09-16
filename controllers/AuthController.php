@@ -10,7 +10,17 @@ class AuthController extends BaseController
         $this->loadModel('UserModel');
         $this->userModel = new UserModel();
     }
+    public function admin()
+    {
+        if (empty($_SESSION['admin_logged_in'])) {
+            header('Location: index.php?controllers=auth&action=login');
+            exit();
+        }
 
+        return $this->view('admin.index', [
+            'pageTitle' => 'Trang quản trị'
+        ], false);
+    }
     // Trang đăng nhập
     public function login()
     {
@@ -18,7 +28,13 @@ class AuthController extends BaseController
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $email = $_POST['email'];
                 $password = $_POST['password'];
+                if ($email === 'admin@gmail.com' && $password === '123') {
+                    $_SESSION['admin_logged_in'] = true;
+                    $_SESSION['admin_email'] = $email;
 
+                    header('Location: index.php?controllers=auth&action=admin');
+                    exit();
+                }
                 $user = $this->userModel->findByEmail($email);
 
                 if (!$user) {
@@ -36,7 +52,6 @@ class AuthController extends BaseController
                 exit();
             }
         } catch (Exception $e) {
-
             $error = $e->getMessage();
         }
 
@@ -45,7 +60,6 @@ class AuthController extends BaseController
             'error' => $error ?? null
         ]);
     }
-
     // Trang đăng ký
     public function register()
     {
@@ -73,11 +87,12 @@ class AuthController extends BaseController
         ]);
     }
 
+
     // Đăng xuất
     public function logout()
     {
         session_destroy();
-        header('Location: index.php');
+        header('Location: index.php?controllers=auth&action=login');
         exit();
     }
 }

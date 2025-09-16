@@ -4,3 +4,5 @@
 echo '<pre>';
 echo print_r($products)
 ?>
+
+<h1>ahihi</h1>
