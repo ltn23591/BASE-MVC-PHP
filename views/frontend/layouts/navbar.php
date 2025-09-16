@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <div class="flex items-center justify-between py-5 font-medium">
     <!-- Logo -->
     <?php include './includes/logo.php'; ?>
@@ -27,7 +33,7 @@
                     </p>
                     <p onclick="window.location.href='orders.php'" class="cursor-pointer hover:text-black">Orders</p>
                     <p onclick="window.location.href='index.php?controllers=auth&action=logout'"
-                        class="cursor-pointer hover:text-black">Logout</p>
+                        class="cursor-pointer hover:text-black">Đăng xuất</p>
                 </div>
             </div>
             <?php else: ?>

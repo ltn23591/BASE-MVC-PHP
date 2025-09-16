@@ -81,7 +81,7 @@ class AuthController extends BaseController
             }
         }
 
-        return $this->view('frontend.auth.register', [
+        return $this->view('frontend.auth.login', [
             'pageTitle' => 'Đăng ký',
             'error' => $error ?? null
         ]);
