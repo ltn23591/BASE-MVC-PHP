@@ -6,8 +6,8 @@
     <ul class="hidden sm:flex gap-5 text-sm text-gray-700">
         <li><a href="index.php" class="hover:text-gray-900 transition">TRANG CHỦ</a></li>
         <li><a href="collection.php" class="hover:text-gray-900 transition">SẢN PHẨM</a></li>
-        <li><a href="about.php" class="hover:text-gray-900 transition">VỀ CHÚNG TÔI</a></li>
-        <li><a href="contact.php" class="hover:text-gray-900 transition">LIÊN HỆ</a></li>
+        <li><a href="index.php?controllers=aboutus" class="hover:text-gray-900 transition">VỀ CHÚNG TÔI</a></li>
+        <li><a href="index.php?controllers=contactus" class="hover:text-gray-900 transition">LIÊN HỆ</a></li>
     </ul>
 
     <!-- Icons -->
@@ -59,8 +59,8 @@
                 <p>Back</p>
             </div>
             <a href="index.php" class="py-2 pl-6 border">TRANG CHỦ</a>
-            <a href="about.php" class="py-2 pl-6 border">VỀ CHÚNG TÔI</a>
-            <a href="contact.php" class="py-2 pl-6 border">LIÊN HỆ</a>
+            <a href="index.php?controllers=aboutus" class="py-2 pl-6 border">VỀ CHÚNG TÔI</a>
+            <a href="index.php?controllers=contactus" class="py-2 pl-6 border">LIÊN HỆ</a>
             <a href="collection.php" class="py-2 pl-6 border">SẢN PHẨM</a>
         </div>
     </div>

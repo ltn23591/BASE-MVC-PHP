@@ -15,7 +15,7 @@
                 <p class="font-semibold text-sm md:text-base">
                     SHOP NOW
                 </p>
-                <p class="w-8 md:w-11 h-[1px] bg-[#414141]"></p>
+                <p class=" w-8 md:w-11 h-[1px] bg-[#414141]"></p>
             </div>
         </div>
     </div>
