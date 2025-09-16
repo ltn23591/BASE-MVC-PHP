@@ -21,5 +21,5 @@
     </div>
 
     <!-- Hero right side -->
-    <img class="w-full sm:w-1/2" src="<?php echo $assets['hero_img']; ?>" alt="Hero">
+    <img class="h-[671px] sm:w-1/2 object-cover bg-top" src="<?php echo $assets['hero_img']; ?>" alt="Hero">
 </div>
