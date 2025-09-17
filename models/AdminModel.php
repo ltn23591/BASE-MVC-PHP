@@ -1,24 +1,19 @@
 <?php
 
-class ProductModel extends BaseModel
+class AdminModel extends BaseModel
 {
     const TABLE = 'products';
     public function getAll($select = ['*'], $orderBys = [], $limit = 15)
     {
         return $this->all(self::TABLE, $select, $orderBys, $limit);
     }
+    public function findById($id)
+    {
+        return $this->find(self::TABLE, $id);
+    }
     public function store($data)
     {
         $this->create(self::TABLE, $data);
-    }
-    public function findById($id)
-    {
-        // return [
-        //     'id' => $id,
-        //     'name' => 'Iphone 14 Pro Max',
-        //     'price' => '30000000'
-        // ];
-        return $this->find(self::TABLE, $id);
     }
     public function updateData($id, $data)
     {
@@ -27,9 +22,5 @@ class ProductModel extends BaseModel
     public function destroy($id)
     {
         $this->delete(self::TABLE, $id);
-    }
-    public function filterProducts($search = '', $categories = [], $subCategories = [], $sort = 'relavent')
-    {
-        $this->filter(self::TABLE, $search, $categories, $subCategories, $sort);
     }
 }

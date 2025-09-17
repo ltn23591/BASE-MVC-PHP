@@ -87,4 +87,39 @@ class BaseModel extends Database
     {
         return mysqli_query($this->conn, $sql);
     }
+    public function filter($search = '', $categories = [], $subCategories = [], $sort = 'relavent')
+    {
+        $sql = "SELECT * FROM products WHERE 1";
+
+        if (!empty($search)) {
+            $search = mysqli_real_escape_string($this->conn, $search);
+            $sql .= " AND name LIKE '%$search%'";
+        }
+
+        if (!empty($categories)) {
+            $cats = implode("','", array_map(fn($c) => mysqli_real_escape_string($this->conn, $c), $categories));
+            $sql .= " AND category IN ('$cats')";
+        }
+
+        if (!empty($subCategories)) {
+            $subs = implode("','", array_map(fn($s) => mysqli_real_escape_string($this->conn, $s), $subCategories));
+            $sql .= " AND subCategory IN ('$subs')";
+        }
+
+        if ($sort === 'low-high') {
+            $sql .= " ORDER BY price ASC";
+        } elseif ($sort === 'high-low') {
+            $sql .= " ORDER BY price DESC";
+        } else {
+            $sql .= " ORDER BY id DESC";
+        }
+
+        $result = mysqli_query($this->conn, $sql);
+
+        // 📌 Quan trọng: trả về mảng, không để null
+        if ($result) {
+            return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        }
+        return []; // nếu không có kết quả vẫn trả về mảng rỗng
+    }
 }

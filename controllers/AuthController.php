@@ -17,9 +17,9 @@ class AuthController extends BaseController
             exit();
         }
 
-        return $this->view('admin.index', [
+        return $this->viewAdmin('admin.home.index', [
             'pageTitle' => 'Trang quản trị'
-        ], false);
+        ]);
     }
     // Trang đăng nhập
     public function login()

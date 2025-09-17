@@ -5,15 +5,15 @@
             <div class="flex items-center gap-2">
                 <p class="w-8 md:w-11 h-[2px] bg-[#414141]"></p>
                 <p class="font-medium text-sm md:text-base">
-                    OUR BESTSELLERS
+                    Sản phẩm bán chạy nhất
                 </p>
             </div>
             <h1 class="prata-regular text-3xl sm:py-3 lg:text-5xl leading-relaxed">
-                Latest Arrivals
+                Hàng mới về
             </h1>
             <div class="flex items-center gap-2">
                 <p class="font-semibold text-sm md:text-base">
-                    SHOP NOW
+                    Khám phá ngay
                 </p>
                 <p class=" w-8 md:w-11 h-[1px] bg-[#414141]"></p>
             </div>
@@ -21,5 +21,5 @@
     </div>
 
     <!-- Hero right side -->
-    <img class="h-[671px] sm:w-1/2 object-cover bg-top" src="<?php echo $assets['hero_img']; ?>" alt="Hero">
+    <img class="h-[671px] sm:w-1/2 object-cover object-top bg-top" src="<?php echo $assets['hero_img']; ?>" alt="Hero">
 </div>

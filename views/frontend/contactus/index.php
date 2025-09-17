@@ -4,19 +4,19 @@
     <h2 class="contactus-title">LIÊN HỆ <span>CHÚNG TÔI</span></h2>
     <div class="contactus-main">
         <div class="contactus-img">
-            <img src="/BASE-MVC-PHP/public/assets/img/frontend_assets/contact_img.png" alt="Liên hệ">
+            <img src="<?= $assets['contact_img'] ?>" alt="Liên hệ">
         </div>
         <div class="contactus-info">
             <div class="contactus-store">
                 <b>CỬA HÀNG CỦA CHÚNG TÔI</b>
                 <p>29 Đường Âu Cơ<br>
-                 Phường 14, Quận 11, Hồ Chí Minh 744003, Việt Nam</p>
+                    Phường 14, Quận 11, Hồ Chí Minh 744003, Việt Nam</p>
                 <p>Điện thoại: 0937293828<br>
-                Email: minhsangnguyen@gmail.com</p>
+                    Email: minhsangnguyen@gmail.com</p>
             </div>
             <div class="contactus-career">
                 <b>CƠ HỘI NGHỀ NGHIỆP TẠI FOREVER</b>
-                <p>Tìm hiểu thêm về đội ngũ và các vị trí tuyển dụng tại Forever.</p>
+                <p>Tìm hiểu thêm về đội ngũ và các vị trí tuyển dụng tại FASHION.</p>
                 <button class="contactus-btn">Xem việc làm</button>
             </div>
         </div>

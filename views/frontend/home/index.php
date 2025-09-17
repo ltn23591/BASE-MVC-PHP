@@ -7,3 +7,5 @@ require_once './includes/title.php';
 require_once  './views/frontend/components/LastedCollection.php';
 // sản phẩm bán chạy
 require_once  './views/frontend/components/BestSeller.php';
+require_once  './views/frontend/components/OurPolicy.php';
+require_once  './views/frontend/components/NewsLetterBox.php';

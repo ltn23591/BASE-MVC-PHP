@@ -10,21 +10,28 @@ class ProductController extends BaseController
     }
     public function index()
     {
-        $column =  ['id', 'name', 'price'];
-        $orderBy =  ['id', 'asc'];
 
         $products = $this->productModel->getAll(
             ['*'],
             ['column' => 'id', 'order' => 'desc']
+        );
 
-        );
-        return $this->view(
-            'frontend.components.LastedCollection',
-            [
-                'products' => $products
-            ],
-        );
+
+        $categories = $_GET['category'] ?? [];
+        $subCategories = $_GET['subCategory'] ?? [];
+        $sortType = $_GET['sort'] ?? 'relavent';
+
+        return $this->view('frontend.products.index', [
+            'products' => $products,
+            'categories' => $categories,
+            'subCategories' => $subCategories,
+            'sortType' => $sortType
+
+        ]);
     }
+
+
+
     public function detail()
     {
         // Lấy tất cả sản phẩm
@@ -36,7 +43,7 @@ class ProductController extends BaseController
 
         );
 
-        ////////////////
+
         if (!isset($_GET['id'])) {
             die('Thiếu ID sản phẩm');
         }
@@ -51,7 +58,7 @@ class ProductController extends BaseController
         foreach ($relatedProducts as $p) {
             if ($p['id'] != $product['id'] && $p['category'] == $currentCategory && $p['subCategory'] ==  $currentSubCategory) {
                 array_push($related, $p);
-           
+
                 if (count($related) >= 5) break; // chỉ lấy tối đa 5 sản phẩm
             }
         }
@@ -107,4 +114,5 @@ class ProductController extends BaseController
             ],
         );
     }
+    public function getAllProduct() {}
 }

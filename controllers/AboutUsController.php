@@ -1,6 +1,7 @@
 <?php
 class AboutUsController extends BaseController
 {
+    
     public function index()
     {
         return $this->view('frontend.aboutus.index', [
@@ -8,6 +9,4 @@ class AboutUsController extends BaseController
         ]);
         return $this->view('frontend.aboutus.index');
     }
-
 }
-?>

@@ -10,7 +10,7 @@ class BaseController
             $$key = $value;
         }
         $viewPath =  self::VIEW_FOLDER_NAME . '/' . str_replace('.', '/', $viewPath) . '.php';
-    
+
         if ($withLayout) {
             include __DIR__ . '/../views/frontend/layouts/header.php';
             include __DIR__ . '/../views/frontend/layouts/navbar.php';
@@ -25,5 +25,13 @@ class BaseController
     {
         $modelPath = self::MODEL_FOLDER_NAME . '/' . str_replace('.', '/', $modelPath) . '.php';
         require($modelPath);
+    }
+    protected function viewAdmin($viewPath, array $data = [])
+    {
+        foreach ($data as $key => $value) {
+            $$key = $value;
+        }
+        $viewPath = self::VIEW_FOLDER_NAME . '/' . str_replace('.', '/', $viewPath) . '.php';
+        require($viewPath);
     }
 }
