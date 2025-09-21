@@ -39,6 +39,8 @@
 
 </div>
 </div>
+<script src="<?= BASE_URL ?>public/assets/js/cart.js" defer></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </body>
 
 </html>

@@ -56,17 +56,20 @@ require_once __DIR__ . '/ProductItem.php';
                 <p>Select Size</p>
                 <div class="flex gap-2">
                     <?php foreach ($sizes as $size): ?>
-                    <button class="border py-2 px-4 bg-gray-100" onclick="selectSize('<?= $size ?>', this)">
+                    <button class="size-btn border py-2 px-4 bg-gray-100" onclick="selectSize('<?= $size ?>', this)">
                         <?= htmlspecialchars($size) ?>
                     </button>
                     <?php endforeach; ?>
                 </div>
             </div>
 
-            <button onclick="addToCart('<?= $product['id'] ?>')"
+            <button
+                onclick="addToCartt(<?= $product['id'] ?>,'<?= $product['name'] ?>','<?= $product['image'][0] ?>', <?= $product['price'] ?>)"
                 class="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">
                 ADD TO CART
             </button>
+
+
 
             <hr class="mt-8 sm:w-4/5">
 
@@ -116,21 +119,13 @@ require_once __DIR__ . '/ProductItem.php';
         </div>
     </div>
 </div>
-<script>
-let selectedSize = null;
-
-function selectSize(size, el) {
-    selectedSize = size;
-    document.querySelectorAll('button').forEach(btn => btn.classList.remove('border-orange-500'));
-    el.classList.add('border-orange-500');
-}
-
-function addToCart(productId) {
-    if (!selectedSize) {
-        alert("Vui lòng chọn size trước khi thêm vào giỏ!");
-        return;
-    }
-    // TODO: Gửi AJAX hoặc chuyển hướng đến trang thêm giỏ hàng
-    console.log("Thêm vào giỏ:", productId, "Size:", selectedSize);
-}
-</script>
+<div id=" toast-danger" class="hidden fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 
+            text-gray-500 bg-white rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800">
+    <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg">
+        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path
+                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
+        </svg>
+    </div>
+    <div class="ms-3 text-sm font-normal">Vui lòng chọn size trước khi thêm vào giỏ!</div>
+</div>

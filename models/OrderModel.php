@@ -1,8 +1,8 @@
 <?php
 
-class ProductModel extends BaseModel
+class OrderModel extends BaseModel
 {
-    const TABLE = 'products';
+    const TABLE = 'orders';
     public function getAll($select = ['*'], $orderBys = [], $limit = 15)
     {
         return $this->all(self::TABLE, $select, $orderBys, $limit);
