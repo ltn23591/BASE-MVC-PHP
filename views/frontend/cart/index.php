@@ -1,4 +1,4 @@
-<div class="border-t pt-14 max-w-5xl mx-auto px-4">
+<div id="loadTotalCart" class="border-t pt-14 max-w-5xl mx-auto px-4">
 
     <!-- Tiêu đề -->
     <div class="text-2xl mb-6 font-bold">
@@ -31,8 +31,8 @@
                 onchange="updateQuantity(<?= $item['id'] ?>, '<?= $item['size'] ?>', this.value)">
 
             <!-- Xóa sản phẩm -->
-            <img onclick="updateQuantity(<?= $item['id'] ?>, '<?= $item['size'] ?>', 0)" class="w-4 mr-4 cursor-pointer"
-                src="<?= $assets['bin_icon'] ?>" alt="Remove">
+            <p onclick="removeFromCart(<?= $item['id'] ?>, '<?= $item['size'] ?>', 0)" class="w-4 mr-4 cursor-pointer">X
+            </p>
         </div>
         <?php endforeach; ?>
         <?php else: ?>
@@ -41,7 +41,7 @@
     </div>
 
     <!-- Tổng giỏ hàng -->
-    <div id="loadTotalCart" class="flex justify-end my-20">
+    <div class="flex justify-end my-20">
         <div class="w-full sm:w-[450px] bg-white p-6 rounded shadow">
             <p class="text-lg">Tổng số lượng: <b><?= $totalQuantity ?></b></p>
             <p class="text-lg">Tổng tiền: <b>$<?= number_format($totalPrice, 2) ?></b></p>
@@ -62,16 +62,15 @@
 function updateQuantity(id) {
     let newQuantity = event.target.value;
 
-    //Gửi yêu cầu AJAX để cập nhật số lượng
     $.ajax({
         type: "POST",
         url: "index.php?controllers=cart&action=updateQuantity",
         data: {
             id: id,
-            quantity: newQuantity,
-
+            quantity: newQuantity
         },
         success: function(response) {
+            // Load lại phần tổng giỏ hàng
             $.post('index.php?controllers=Cart&action=loadTotal', function(data) {
                 $('#loadTotalCart').html(data);
             });
@@ -79,7 +78,30 @@ function updateQuantity(id) {
         error: function() {
             console.log('Có lỗi xảy ra. Vui lòng thử lại.');
         }
-    })
+    });
+}
 
+function removeFromCart(id) {
+    if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
+        let newQuantity = event.target.value;
+
+        $.ajax({
+            type: "POST",
+            url: "index.php?controllers=cart&action=updateQuantity",
+            data: {
+                id: id,
+                quantity: newQuantity
+            },
+            success: function(response) {
+                // Load lại phần tổng giỏ hàng
+                $.post('index.php?controllers=Cart&action=loadTotal', function(data) {
+                    $('#loadTotalCart').html(data);
+                });
+            },
+            error: function() {
+                console.log('Có lỗi xảy ra. Vui lòng thử lại.');
+            }
+        })
+    }
 }
 </script>

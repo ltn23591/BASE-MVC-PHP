@@ -103,6 +103,7 @@ class CartController extends BaseController
                         $_SESSION['cart'][$index]['quantity'] = $newQuantity;
                     } else {
                         unset($_SESSION['cart'][$index]);
+                        $_SESSION['cart'] = array_values($_SESSION['cart']); // Cập nhật lại chỉ số mảng
                     }
                     break;
                 }
@@ -157,6 +158,6 @@ class CartController extends BaseController
             'cart'          => $cart,
             'totalQuantity' => $totalQuantity,
             'totalPrice'    => $totalPrice,
-        ],false);
+        ], false);
     }
 }
