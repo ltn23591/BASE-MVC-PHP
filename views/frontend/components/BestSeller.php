@@ -1,5 +1,4 @@
 <?php
-require_once './includes/title.php';
 require_once './public/assets/img/frontend_assets/assets.php';
 require_once './views/frontend/components/ProductItem.php';
 ?>
@@ -15,7 +14,7 @@ require_once './views/frontend/components/ProductItem.php';
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
         <!-- Lấy 5 sản phẩm được seller -->
         <?php foreach (array_slice($bestsellers, 0, 5) as $p): ?>
-            <?php ProductItem($p['id'], $p['image'], $p['name'], $p['price']); ?>
+        <?php ProductItem($p['id'], $p['image'], $p['name'], $p['price']); ?>
         <?php endforeach; ?>
     </div>
 </div>

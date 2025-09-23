@@ -1,6 +1,5 @@
-let selectedSize = null;
 let totalProducts = document.getElementById('totalProducts');
-
+let selectedSize = null;
 function selectSize(size, el) {
     selectedSize = size;
     console.log('Đã chọn size:', selectedSize);
@@ -15,6 +14,7 @@ function selectSize(size, el) {
 }
 
 function addToCartt(id, name, image, price) {
+    let formData = new FormData();
     if (!selectedSize) {
         console.log('Chưa chọn size!');
         return;
@@ -33,12 +33,44 @@ function addToCartt(id, name, image, price) {
             quantity: 1,
         },
         success: function (response) {
-            totalProducts.innerText = response;
-            alert('Thêm vào giỏ hàng thành công!');
+            try {
+                let data = JSON.parse(response);
+
+                if (data.status === 'error' && data.redirect) {
+                    Toastify({
+                        text: data.message || 'Bạn cần đăng nhập',
+                        duration: 2000,
+                        gravity: 'top',
+                        position: 'right',
+                        close: true,
+                        style: {
+                            background:
+                                'linear-gradient(to right, #ff416c, #ff4b2b)', // đỏ
+                        },
+                    }).showToast();
+                    window.location.href = data.redirect;
+                } else if (data.status === 'success') {
+                    totalProducts.innerText = data.totalQuantity;
+                    Toastify({
+                        text: 'Đã thêm vào giỏ hàng!',
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'right',
+                        close: true,
+                        style: {
+                            background:
+                                'linear-gradient(to right, #00b09b, #96c93d)',
+                        },
+                    }).showToast();
+                } else {
+                    alert(data.message || 'Có lỗi xảy ra!');
+                }
+            } catch (e) {
+                console.error('Lỗi parse JSON:', e, response);
+            }
         },
         error: function (error) {
             alert('Có lỗi xảy ra. Vui lòng thử lại.' + error);
         },
     });
 }
-

@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/../public/assets/img/frontend_assets/assets.php';
+<?php include __DIR__ . '/../../../public/assets/img/frontend_assets/assets.php';
 $totalProducts = !empty($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 ?>
 

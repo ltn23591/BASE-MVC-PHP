@@ -47,12 +47,14 @@ class ProductController extends BaseController
         if (!isset($_GET['id'])) {
             die('Thiếu ID sản phẩm');
         }
+
         $id = $_GET['id'];
         $product = $this->productModel->findById($id);
         if (!empty($product['image'])) {
             $product['image'] = json_decode($product['image'], true);
         }
         $related = [];
+        $empty = "";
         $currentCategory = $product['category'];
         $currentSubCategory = $product['subCategory'];
         foreach ($relatedProducts as $p) {
@@ -60,13 +62,16 @@ class ProductController extends BaseController
                 array_push($related, $p);
 
                 if (count($related) >= 5) break; // chỉ lấy tối đa 5 sản phẩm
+            } else {
+                $empty = "";
             }
         }
         return $this->view(
             'frontend.components.ProductDetail',
             [
                 'product' => $product,
-                'related' => $related
+                'related' => $related,
+                'empty' => $empty
             ]
         );
     }

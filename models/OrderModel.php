@@ -7,6 +7,12 @@ class OrderModel extends BaseModel
     {
         return $this->all(self::TABLE, $select, $orderBys, $limit);
     }
+    public function getByUser($userId)
+    {
+        $userId = (int)$userId;
+        $sql = "SELECT * FROM `" . self::TABLE . "` WHERE `user_id` = $userId ORDER BY id DESC";
+        return $this->getByQuery($sql);
+    }
     public function store($data)
     {
         $this->create(self::TABLE, $data);
@@ -28,5 +34,4 @@ class OrderModel extends BaseModel
     {
         $this->delete(self::TABLE, $id);
     }
-   
 }

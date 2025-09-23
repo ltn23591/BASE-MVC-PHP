@@ -71,7 +71,46 @@ class AdminController extends BaseController
 
     public function orders()
     {
-        return $this->viewAdmin('admin.components.orders');
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (empty($_SESSION['admin_logged_in'])) {
+            header('Location: index.php?controllers=auth&action=login');
+            exit();
+        }
+
+        $this->loadModel('OrderModel');
+        $orderModel = new OrderModel();
+        $orders = $orderModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
+
+        return $this->viewAdmin('admin.components.orders', [
+            'orders' => $orders
+        ]);
+    }
+    public function updateOrderStatus()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (empty($_SESSION['admin_logged_in'])) {
+            header('Location: index.php?controllers=auth&action=login');
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: index.php?controllers=auth&action=admin');
+            exit();
+        }
+
+        $orderId = (int)($_POST['order_id'] ?? 0);
+        $status  = $_POST['status'] ?? '';
+        if ($orderId > 0 && $status !== '') {
+            $this->loadModel('OrderModel');
+            $orderModel = new OrderModel();
+            $orderModel->updateData($orderId, ['status' => $status]);
+        }
+        header('Location: index.php?controllers=auth&action=admin');
+        exit();
     }
     public function delete()
     {

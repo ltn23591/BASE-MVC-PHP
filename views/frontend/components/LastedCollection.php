@@ -1,7 +1,7 @@
 <?php
 require_once './views/frontend/components/LastedCollection.php';
 require_once __DIR__ . '/ProductItem.php';
-require_once './includes/title.php';
+// require  './views/frontend/layouts/title.php';
 
 ?>
 <div class="my-10">
@@ -12,11 +12,11 @@ require_once './includes/title.php';
         </p>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6 autoplay ">
         <?php
         try {
             foreach (array_slice($products, 0, 10) as $p) {
-                ProductItem($p['id'],$p['image'], $p['name'], $p['price']);
+                ProductItem($p['id'], $p['image'], $p['name'], $p['price']);
             }
         } catch (Exception $e) {
             echo "Lỗi: " . $e->getMessage();

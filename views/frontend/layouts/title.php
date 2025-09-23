@@ -9,4 +9,4 @@ function Title($text1, $text2)
         </p>
         <p class="w-8 sm:w-12 h-[1px] sm:h-[2px] bg-gray-700"></p>
     </div>';
-} 
+}

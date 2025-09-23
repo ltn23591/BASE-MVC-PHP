@@ -36,3 +36,19 @@ $action = $currentState === 'Sign up' ? 'register' : 'login';
         </button>
     </form>
 </div>
+
+
+<?php if (!empty($toast)): ?>
+<script>
+Toastify({
+    text: "<?= htmlspecialchars($toast) ?>",
+    duration: 3000,
+    gravity: "top",
+    position: "right",
+    close: true,
+    style: {
+        background: "linear-gradient(to right, #ff416c, #ff4b2b)"
+    }
+}).showToast();
+</script>
+<?php endif; ?>

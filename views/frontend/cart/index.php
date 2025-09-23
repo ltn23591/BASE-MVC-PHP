@@ -20,13 +20,14 @@
                     <p class="text-xs sm:text-lg font-medium"><?= htmlspecialchars($item['name']) ?></p>
                     <div class="flex items-center gap-5 mt-2">
                         <p>$<?= number_format($item['price'], 2) ?></p>
-                        <p class="px-2 sm:px-3 sm:py-1 border bg-slate-50"><?= htmlspecialchars($item['size']) ?></p>
+                        <p class="px-2 sm:px-3 sm:py-1 border bg-slate-50"><?= htmlspecialchars($item['size']) ?>
+                        </p>
                     </div>
                 </div>
             </div>
 
             <!-- Input số lượng -->
-            <input class="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1 text-center" type="number" min="1"
+            <input class="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1 text-center" type="number" min="0"
                 value="<?= $item['quantity'] ?>"
                 onchange="updateQuantity(<?= $item['id'] ?>, '<?= $item['size'] ?>', this.value)">
 
@@ -46,8 +47,8 @@
             <p class="text-lg">Tổng số lượng: <b><?= $totalQuantity ?></b></p>
             <p class="text-lg">Tổng tiền: <b>$<?= number_format($totalPrice, 2) ?></b></p>
             <div class="w-full text-end">
-                <a href="index.php?controller=Order&action=placeOrder"
-                    class="bg-black text-white my-8 px-8 py-3 inline-block">
+                <a href="index.php?controllers=checkout&action=index" class="bg-black text-white px-16 py-3"
+                    type=" button">
                     ĐẶT HÀNG
                 </a>
             </div>
@@ -73,6 +74,7 @@ function updateQuantity(id) {
             // Load lại phần tổng giỏ hàng
             $.post('index.php?controllers=Cart&action=loadTotal', function(data) {
                 $('#loadTotalCart').html(data);
+
             });
         },
         error: function() {

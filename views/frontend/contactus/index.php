@@ -1,7 +1,7 @@
 <?php include_once __DIR__ . '/../layouts/header.php'; ?>
-
+<?php include __DIR__ . '/../layouts/title.php'; ?>
 <div class="container contactus">
-    <h2 class="contactus-title">LIÊN HỆ <span>CHÚNG TÔI</span></h2>
+    <div class="text-3xl text-center my-5"> <?= Title("LIÊN HỆ", "VỚI CHÚNG TÔI") ?></div>
     <div class="contactus-main">
         <div class="contactus-img">
             <img src="<?= $assets['contact_img'] ?>" alt="Liên hệ">

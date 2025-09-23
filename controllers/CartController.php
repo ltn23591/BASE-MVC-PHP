@@ -19,21 +19,34 @@ class CartController extends BaseController
             session_start();
         }
 
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode([
+                'status'  => 'error',
+                'message' => 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng',
+                'redirect' => 'index.php?controllers=auth&action=login'
+            ]);
+            return;
+        }
+
+
         if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
             $_SESSION['cart'] = [];
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $productId = $_POST['product_id'];
+            $productId = (int)$_POST['product_id'];
             $name      = $_POST['name'];
             $image     = $_POST['image'];
-            $price     = $_POST['price'];
+            $price     = (float)$_POST['price'];
             $size      = $_POST['size'];
+            $userId    = (int)$_SESSION['user_id'];
 
+            // Kiểm tra có sản phẩm có id hay không, nếu không thì trả về false
             $index = array_search($productId, array_column($_SESSION['cart'], 'id'));
 
             if ($index !== false) {
                 $_SESSION['cart'][$index]['quantity'] += 1;
+                $this->CartModel->setQuantityByComposite($userId, $productId, $size, (int)$_SESSION['cart'][$index]['quantity']);
             } else {
                 $product = [
                     'id'       => $productId,
@@ -44,13 +57,18 @@ class CartController extends BaseController
                     'quantity' => 1
                 ];
                 $_SESSION['cart'][] = $product;
+
+                $this->CartModel->addOrIncrement($userId, $productId, $name, $image, $price, $size, 1);
             }
 
-            echo array_sum(array_column($_SESSION['cart'], 'quantity'));
+            echo json_encode([
+                'status'        => 'success',
+                'totalQuantity' => array_sum(array_column($_SESSION['cart'], 'quantity'))
+            ]);
         } else {
             echo json_encode([
-                'status'  => 'error',
-                'message' => 'Yêu cầu không hợp lệ'
+                'status'        => 'success',
+                'totalQuantity' => array_sum(array_column($_SESSION['cart'], 'quantity'))
             ]);
         }
     }
@@ -60,8 +78,13 @@ class CartController extends BaseController
             session_start();
         }
 
-        if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
-            $_SESSION['cart'] = [];
+        if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart']) || count($_SESSION['cart']) === 0) {
+            if (isset($_SESSION['user_id'])) {
+                $rows = $this->CartModel->getByUser((int)$_SESSION['user_id']);
+                $_SESSION['cart'] = $this->CartModel->rowsToSessionCart($rows);
+            } else {
+                $_SESSION['cart'] = [];
+            }
         }
 
         $cart = $_SESSION['cart'];
@@ -94,11 +117,16 @@ class CartController extends BaseController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id          = $_POST['id'];        // ✅ khớp với JS
+            $id          = (int)$_POST['id'];
             $newQuantity = (int)$_POST['quantity'];
+            $size        = isset($_POST['size']) ? $_POST['size'] : null;
 
+            $matchedSize = null; // giữ size tìm được để đồng bộ DB
+            $foundIndex = null;
             foreach ($_SESSION['cart'] as $index => $item) {
-                if ($item['id'] == $id) {
+                if ($item['id'] == $id && ($size === null || $item['size'] === $size)) {
+                    $matchedSize = $item['size'];
+                    $foundIndex = $index;
                     if ($newQuantity > 0) {
                         $_SESSION['cart'][$index]['quantity'] = $newQuantity;
                     } else {
@@ -107,6 +135,11 @@ class CartController extends BaseController
                     }
                     break;
                 }
+            }
+
+            if (isset($_SESSION['user_id']) && $matchedSize !== null) {
+                $userId = (int)$_SESSION['user_id'];
+                $this->CartModel->setQuantityByComposite($userId, $id, $matchedSize, $newQuantity);
             }
 
             // Tính lại tổng
@@ -139,8 +172,13 @@ class CartController extends BaseController
             session_start();
         }
 
-        if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
-            $_SESSION['cart'] = [];
+        if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart']) || count($_SESSION['cart']) === 0) {
+            if (isset($_SESSION['user_id'])) {
+                $rows = $this->CartModel->getByUser((int)$_SESSION['user_id']);
+                $_SESSION['cart'] = $this->CartModel->rowsToSessionCart($rows);
+            } else {
+                $_SESSION['cart'] = [];
+            }
         }
 
         $cart = $_SESSION['cart'];

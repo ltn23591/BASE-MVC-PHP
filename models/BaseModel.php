@@ -77,10 +77,14 @@ class BaseModel extends Database
     }
     public function delete($table, $id)
     {
+        $id = (int)$id; // ép kiểu an toàn
         $sql = "DELETE FROM $table WHERE id = $id";
-        $this->_query($sql);
+        if (!mysqli_query($this->conn, $sql)) {
+            die("Lỗi SQL: " . mysqli_error($this->conn));
+        }
     }
-    public function add() {}
+
+
 
 
     private function _query($sql)
@@ -98,21 +102,5 @@ class BaseModel extends Database
     {
         $sql = "UPDATE $table SET amount = quantity * price WHERE id = $id";
         $this->_query($sql);
-    }
-    public function updateWhere($productId, $size, $data)
-    {
-        $sets = [];
-        foreach ($data as $key => $val) {
-            $sets[] = "$key = '" . mysqli_real_escape_string($this->conn, $val) . "'";
-        }
-        $setString = implode(', ', $sets);
-        $sql = "UPDATE order_items SET $setString WHERE product_id = '$productId' AND size = '$size'";
-        $this->_query($sql);
-    }
-    public function getOne($productId, $size)
-    {
-        $sql = "SELECT * FROM order_items WHERE product_id = '$productId' AND size = '$size' LIMIT 1";
-        $query = $this->_query($sql);
-        return mysqli_fetch_assoc($query);
     }
 }

@@ -1,12 +1,16 @@
-<?php include_once __DIR__ . '/../layouts/header.php'; ?>
+<?php include_once __DIR__ . '/../layouts/header.php';
+include __DIR__ . '/../layouts/title.php';
+?>
 
 <div class="container">
+    <div class="text-center text-2xl"><?= Title("VỀ", "CHÚNG TÔI") ?></div>
     <div class="about">
+
         <div class="about-img">
             <img src="<?= $assets['about_img'] ?>" alt="Về chúng tôi">
         </div>
         <div class="about-text">
-            <h2>VỀ CHÚNG TÔI</h2>
+
             <p>
                 Forever được thành lập với niềm đam mê đổi mới và mong muốn cách mạng hóa trải nghiệm mua sắm trực
                 tuyến. Hành trình của chúng tôi bắt đầu với ý tưởng đơn giản: tạo ra một nền tảng nơi khách hàng có thể

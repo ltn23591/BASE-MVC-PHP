@@ -1,6 +1,5 @@
 <?php
 
-
 class AuthController extends BaseController
 {
     private $userModel;
@@ -10,6 +9,8 @@ class AuthController extends BaseController
         $this->loadModel('UserModel');
         $this->userModel = new UserModel();
     }
+
+    // Trang quản trị
     public function admin()
     {
         if (empty($_SESSION['admin_logged_in'])) {
@@ -21,13 +22,16 @@ class AuthController extends BaseController
             'pageTitle' => 'Trang quản trị'
         ]);
     }
-    // Trang đăng nhập
+
+    // Đăng nhập
     public function login()
     {
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $email = $_POST['email'];
                 $password = $_POST['password'];
+
+                // Trường hợp admin
                 if ($email === 'admin@gmail.com' && $password === '123') {
                     $_SESSION['admin_logged_in'] = true;
                     $_SESSION['admin_email'] = $email;
@@ -35,32 +39,51 @@ class AuthController extends BaseController
                     header('Location: index.php?controllers=auth&action=admin');
                     exit();
                 }
+
+                // Tìm user trong DB
                 $user = $this->userModel->findByEmail($email);
-
                 if (!$user) {
-                    throw new Exception("Tài khoản không tồn tại!");
+                    $toast = "Tài khoản không tồn tại!";
+                    return $this->view('frontend.auth.login', [
+                        'pageTitle' => 'Đăng nhập',
+                        'toast' => $toast
+                    ]);
                 }
 
+                // Kiểm tra mật khẩu
                 if (!password_verify($password, $user['password'])) {
-                    throw new Exception("Sai mật khẩu!");
+                    $toast = "Sai mật khẩu!";
+                    return $this->view('frontend.auth.login', [
+                        'pageTitle' => 'Đăng nhập',
+                        'toast' => $toast
+                    ]);
                 }
 
-                // Đăng nhập thành công
+                // ✅ Đăng nhập thành công
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
+
+                // Đồng bộ giỏ hàng từ DB -> session
+                $this->loadModel('CartModel');
+                $cartModel = new CartModel();
+                $rows = $cartModel->getByUser((int)$user['id']);
+                $_SESSION['cart'] = $cartModel->rowsToSessionCart($rows);
+
+                $toast = "Đăng nhập thành công! Chào mừng " . $user['name'];
                 header('Location: index.php');
                 exit();
             }
         } catch (Exception $e) {
-            $error = $e->getMessage();
+            $toast = $e->getMessage();
         }
 
         return $this->view('frontend.auth.login', [
             'pageTitle' => 'Đăng nhập',
-            'error' => $error ?? null
+            'toast' => $toast ?? null
         ]);
     }
-    // Trang đăng ký
+
+    // Đăng ký
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -69,13 +92,18 @@ class AuthController extends BaseController
             $password = $_POST['password'];
 
             if ($this->userModel->findByEmail($email)) {
-                $error = "Email đã tồn tại!";
+                $toast = "Email đã tồn tại!";
+                return $this->view('frontend.auth.login', [
+                    'pageTitle' => 'Đăng ký',
+                    'toast' => $toast
+                ]);
             } else {
                 $this->userModel->store([
                     'name' => $name,
                     'email' => $email,
-                    'password' => $password
+                    'password' => $password,
                 ]);
+                $toast = 'Đăng ký thành công! Vui lòng đăng nhập.';
                 header('Location: index.php?controllers=auth&action=login');
                 exit();
             }
@@ -83,10 +111,9 @@ class AuthController extends BaseController
 
         return $this->view('frontend.auth.login', [
             'pageTitle' => 'Đăng ký',
-            'error' => $error ?? null
+            'toast' => $toast ?? null
         ]);
     }
-
 
     // Đăng xuất
     public function logout()
