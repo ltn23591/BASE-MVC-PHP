@@ -12,20 +12,27 @@
             <?php endif; ?>
 
             <div class="flex gap-3">
-                <input required name="firstName" value="<?= htmlspecialchars($_POST['firstName'] ?? '') ?>" class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="First Name" />
-                <input required name="lastName" value="<?= htmlspecialchars($_POST['lastName'] ?? '') ?>" class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Last Name" />
+                <input required name="firstName" value="<?= htmlspecialchars($_POST['firstName'] ?? '') ?>"
+                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="First Name" />
+                <input required name="lastName" value="<?= htmlspecialchars($_POST['lastName'] ?? '') ?>"
+                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Last Name" />
             </div>
 
-            <input required name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="email" placeholder="Email" />
+            <input required name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
+                class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="email" placeholder="Email" />
 
-            <input required name="street" value="<?= htmlspecialchars($_POST['street'] ?? '') ?>" class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Street Address" />
+            <input required name="street" value="<?= htmlspecialchars($_POST['street'] ?? '') ?>"
+                class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Street Address" />
 
             <div class="flex gap-3">
-                <input required name="city" value="<?= htmlspecialchars($_POST['city'] ?? '') ?>" class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="City" />
-                <input required name="country" value="<?= htmlspecialchars($_POST['country'] ?? '') ?>" class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Country" />
+                <input required name="city" value="<?= htmlspecialchars($_POST['city'] ?? '') ?>"
+                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="City" />
+                <input required name="country" value="<?= htmlspecialchars($_POST['country'] ?? '') ?>"
+                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Country" />
             </div>
 
-            <input required name="phone" value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>" class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Phone Number" />
+            <input required name="phone" value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>"
+                class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Phone Number" />
         </div>
 
         <div class="mt-8">
@@ -60,10 +67,10 @@
                         <span class="text-gray-600 text-sm">Cash on Delivery</span>
                     </label>
                 </div>
-
-                <div class="w-full text-end mt-8">
+                <div class=" w-full text-end mt-8">
                     <button type="submit" class="bg-black text-white px-16 py-3">PLACE ORDER</button>
                 </div>
+
             </div>
         </div>
     </form>

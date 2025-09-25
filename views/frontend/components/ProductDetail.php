@@ -1,7 +1,6 @@
 <?php
 include './public/assets/img/frontend_assets/assets.php';
 include __DIR__ . '/../layouts/title.php';
-
 require __DIR__ . '/ProductItem.php';
 ?>
 
@@ -46,7 +45,7 @@ require __DIR__ . '/ProductItem.php';
             </div>
 
             <p class="mt-5 text-3xl font-medium">
-                $<?= htmlspecialchars($product['price']) ?>
+                <?= number_format(htmlspecialchars($product['price']), 0, ',', '.') ?> VND
             </p>
 
             <p class="mt-3 text-gray-500 md:w-4/5">
@@ -66,8 +65,13 @@ require __DIR__ . '/ProductItem.php';
 
             <button
                 onclick="addToCartt(<?= $product['id'] ?>,'<?= $product['name'] ?>','<?= $product['image'][0] ?>', <?= $product['price'] ?>)"
-                class="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">
-                ADD TO CART
+                class="bg-black text-white px-2 py-3 text-sm active:bg-gray-700">
+                THÊM VÀO GIỎ HÀNG
+            </button>
+            <button
+                onclick="buyNow(<?= $product['id'] ?>,'<?= $product['name'] ?>','<?= $product['image'][0] ?>', <?= $product['price'] ?>)"
+                class="bg-orange-400 text-white px-2 py-3 text-sm active:bg-gray-700">
+                MUA NGAY
             </button>
 
 
@@ -85,8 +89,8 @@ require __DIR__ . '/ProductItem.php';
     <!-- Description & Reviews -->
     <div class="mt-20">
         <div class="flex">
-            <b class="border px-5 py-3 text-sm">Description</b>
-            <p class="border px-5 py-3 text-sm">Reviews (122)</p>
+            <b class="border px-5 py-3 text-sm">Mô tả sản phẩm</b>
+            <p class="border px-5 py-3 text-sm">Đánh giá (122)</p>
         </div>
         <div class="flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500 text-left">
             <p>

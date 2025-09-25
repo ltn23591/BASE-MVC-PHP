@@ -18,7 +18,7 @@
                         <div>
                             <p class="text-xs sm:text-lg font-medium"><?= htmlspecialchars($item['name']) ?></p>
                             <div class="flex items-center gap-5 mt-2">
-                                <p>$<?= number_format($item['price'], 2) ?></p>
+                                <p><?= number_format($item['price'], 0, ',', '.') ?> VND</p>
                                 <p class="px-2 sm:px-3 sm:py-1 border bg-slate-50"><?= htmlspecialchars($item['size']) ?>
                                 </p>
                             </div>
@@ -44,7 +44,8 @@
     <div class="flex justify-end my-20">
         <div class="w-full sm:w-[450px] bg-white p-6 rounded shadow">
             <p class="text-lg">Tổng số lượng: <b><?= $totalQuantity ?></b></p>
-            <p class="text-lg">Tổng tiền: <b>$<?= number_format($totalPrice, 2) ?></b></p>
+
+            <p class="text-lg">Tổng tiền: <b><?= number_format($totalPrice, 0, ',', '.') ?> VND</b></p>
             <div class="w-full text-end">
                 <a href="index.php?controllers=checkout&action=index" class="bg-black text-white px-16 py-3"
                     type=" button">
