@@ -8,6 +8,10 @@ class AuthController extends BaseController
     {
         $this->loadModel('UserModel');
         $this->userModel = new UserModel();
+
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
     // Trang quản trị
@@ -43,19 +47,17 @@ class AuthController extends BaseController
                 // Tìm user trong DB
                 $user = $this->userModel->findByEmail($email);
                 if (!$user) {
-                    $toast = "Tài khoản không tồn tại!";
                     return $this->view('frontend.auth.login', [
                         'pageTitle' => 'Đăng nhập',
-                        'toast' => $toast
+                        'toast' => "Tài khoản không tồn tại!"
                     ]);
                 }
 
                 // Kiểm tra mật khẩu
                 if (!password_verify($password, $user['password'])) {
-                    $toast = "Sai mật khẩu!";
                     return $this->view('frontend.auth.login', [
                         'pageTitle' => 'Đăng nhập',
-                        'toast' => $toast
+                        'toast' => "Sai mật khẩu!"
                     ]);
                 }
 
@@ -63,13 +65,12 @@ class AuthController extends BaseController
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
 
-                // Đồng bộ giỏ hàng từ DB -> session
                 $this->loadModel('CartModel');
                 $cartModel = new CartModel();
-                $rows = $cartModel->getByUser((int)$user['id']);
-                $_SESSION['cart'] = $cartModel->rowsToSessionCart($rows);
+                $_SESSION['cart'] = $cartModel->rowsToSessionCart(
+                    $cartModel->getByUser((int)$user['id'])
+                );
 
-                $toast = "Đăng nhập thành công! Chào mừng " . $user['name'];
                 header('Location: index.php');
                 exit();
             }
@@ -83,35 +84,60 @@ class AuthController extends BaseController
         ]);
     }
 
-    // Đăng ký
+    // Đăng ký tài khoản
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'];
             $email = $_POST['email'];
             $password = $_POST['password'];
+            $otpInput = $_POST['otp'] ?? null;
 
             if ($this->userModel->findByEmail($email)) {
-                $toast = "Email đã tồn tại!";
                 return $this->view('frontend.auth.login', [
                     'pageTitle' => 'Đăng ký',
-                    'toast' => $toast
+                    'toast' => "❌ Email đã tồn tại!"
                 ]);
-            } else {
-                $this->userModel->store([
-                    'name' => $name,
-                    'email' => $email,
-                    'password' => $password,
-                ]);
-                $toast = 'Đăng ký thành công! Vui lòng đăng nhập.';
-                header('Location: index.php?controllers=auth&action=login');
-                exit();
             }
+
+            // ✅ Kiểm tra OTP
+            if (!isset($_SESSION['otp']) || time() > $_SESSION['otp_expire']) {
+                return $this->view('frontend.auth.login', [
+                    'pageTitle' => 'Đăng ký',
+                    'toast' => "❌ OTP đã hết hạn. Vui lòng gửi lại."
+                ]);
+            }
+
+            if (strtolower($email) != strtolower($_SESSION['otp_email'])) {
+                return $this->view('frontend.auth.login', [
+                    'pageTitle' => 'Đăng ký',
+                    'toast' => "❌ Email không trùng với email đã gửi OTP."
+                ]);
+            }
+
+            if ($otpInput != $_SESSION['otp']) {
+                return $this->view('frontend.auth.login', [
+                    'pageTitle' => 'Đăng ký',
+                    'toast' => "❌ Mã OTP không đúng."
+                ]);
+            }
+
+            // ✅ OTP đúng ➝ Lưu tài khoản
+            unset($_SESSION['otp'], $_SESSION['otp_email'], $_SESSION['otp_expire']);
+
+            $this->userModel->store([
+                'name' => $name,
+                'email' => $email,
+                'password' => $password
+            ]);
+
+            $_SESSION['toast_success'] = " Đăng ký thành công! Bạn có thể đăng nhập ngay.";
+            header('Location: index.php?controllers=auth&action=login');
+            exit();
         }
 
         return $this->view('frontend.auth.login', [
-            'pageTitle' => 'Đăng ký',
-            'toast' => $toast ?? null
+            'pageTitle' => 'Đăng ký'
         ]);
     }
 
@@ -122,45 +148,52 @@ class AuthController extends BaseController
         header('Location: index.php?controllers=auth&action=login');
         exit();
     }
-    // đổi mật khẩu
-    // Quên mật khẩu / đổi mật khẩu
-public function resetPassword()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $email = $_POST['email'] ?? '';
-        $newPassword = $_POST['new_password'] ?? '';
 
-        // Kiểm tra email có trong database không
-        $user = $this->userModel->findByEmail($email);
+    // Quên mật khẩu
+    public function resetPassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'] ?? '';
+            $otpInput = $_POST['otp'] ?? '';
+            $newPassword = $_POST['new_password'] ?? '';
 
-        if (!$user) {
-            $toast = "Email không tồn tại!";
-        } else {
-            if (!empty($newPassword)) {
-                // Nếu có mật khẩu mới, update luôn
-                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                $this->userModel->update($user['id'], ['password' => $hashedPassword],'id');
-                $toast = "Đổi mật khẩu thành công! Vui lòng đăng nhập.";
+            // ✅ Kiểm tra OTP
+            if (!isset($_SESSION['reset_otp']) || time() > $_SESSION['reset_expire']) {
+                $toast = "❌ OTP đã hết hạn. Vui lòng gửi lại.";
+            } elseif (strtolower($email) !== strtolower($_SESSION['reset_email'])) {
+                $toast = "❌ Email không trùng khớp với email đã gửi OTP.";
+            } elseif ($otpInput != $_SESSION['reset_otp']) {
+                $toast = "❌ Mã OTP không chính xác.";
             } else {
-                // Chỉ nhập email, hiển thị form nhập mật khẩu mới
-                $toast = "Email hợp lệ. Vui lòng nhập mật khẩu mới.";
-            }
-        }
+                // ✅ OTP đúng ➝ đổi mật khẩu
+                $user = $this->userModel->findByEmail($email);
+                if (!$user) {
+                    $toast = "❌ Email không tồn tại.";
+                } else {
+                    // Hash mật khẩu mới trước khi lưu
+                    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                    $this->userModel->updateData($user['id'], ['password' => $hashedPassword]);
 
-        // Hiển thị view với state reset và truyền thông tin user
-        return $this->view('frontend.auth.login', [
-            'pageTitle' => 'Đổi mật khẩu',
-            'toast' => $toast,
-            'state' => 'reset',
-            'email' => $email,
-            'showNewPassword' => !empty($user) && empty($newPassword) ? true : false
-        ]);
-    } else {
-        // GET → chỉ hiển thị form email
-        return $this->view('frontend.auth.login', [
-            'pageTitle' => 'Quên Mật Khẩu',
-            'state' => 'reset'
-        ]);
+                    // Xoá session OTP
+                    unset($_SESSION['reset_otp'], $_SESSION['reset_email'], $_SESSION['reset_expire']);
+
+                    $_SESSION['toast_success'] = "Mật khẩu đã đổi thành công! Bạn có thể đăng nhập.";
+                    header("Location: index.php?controllers=auth&action=login");
+                    exit();
+                }
+            }
+
+            return $this->view('frontend.auth.login', [
+                'pageTitle' => 'Đổi mật khẩu',
+                'toast' => $toast,
+                'state' => 'reset',
+                'email' => $email
+            ]);
+        } else {
+            return $this->view('frontend.auth.login', [
+                'pageTitle' => 'Quên mật khẩu',
+                'state' => 'reset'
+            ]);
+        }
     }
-}
 }

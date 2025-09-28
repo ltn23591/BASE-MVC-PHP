@@ -19,17 +19,13 @@ class UserModel extends BaseModel
     // Tìm user theo email
     public function findByEmail($email)
     {
-        // $sql = "SELECT * FROM " . self::TABLE . " WHERE email = '" . $email . "' LIMIT 1";
-        // $query = $this->_query($sql);
-
-        // return mysqli_fetch_assoc($query); // ✅ trả về mảng thay vì chuỗi
         return $this->findEmail(self::TABLE, $email);
     }
 
     // Thêm user mới (đăng ký)
     public function store($data)
     {
-        // Mã hóa mật khẩu trước khi lưu
+      
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         $this->create(self::TABLE, $data);
     }
