@@ -5,7 +5,7 @@
         <a data-url="index.php?controllers=admin&action=add"
             class="cursor-pointer nav-link flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition">
             <img class="w-5 h-5" src="<?= $assets['add_icon'] ?>" alt="">
-            <span class="hidden md:block">Thêm sản phẩm</span>
+            <span class="hidden md:block">Thêm sản phẩm mới</span>
         </a>
 
         <!-- List Items -->

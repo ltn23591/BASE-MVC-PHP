@@ -26,4 +26,4 @@ require_once __DIR__ . '../../../../config.php';
 
 <body>
     <div class="px-4 sm:px[5vw] md:px-[7vw] lg:px[9vw]">
-        <div id="root">
+        <div>

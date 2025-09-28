@@ -15,7 +15,9 @@ html {
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
 }
-
+:root {
+    max-width: 400px;
+}
 body {
     color: #333;
     line-height: 1.6;
@@ -306,4 +308,3 @@ footer {
     background: #222;
     color: #fff;
 }
-
