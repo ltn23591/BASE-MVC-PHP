@@ -122,4 +122,45 @@ class AuthController extends BaseController
         header('Location: index.php?controllers=auth&action=login');
         exit();
     }
+    // đổi mật khẩu
+    // Quên mật khẩu / đổi mật khẩu
+public function resetPassword()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'] ?? '';
+        $newPassword = $_POST['new_password'] ?? '';
+
+        // Kiểm tra email có trong database không
+        $user = $this->userModel->findByEmail($email);
+
+        if (!$user) {
+            $toast = "Email không tồn tại!";
+        } else {
+            if (!empty($newPassword)) {
+                // Nếu có mật khẩu mới, update luôn
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                $this->userModel->update($user['id'], ['password' => $hashedPassword],'id');
+                $toast = "Đổi mật khẩu thành công! Vui lòng đăng nhập.";
+            } else {
+                // Chỉ nhập email, hiển thị form nhập mật khẩu mới
+                $toast = "Email hợp lệ. Vui lòng nhập mật khẩu mới.";
+            }
+        }
+
+        // Hiển thị view với state reset và truyền thông tin user
+        return $this->view('frontend.auth.login', [
+            'pageTitle' => 'Đổi mật khẩu',
+            'toast' => $toast,
+            'state' => 'reset',
+            'email' => $email,
+            'showNewPassword' => !empty($user) && empty($newPassword) ? true : false
+        ]);
+    } else {
+        // GET → chỉ hiển thị form email
+        return $this->view('frontend.auth.login', [
+            'pageTitle' => 'Quên Mật Khẩu',
+            'state' => 'reset'
+        ]);
+    }
+}
 }

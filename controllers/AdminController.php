@@ -11,7 +11,6 @@ class AdminController extends BaseController
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
             $uploadedImages = [];
             $uploadDir = 'public/uploads/';
 
@@ -52,7 +51,6 @@ class AdminController extends BaseController
                 'bestseller' => $bestseller,
                 'date' => time()
             ]);
-
             // Quay về danh sách
             header('Location: index.php?controllers=auth&action=admin');
             exit();
@@ -124,4 +122,24 @@ class AdminController extends BaseController
         }
         exit;
     }
+    public function users()
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (empty($_SESSION['admin_logged_in'])) {
+        header('Location: index.php?controllers=auth&action=login');
+        exit();
+    }
+
+    $this->loadModel('UserModel');
+    $userModel = new UserModel();
+    $users = $userModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
+
+
+    return $this->viewAdmin('admin.components.user.list', [
+        'users' => $users
+    ]);
+}
+
 }

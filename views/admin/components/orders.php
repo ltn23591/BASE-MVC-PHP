@@ -3,7 +3,7 @@
     <div class="space-y-6">
         <?php foreach ($orders as $order): ?>
         <form method="POST" action="index.php?controllers=admin&action=updateOrderStatus"
-            class="w-[1100px] grid grid-cols-1 sm:grid-cols-5 gap-4 items-center bg-white border rounded-lg shadow-sm p-5 hover:shadow-md transition js-order-form">
+            class="w-[1000px] grid grid-cols-1 sm:grid-cols-5 gap-4 items-center bg-white border rounded-lg shadow-sm p-5 hover:shadow-md transition js-order-form">
 
             <!-- information -->
             <div>
