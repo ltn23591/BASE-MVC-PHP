@@ -2,7 +2,7 @@
 <div>
     <div class="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 text-sm">
         <div>
-            <?php include __DIR__ . './logo.php'; ?>
+            <?php include __DIR__ . '/logo.php'; ?>
             <p class="w-full md:w-2/3 text-gray-500 text-left mt-3">
                 Khám phá những xu hướng thời trang mới nhất, mang đến vẻ đẹp tự tin và cá tính cho bạn mỗi ngày.
             </p>

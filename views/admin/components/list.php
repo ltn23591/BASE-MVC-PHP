@@ -2,11 +2,11 @@
     <!-- Header -->
     <div class="hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center 
                 py-3 px-4 bg-gradient-to-r from-gray-100 to-gray-200 border rounded-lg text-sm font-semibold text-gray-700 shadow-sm">
-        <b>Image</b>
-        <b>Name</b>
-        <b>Category</b>
-        <b>Price</b>
-        <b class="text-center">Action</b>
+        <b>Ảnh</b>
+        <b>Tên</b>
+        <b>Danh mục</b>
+        <b>GIá</b>
+        <b class="text-center">Hành Động</b>
     </div>
 
     <!-- Items -->
@@ -33,7 +33,7 @@
             <button data-id="<?= $item['id'] ?>"
                 class="btn-delete text-center py-1 px-3 text-sm font-medium rounded-md 
                            bg-red-100 text-red-600 hover:bg-red-500 hover:text-white transition">
-                Delete
+                Xóa
             </button>
         </div>
     <?php endforeach; ?>

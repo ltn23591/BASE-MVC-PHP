@@ -27,6 +27,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <img src="<?= $assets['profile_icon'] ?>" alt="profile" class="w-5 cursor-pointer">
 
             <?php if (!empty($_SESSION['user_id'])): ?>
+<<<<<<< HEAD
             <!-- Nếu đã đăng nhập -->
             <div class="group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
                 <div class="flex flex-col gap-2 w-36 py-3 px-5">
@@ -36,6 +37,17 @@ if (session_status() === PHP_SESSION_NONE) {
                         class="cursor-pointer hover:text-black">Orders</p>
                     <p onclick="window.location.href='index.php?controllers=auth&action=logout'"
                         class="cursor-pointer hover:text-black">Đăng xuất</p>
+=======
+                <!-- Nếu đã đăng nhập -->
+                <div class="group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
+                    <div class="flex flex-col gap-2 w-36 py-3 px-5">
+                        <p class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
+                        </p>
+                        <p onclick="window.location.href='index.php?controllers=order&action=index'" class="cursor-pointer hover:text-black">Giỏ Hàng</p>
+                        <p onclick="window.location.href='index.php?controllers=auth&action=logout'"
+                            class="cursor-pointer hover:text-black">Đăng xuất</p>
+                    </div>
+>>>>>>> 3b2c36b387ea9a7f5743ddfd7915c72655a1f518
                 </div>
             </div>
             <?php else: ?>
@@ -52,7 +64,7 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <!-- Cart -->
-        <?php include __DIR__ . './cart.php'; ?>
+        <?php include __DIR__ . '/cart.php'; ?>
 
         <!-- Menu icon (mobile) -->
         <img onclick="toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu"

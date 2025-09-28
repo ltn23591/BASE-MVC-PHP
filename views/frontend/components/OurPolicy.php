@@ -1,5 +1,5 @@
 <?php include './public/assets/img/frontend_assets/assets.php'; ?>
-
+<?php if (empty($_SESSION['user_id'])): ?>
 <div
     class="flex flex-col sm:flex-row justify-around gap-12 sm:gap-2 text-center py-20 text-xs sm:text-sm md:text-base text-gray-700">
     <div>
@@ -24,3 +24,4 @@
         </p>
     </div>
 </div>
+<?php endif; ?>

@@ -13,49 +13,49 @@
 
             <div class="flex gap-3">
                 <input required name="firstName" value="<?= htmlspecialchars($_POST['firstName'] ?? '') ?>"
-                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="First Name" />
+                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Tên" />
                 <input required name="lastName" value="<?= htmlspecialchars($_POST['lastName'] ?? '') ?>"
-                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Last Name" />
+                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Họ" />
             </div>
 
             <input required name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
                 class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="email" placeholder="Email" />
 
             <input required name="street" value="<?= htmlspecialchars($_POST['street'] ?? '') ?>"
-                class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Street Address" />
+                class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Địa Chỉ" />
 
             <div class="flex gap-3">
                 <input required name="city" value="<?= htmlspecialchars($_POST['city'] ?? '') ?>"
-                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="City" />
+                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Thành Phố" />
                 <input required name="country" value="<?= htmlspecialchars($_POST['country'] ?? '') ?>"
-                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Country" />
+                    class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Quóc Gia" />
             </div>
 
             <input required name="phone" value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>"
-                class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Phone Number" />
+                class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="SDT" />
         </div>
 
         <div class="mt-8">
             <div class="mt-8 min-w-80">
                 <div class="border p-4 rounded">
                     <div class="flex justify-between py-1">
-                        <span>Subtotal</span>
+                        <span>Tổng Trị Giá</span>
                         <span><?= number_format($subtotal ?? 0, 0, ',', '.') ?> đ</span>
                     </div>
                     <div class="flex justify-between py-1">
-                        <span>Delivery Fee</span>
+                        <span>Phí Vận Chuyển</span>
                         <span><?= number_format($delivery_fee ?? 0, 0, ',', '.') ?> đ</span>
                     </div>
                     <hr />
                     <div class="flex justify-between py-2 font-semibold">
-                        <span>Total</span>
+                        <span>Tổng Cộng</span>
                         <span><?= number_format($amount ?? 0, 0, ',', '.') ?> đ</span>
                     </div>
                 </div>
             </div>
 
             <div class="mt-12">
-                <p class="text-xl font-semibold mb-3">PAYMENT <span class="text-orange-500">METHOD</span></p>
+                <p class="text-xl font-semibold mb-3">Phương Thức <span class="text-orange-500">Thanh Toán</span></p>
 
                 <div class="flex gap-3 flex-col lg:flex-row">
                     <label class="flex items-center gap-3 border p-2 px-3 cursor-pointer">
@@ -64,11 +64,11 @@
                     </label>
                     <label class="flex items-center gap-3 border p-2 px-3 cursor-pointer">
                         <input type="radio" name="paymentMethod" value="cod" checked />
-                        <span class="text-gray-600 text-sm">Cash on Delivery</span>
+                        <span class="text-gray-600 text-sm">TIền Mặt</span>
                     </label>
                 </div>
                 <div class=" w-full text-end mt-8">
-                    <button type="submit" class="bg-black text-white px-16 py-3">PLACE ORDER</button>
+                    <button type="submit" class="bg-black text-white px-16 py-3">Đặt Hàng</button>
                 </div>
 
             </div>

@@ -5,7 +5,7 @@
 
     <!-- Upload -->
     <div class="w-full">
-        <p class="mb-2 font-medium text-gray-700">📷 Upload Images</p>
+        <p class="mb-2 font-medium text-gray-700">📷 Ảnh</p>
         <input type="file" name="images[]" multiple
             class="block w-full max-w-[500px] border rounded-lg px-3 py-2 text-sm file:mr-3 file:py-2 file:px-4 
                       file:rounded-md file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
@@ -14,13 +14,13 @@
 
     <!-- Name -->
     <div class="w-full">
-        <p class="mb-2 font-medium text-gray-700">🛍 Product name</p>
+        <p class="mb-2 font-medium text-gray-700">🛍 Tên Sản Phẩm</p>
         <input name="name" class="w-full max-w-[500px] py-3 px-3 border rounded-lg focus:ring-2 focus:ring-blue-400" type="text" required>
     </div>
 
     <!-- Description -->
     <div class="w-full">
-        <p class="mb-2 font-medium text-gray-700">📝 Product description</p>
+        <p class="mb-2 font-medium text-gray-700">📝 Mô Tả Sản Phẩm</p>
         <textarea name="description" rows="4"
             class="w-full max-w-[500px] py-3 px-3 border rounded-lg focus:ring-2 focus:ring-blue-400" required></textarea>
     </div>
@@ -28,32 +28,32 @@
     <!-- Category -->
     <div class="flex flex-col sm:flex-row gap-4 w-full">
         <div>
-            <p class="mb-2 font-medium text-gray-700">📂 Category</p>
+            <p class="mb-2 font-medium text-gray-700">📂 Danh mục</p>
             <select name="category" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
-                <option value="Men">Men</option>
-                <option value="Women">Women</option>
-                <option value="Kid">Kid</option>
+                <option value="Men">Nam</option>
+                <option value="Women">Nữ</option>
+                <option value="Kid">Trẻ em</option>
             </select>
         </div>
 
         <div>
-            <p class="mb-2 font-medium text-gray-700">📑 Sub category</p>
+            <p class="mb-2 font-medium text-gray-700">📑 Danh mục phụ</p>
             <select name="subCategory" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
-                <option value="Topwear">Topwear</option>
-                <option value="Bottomwear">Bottomwear</option>
-                <option value="Winterwear">Winterwear</option>
+                <option value="Topwear">Áo</option>
+                <option value="Bottomwear">Quần</option>
+                <option value="Winterwear">Đồ mùa đông</option>
             </select>
         </div>
 
         <div>
-            <p class="mb-2 font-medium text-gray-700">💲 Price</p>
+            <p class="mb-2 font-medium text-gray-700">💲 Giá</p>
             <input name="price" class="w-full px-3 py-2 border rounded-lg sm:w-[150px] focus:ring-2 focus:ring-blue-400" type="number" required>
         </div>
     </div>
 
     <!-- Sizes -->
     <div class="w-full">
-        <p class="mb-2 font-medium text-gray-700">📏 Sizes</p>
+        <p class="mb-2 font-medium text-gray-700">📏 Kích Thước</p>
         <div class="flex flex-wrap gap-3">
             <?php foreach (['S', 'M', 'L', 'XL', 'XXL'] as $size): ?>
                 <label class="cursor-pointer">
@@ -69,12 +69,12 @@
     <!-- Bestseller -->
     <div class="flex gap-2 items-center">
         <input type="checkbox" name="bestseller" id="bestseller" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-400">
-        <label for="bestseller" class="text-gray-700">🌟 Add to bestseller</label>
+        <label for="bestseller" class="text-gray-700">🌟 Bán Chạy</label>
     </div>
 
     <!-- Submit -->
     <button type="submit"
         class="w-32 py-3 mt-4 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition">
-        ➕ ADD
+        ➕ Thêm
     </button>
 </form>

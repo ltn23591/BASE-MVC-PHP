@@ -3,7 +3,7 @@
     <div class="space-y-6">
         <?php foreach ($orders as $order): ?>
         <form method="POST" action="index.php?controllers=admin&action=updateOrderStatus"
-            class="w-[1100px] grid grid-cols-1 sm:grid-cols-5 gap-4 items-center bg-white border rounded-lg shadow-sm p-5 hover:shadow-md transition js-order-form">
+            class="w-[1000px] grid grid-cols-1 sm:grid-cols-5 gap-4 items-center bg-white border rounded-lg shadow-sm p-5 hover:shadow-md transition js-order-form">
 
             <!-- information -->
             <div>
@@ -20,7 +20,7 @@
 
             <!-- Amount + Total -->
             <div>
-                <p class="text-gray-700">Số lượng: <span class="font-medium"><?= (int)$order['amount'] ?></span></p>
+                <p class="text-gray-700">Số lượng: <span class="font-medium"><?= (int)$order['quantity'] ?></span></p>
                 <p class="text-gray-700">Tổng tiền:
                     <span class="font-semibold text-green-600">
                         <?= number_format((float)($order['amount'] ?? 0), 0, ',', '.') ?> đ
