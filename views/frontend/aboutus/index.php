@@ -10,7 +10,6 @@ include __DIR__ . '/../layouts/title.php';
             <img src="<?= $assets['about_img'] ?>" alt="Về chúng tôi">
         </div>
         <div class="about-text">
-
             <p>
                 Forever được thành lập với niềm đam mê đổi mới và mong muốn cách mạng hóa trải nghiệm mua sắm trực
                 tuyến. Hành trình của chúng tôi bắt đầu với ý tưởng đơn giản: tạo ra một nền tảng nơi khách hàng có thể
@@ -29,7 +28,6 @@ include __DIR__ . '/../layouts/title.php';
             </p>
         </div>
     </div>
-
     <div class="why">
         <h2>TẠI SAO CHỌN CHÚNG TÔI</h2>
         <div class="features">

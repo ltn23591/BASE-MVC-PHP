@@ -20,7 +20,7 @@
 
             <!-- Amount + Total -->
             <div>
-                <p class="text-gray-700">Số lượng: <span class="font-medium"><?= (int)$order['amount'] ?></span></p>
+                <p class="text-gray-700">Số lượng: <span class="font-medium"><?= (int)$order['quantity'] ?></span></p>
                 <p class="text-gray-700">Tổng tiền:
                     <span class="font-semibold text-green-600">
                         <?= number_format((float)($order['amount'] ?? 0), 0, ',', '.') ?> đ

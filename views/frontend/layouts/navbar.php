@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <div class="flex items-center justify-between py-5 font-medium">
     <!-- Logo -->
-    <?php include __DIR__ . './logo.php'; ?>
+    <?php include __DIR__ . '/logo.php'; ?>
 
     <!-- Navbar -->
     <ul class="hidden sm:flex gap-5 text-sm text-gray-700">
@@ -32,7 +32,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="flex flex-col gap-2 w-36 py-3 px-5">
                         <p class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
                         </p>
-                        <p onclick="window.location.href='index.php?controllers=order&action=index'" class="cursor-pointer hover:text-black">Orders</p>
+                        <p onclick="window.location.href='index.php?controllers=order&action=index'" class="cursor-pointer hover:text-black">Giỏ Hàng</p>
                         <p onclick="window.location.href='index.php?controllers=auth&action=logout'"
                             class="cursor-pointer hover:text-black">Đăng xuất</p>
                     </div>
@@ -51,7 +51,7 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <!-- Cart -->
-        <?php include __DIR__ . './cart.php'; ?>
+        <?php include __DIR__ . '/cart.php'; ?>
 
         <!-- Menu icon (mobile) -->
         <img onclick="toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu"
