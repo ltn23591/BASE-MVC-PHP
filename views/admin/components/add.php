@@ -1,11 +1,11 @@
-<h2 class="text-2xl font-bold mb-6 text-gray-800">➕ Thêm sản phẩm mới</h2>
+<h2 class="text-2xl font-bold mb-6 text-gray-800"><i class="fa-solid fa-plus"></i> Thêm sản phẩm mới</h2>
 
 <form action="index.php?controllers=admin&action=add" method="POST" enctype="multipart/form-data"
     class="flex flex-col w-full items-start gap-6 bg-white p-6 rounded-lg shadow-md">
 
     <!-- Upload -->
     <div class="w-full">
-        <p class="mb-2 font-medium text-gray-700">📷 Ảnh</p>
+        <p class="mb-2 font-medium text-gray-700"><i class="fa-solid fa-camera"></i> Ảnh</p>
         <input type="file" name="images[]" multiple class="block w-full max-w-[500px] border rounded-lg px-3 py-2 text-sm file:mr-3 file:py-2 file:px-4 
                       file:rounded-md file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
         <small class="text-gray-500">Chọn tối đa 4 ảnh</small>
@@ -13,7 +13,7 @@
 
     <!-- Name -->
     <div class="w-full">
-        <p class="mb-2 font-medium text-gray-700">🛍 Tên Sản Phẩm</p>
+        <p class="mb-2 font-medium text-gray-700"><i class="fa-solid fa-notes-medical"></i> Tên Sản Phẩm</p>
         <input name="name" class="w-full max-w-[500px] py-3 px-3 border rounded-lg focus:ring-2 focus:ring-blue-400"
             type="text" required>
     </div>
@@ -47,7 +47,7 @@
         </div>
 
         <div>
-            <p class="mb-2 font-medium text-gray-700">💲 Giá</p>
+            <p class="mb-2 font-medium text-gray-700"><i class="fa-solid fa-money-bill-1"></i> Giá</p>
             <input name="price" class="w-full px-3 py-2 border rounded-lg sm:w-[150px] focus:ring-2 focus:ring-blue-400"
                 type="number" required>
         </div>
@@ -55,7 +55,7 @@
 
     <!-- Sizes -->
     <div class="w-full">
-        <p class="mb-2 font-medium text-gray-700">📏 Kích Thước</p>
+        <p class="mb-2 font-medium text-gray-700"><i class="fa-solid fa-ruler"></i> Kích Thước</p>
         <div class="flex flex-wrap gap-3">
             <?php foreach (['S', 'M', 'L', 'XL', 'XXL'] as $size): ?>
             <label class="cursor-pointer">
@@ -73,7 +73,7 @@
     <div class="flex gap-2 items-center">
         <input type="checkbox" name="bestseller" id="bestseller"
             class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-400">
-        <label for="bestseller" class="text-gray-700">🌟 Bán Chạy</label>
+        <label for="bestseller" class="text-gray-700"><i class="fa-solid fa-chart-simple"></i> Bán Chạy</label>
     </div>
 
     <!-- Submit -->

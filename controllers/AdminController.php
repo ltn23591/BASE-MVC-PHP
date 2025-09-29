@@ -123,23 +123,88 @@ class AdminController extends BaseController
         exit;
     }
     public function users()
-{
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (empty($_SESSION['admin_logged_in'])) {
+            header('Location: index.php?controllers=auth&action=login');
+            exit();
+        }
+
+        $this->loadModel('UserModel');
+        $userModel = new UserModel();
+        $users = $userModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
+
+
+        return $this->viewAdmin('admin.components.user.list', [
+            'users' => $users
+        ]);
     }
-    if (empty($_SESSION['admin_logged_in'])) {
-        header('Location: index.php?controllers=auth&action=login');
-        exit();
+
+    public function update()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+            $name = $_POST['name'];
+            $description = $_POST['description'];
+            $price = $_POST['price'];
+            $category = $_POST['category'];
+            $subCategory = $_POST['subCategory'];
+            $sizes = json_encode($_POST['sizes'] ?? []);
+            $bestseller = isset($_POST['bestseller']) ? 1 : 0;
+
+            // Xử lý upload ảnh mới (nếu có)
+            $uploadedImages = [];
+            $uploadDir = 'public/uploads/';
+
+            
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            if (!empty($_FILES['images']['name'][0])) {
+                foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
+                    if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
+                        $fileName = time() . '_' . basename($_FILES['images']['name'][$key]);
+                        $targetPath = $uploadDir . $fileName;
+                        if (move_uploaded_file($tmpName, $targetPath)) {
+                            $uploadedImages[] = $targetPath;
+                        }
+                    }
+                }
+            } else {
+                // Nếu không upload ảnh mới, giữ ảnh cũ
+                $product = $this->adminModel->findById($id);
+                $uploadedImages = json_decode($product['image'], true);
+            }
+
+            //  Cập nhật dữ liệu
+            $this->adminModel->updateData($id, [
+                'name' => $name,
+                'description' => $description,
+                'price' => $price,
+                'image' => json_encode($uploadedImages),
+                'category' => $category,
+                'subCategory' => $subCategory,
+                'sizes' => $sizes,
+                'bestseller' => $bestseller,
+            ]);
+
+            header('Location: index.php?controllers=auth&action=admin');
+            exit();
+        }
+
+        // ✅ Lấy sản phẩm để hiển thị vào form sửa
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            header('Location: index.php?controllers=admin&action=list');
+            exit();
+        }
+
+        $product = $this->adminModel->findById($id);
+        return $this->viewAdmin('admin.components.update', [
+            'product' => $product
+        ]);
     }
-
-    $this->loadModel('UserModel');
-    $userModel = new UserModel();
-    $users = $userModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
-
-
-    return $this->viewAdmin('admin.components.user.list', [
-        'users' => $users
-    ]);
-}
-
 }
