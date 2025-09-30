@@ -68,7 +68,7 @@ class CheckoutController extends BaseController
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['firstName'])) {
             $firstName = trim($_POST['firstName'] ?? '');
             $lastName  = trim($_POST['lastName'] ?? '');
-            $email     = trim($_POST['email'] ?? '');
+
             $street    = trim($_POST['street'] ?? '');
             $city      = trim($_POST['city'] ?? '');
             $country   = trim($_POST['country'] ?? '');
@@ -76,7 +76,7 @@ class CheckoutController extends BaseController
             $paymentMethod = $_POST['paymentMethod'] ?? 'cod';
 
             // ✅ Validate form
-            if ($firstName === '' || $lastName === '' || $email === '' || $street === '' || $city === '' || $country === '' || $phone === '') {
+            if ($firstName === '' || $lastName === '' || $street === '' || $city === '' || $country === '' || $phone === '') {
                 $errors[] = 'Vui lòng nhập đầy đủ thông tin.';
             }
             if ($amount <= 0) {
@@ -90,7 +90,6 @@ class CheckoutController extends BaseController
                     'quantity'      => array_sum(array_column($cart, 'quantity')),
                     'firstName'     => $firstName,
                     'lastName'      => $lastName,
-                    'email'         => $email,
                     'street'        => $street,
                     'city'          => $city,
                     'country'       => $country,

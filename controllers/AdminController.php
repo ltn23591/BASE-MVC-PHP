@@ -81,8 +81,24 @@ class AdminController extends BaseController
         $orderModel = new OrderModel();
         $orders = $orderModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
 
+
+        $this->loadModel('UserModel');
+        $user = new UserModel();
+        $getEmailUser = $user->getAll(['*']);
+
+        
+        // Gắn email vào từng đơn hàng
+        foreach ($orders as &$order) {
+            foreach ($getEmailUser as $u) {
+                if ($order['user_id'] == $u['id']) {
+                    $order['email'] = $u['email'];
+                    break;
+                }
+            }
+        }
         return $this->viewAdmin('admin.components.orders', [
-            'orders' => $orders
+            'orders' => $orders,
+            'getEmailUser' => $getEmailUser
         ]);
     }
     public function updateOrderStatus()
@@ -158,7 +174,7 @@ class AdminController extends BaseController
             $uploadedImages = [];
             $uploadDir = 'public/uploads/';
 
-            
+
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
