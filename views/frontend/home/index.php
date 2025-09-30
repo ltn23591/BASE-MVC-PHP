@@ -7,5 +7,6 @@ require './views/frontend/layouts/title.php';
 require_once  './views/frontend/components/LastedCollection.php';
 // sản phẩm bán chạy
 require_once  './views/frontend/components/BestSeller.php';
+// Chính sách
 require_once  './views/frontend/components/OurPolicy.php';
 require_once  './views/frontend/components/NewsLetterBox.php';
