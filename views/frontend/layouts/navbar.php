@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 ?>
 
-<div class="flex items-center justify-between py-5 font-medium">
+<div class="mb-2 flex items-center justify-between py-5 font-medium">
     <!-- Logo -->
     <?php include __DIR__ . '/logo.php'; ?>
 
@@ -28,7 +28,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <?php if (!empty($_SESSION['user_id'])): ?>
             <!-- Nếu đã đăng nhập -->
-            <div class="group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
+            <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
                 <div class="flex flex-col gap-2 w-36 py-3 px-5">
                     <p class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
                     </p>
@@ -40,7 +40,7 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
             <?php else: ?>
             <!-- Nếu chưa đăng nhập -->
-            <div class="group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
+            <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
                 <div class="flex flex-col gap-2 w-36 py-3 px-5">
                     <p onclick="window.location.href='index.php?controllers=auth&action=login'"
                         class="cursor-pointer hover:text-black">

@@ -6,9 +6,9 @@
             </div>
 
             <?php if (!empty($errors)): ?>
-                <div class="p-3 bg-red-50 text-red-600 border border-red-200 rounded">
-                    <?= implode('<br>', array_map('htmlspecialchars', $errors)) ?>
-                </div>
+            <div class="p-3 bg-red-50 text-red-600 border border-red-200 rounded">
+                <?= implode('<br>', array_map('htmlspecialchars', $errors)) ?>
+            </div>
             <?php endif; ?>
 
             <div class="flex gap-3">
@@ -17,9 +17,6 @@
                 <input required name="lastName" value="<?= htmlspecialchars($_POST['lastName'] ?? '') ?>"
                     class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Họ" />
             </div>
-
-            <input required name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
-                class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="email" placeholder="Email" />
 
             <input required name="street" value="<?= htmlspecialchars($_POST['street'] ?? '') ?>"
                 class="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Địa Chỉ" />
