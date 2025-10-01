@@ -47,7 +47,7 @@ include __DIR__ . '/../layouts/title.php';
             </div>
         </div>
     </div>
-
+<?php if (empty($_SESSION['user_id'])): ?>
     <div class="subscribe">
         <h2>Đăng ký nhận tin &amp; nhận ngay ưu đãi 20%</h2>
         <p>Đăng ký email để nhận thông tin khuyến mãi và xu hướng mới nhất từ Forever.</p>
@@ -56,4 +56,5 @@ include __DIR__ . '/../layouts/title.php';
             <button type="submit">ĐĂNG KÝ</button>
         </form>
     </div>
+<?php endif; ?>
 </div>
