@@ -52,7 +52,7 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <!-- Cart -->
-        <?php include __DIR__ . './cart.php'; ?>
+        <?php include __DIR__ . '/cart.php'; ?>
 
         <!-- Menu icon (mobile) -->
         <img onclick="toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu"

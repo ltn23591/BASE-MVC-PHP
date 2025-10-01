@@ -28,9 +28,9 @@
       <!-- Category -->
       <div class="flex gap-4 w-full">
           <select name="category" class="px-3 py-2 border rounded-lg">
-              <option value="Men" <?= $product['category'] == 'Men' ? 'selected' : '' ?>>Nam</option>
-              <option value="Women" <?= $product['category'] == 'Women' ? 'selected' : '' ?>>Nữ</option>
-              <option value="Kid" <?= $product['category'] == 'Kid' ? 'selected' : '' ?>>Trẻ em</option>
+              <option value="Nam" <?= $product['category'] == 'Men' ? 'selected' : '' ?>>Nam</option>
+              <option value="Nữ" <?= $product['category'] == 'Women' ? 'selected' : '' ?>>Nữ</option>
+              <option value="Trẻ Em" <?= $product['category'] == 'Kid' ? 'selected' : '' ?>>Trẻ em</option>
           </select>
           <input name="price" value="<?= $product['price'] ?>" type="number" class="px-3 py-2 border rounded-lg">
       </div>
