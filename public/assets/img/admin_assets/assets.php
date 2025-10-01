@@ -8,4 +8,5 @@ $assets = [
     'user_icon'    => './public/assets/img/admin_assets/user_icon.png',
     'user_list'    => './public/assets/img/admin_assets/user_list_icon.png',
     'promo_icon'   => './public/assets/img/admin_assets/promo_icon.png',
+    'add_user'    => './public/assets/img/admin_assets/add-user.png',
 ];
