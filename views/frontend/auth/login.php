@@ -130,13 +130,13 @@ function sendOtp() {
     const button = document.querySelector('button[onclick="sendOtp()"]');
 
     if (!email) {
-        alert("⚠️ Vui lòng nhập email trước khi gửi OTP!");
+        alert(" Vui lòng nhập email trước khi gửi OTP!");
         return;
     }
 
     startCountdown(button, 60);
 
-    fetch("send_otp.php", {
+    fetch("index.php?controllers=auth&action=sendOtp", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -169,7 +169,7 @@ function sendResetOtp() {
 
     startCountdown(btn, 60);
 
-    fetch("send_reset_otp.php", {
+    fetch("index.php?controllers=auth&action=resetOtp", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -179,7 +179,7 @@ function sendResetOtp() {
         .then(res => res.json())
         .then(data => alert(data.msg))
         .catch(err => {
-            alert("❌ Gửi OTP thất bại.");
+            alert(" Gửi OTP thất bại.");
             resetButton(btn);
         });
 }
