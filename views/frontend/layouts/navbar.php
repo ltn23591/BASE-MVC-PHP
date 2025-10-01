@@ -20,7 +20,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Icons -->
     <div class="flex items-center gap-5">
         <!-- Search -->
-        <img src="<?= $assets['search_icon'] ?>" alt="search" class="w-5 cursor-pointer" onclick="toggleSearch()">
+        <img src="<?= $assets['search_icon'] ?>"  alt="search" class="w-5 cursor-pointer" onclick="toggleSearch()">
 
         <!-- Profile -->
         <div class="group relative">
@@ -33,7 +33,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <p class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
                     </p>
                     <p onclick="window.location.href='index.php?controllers=order&action=index'"
-                        class="cursor-pointer hover:text-black">Orders</p>
+                        class="cursor-pointer hover:text-black">Giỏ Hàng</p>
                     <p onclick="window.location.href='index.php?controllers=auth&action=logout'"
                         class="cursor-pointer hover:text-black">Đăng xuất</p>
                 </div>
@@ -52,7 +52,7 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <!-- Cart -->
-        <?php include __DIR__ . './cart.php'; ?>
+        <?php include __DIR__ . '/cart.php'; ?>
 
         <!-- Menu icon (mobile) -->
         <img onclick="toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu"
