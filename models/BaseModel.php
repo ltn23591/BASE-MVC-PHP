@@ -83,14 +83,17 @@ class BaseModel extends Database
             die("Lỗi SQL: " . mysqli_error($this->conn));
         }
     }
-
-
-
-
     private function _query($sql)
     {
-        return mysqli_query($this->conn, $sql);
+        $result = mysqli_query($this->conn, $sql);
+        if ($result === false) {
+            // Trong môi trường dev nên in lỗi rõ ràng
+            die("SQL ERROR: " . mysqli_error($this->conn) . "\nQuery: " . $sql);
+        }
+        return $result;
     }
+
+    // Hàm tính tổng
     public function sum($table, $expression, $condition = '1=1')
     {
         $sql = "SELECT SUM($expression) as total FROM $table WHERE $condition";

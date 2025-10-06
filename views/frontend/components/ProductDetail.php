@@ -16,9 +16,9 @@ require __DIR__ . '/ProductItem.php';
                 class="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
 
                 <?php foreach ($product['image'] as $item): ?>
-                <img src="<?= htmlspecialchars($item) ?>" alt="thumb"
-                    class="w-[24%] sm:w-full sm:mb-3 flex shrink-0 cursor-pointer"
-                    onclick="document.getElementById('mainImage').src='<?= htmlspecialchars($item) ?>'">
+                    <img src="<?= htmlspecialchars($item) ?>" alt="thumb"
+                        class="w-[24%] sm:w-full sm:mb-3 flex shrink-0 cursor-pointer"
+                        onclick="document.getElementById('mainImage').src='<?= htmlspecialchars($item) ?>'">
                 <?php endforeach; ?>
 
             </div>
@@ -48,17 +48,15 @@ require __DIR__ . '/ProductItem.php';
                 <?= number_format(htmlspecialchars($product['price']), 0, ',', '.') ?> VND
             </p>
 
-            <p class="mt-3 text-gray-500 md:w-4/5">
-                <?= htmlspecialchars($product['description']) ?>
-            </p>
+
             <?php $sizes = !empty($product['sizes']) ? json_decode($product['sizes'], true) : []; ?>
             <div class="flex flex-col gap-4 my-8">
                 <p>Select Size</p>
                 <div class="flex gap-2">
                     <?php foreach ($sizes as $size): ?>
-                    <button class="size-btn border py-2 px-4 bg-gray-100" onclick="selectSize('<?= $size ?>', this)">
-                        <?= htmlspecialchars($size) ?>
-                    </button>
+                        <button class="size-btn border py-2 px-4 bg-gray-100" onclick="selectSize('<?= $size ?>', this)">
+                            <?= htmlspecialchars($size) ?>
+                        </button>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -87,36 +85,61 @@ require __DIR__ . '/ProductItem.php';
     </div>
 
     <!-- Description & Reviews -->
-    <div class="mt-20">
-        <div class="flex">
-            <b class="border px-5 py-3 text-sm">Mô tả sản phẩm</b>
-            <p class="border px-5 py-3 text-sm">Đánh giá (122)</p>
+    <div class="mt-20 w-full max-w-4xl mx-auto">
+
+        <!-- Tabs -->
+        <div class="flex border-b text-sm font-medium text-gray-600">
+            <button id="tab-desc"
+                class="tab-btn border-b-2 border-blue-600 text-blue-600 px-5 py-3 focus:outline-none transition">
+                📄 Mô tả sản phẩm
+            </button>
+            <button id="tab-reviews"
+                class="tab-btn border-b-2 border-transparent hover:border-blue-400 hover:text-blue-600 px-5 py-3 focus:outline-none transition">
+                ⭐ Đánh giá (<?= htmlspecialchars($totalReviews ?? 122) ?>)
+            </button>
         </div>
-        <div class="flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500 text-left">
+
+        <!-- Nội dung mô tả -->
+        <div id="content-desc" class="tab-content border px-6 py-6 text-sm text-gray-600 leading-relaxed space-y-4">
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Illum corrupti, facilis pariatur dolorem adipisci
-                aspernatur sit dignissimos. Est fugiat ipsam ad
-                necessitatibus quidem? Nostrum officia eum voluptas,
-                ipsum ex nihil?
+                <?= htmlspecialchars($product['description']) ?>
             </p>
-            <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing
-                elit. In aut rerum quae accusamus aspernatur libero
-                accusantium quisquam saepe mollitia animi, voluptas
-                recusandae officiis? Id illum assumenda at consequatur
-                possimus, obcaecati sequi nemo alias veniam. Officiis
-                obcaecati corrupti vitae dolorem quisquam.
-            </p>
+            <ul class="list-disc pl-6">
+                <li>✔️ Sản phẩm chính hãng, chất lượng cao.</li>
+                <li>✔️ Thiết kế hiện đại phù hợp với xu hướng.</li>
+                <li>✔️ Bảo hành lên tới 12 tháng.</li>
+            </ul>
         </div>
+
+        <!-- Nội dung đánh giá -->
+        <div id="content-reviews" class="tab-content hidden border px-6 py-6 text-sm text-gray-600 space-y-6">
+            <?php if (!empty($reviews)): ?>
+                <?php foreach ($reviews as $review): ?>
+                    <div class="border-b pb-4">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-semibold text-gray-800"><?= htmlspecialchars($review['user_name']) ?></span>
+                            <span class="text-yellow-400">
+                                <?= str_repeat("★", $review['rating']) ?>
+                                <?= str_repeat("☆", 5 - $review['rating']) ?>
+                            </span>
+                        </div>
+                        <p class="text-gray-600"><?= htmlspecialchars($review['comment']) ?></p>
+                        <p class="text-xs text-gray-400 mt-1">📅 <?= date("d/m/Y", strtotime($review['created_at'])) ?></p>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="text-gray-500 italic">Chưa có đánh giá nào cho sản phẩm này.</p>
+            <?php endif; ?>
+        </div>
+
     </div>
     <!-- Sản phẩm liên quan -->
     <div class='my-24'>
         <div class="text-center text-3xl py-2">
             <?php if (!empty($related) && count($related) > 0): ?>
-            <?= Title("SẢN PHẨM", "LIÊN QUAN"); ?>
+                <?= Title("SẢN PHẨM", "LIÊN QUAN"); ?>
             <?php else: ?>
-            <?= $empty; ?>
+                <?= $empty; ?>
             <?php endif; ?>
 
         </div>
@@ -129,3 +152,29 @@ require __DIR__ . '/ProductItem.php';
         </div>
     </div>
 </div>
+
+
+
+<!-- JS chuyển tab -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tabDesc = document.getElementById("tab-desc");
+        const tabReviews = document.getElementById("tab-reviews");
+        const contentDesc = document.getElementById("content-desc");
+        const contentReviews = document.getElementById("content-reviews");
+
+        tabDesc.addEventListener("click", () => {
+            tabDesc.classList.add("border-blue-600", "text-blue-600");
+            tabReviews.classList.remove("border-blue-600", "text-blue-600");
+            contentDesc.classList.remove("hidden");
+            contentReviews.classList.add("hidden");
+        });
+
+        tabReviews.addEventListener("click", () => {
+            tabReviews.classList.add("border-blue-600", "text-blue-600");
+            tabDesc.classList.remove("border-blue-600", "text-blue-600");
+            contentReviews.classList.remove("hidden");
+            contentDesc.classList.add("hidden");
+        });
+    });
+</script>

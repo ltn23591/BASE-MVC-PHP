@@ -16,6 +16,7 @@ class OrderModel extends BaseModel
     public function store($data)
     {
         $this->create(self::TABLE, $data);
+        return mysqli_insert_id($this->conn);
     }
     public function findById($id)
     {

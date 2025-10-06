@@ -1,3 +1,7 @@
+<?php
+echo '<pre>';
+print_r($cart);
+?>
 <div class="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
     <form method="POST" class="flex flex-col sm:flex-row justify-between gap-4 w-full">
         <div class="flex flex-col gap-4 w-full sm:max-w-[480px]">
@@ -52,7 +56,8 @@
             </div>
 
             <div class="mt-12">
-                <p class="text-xl font-semibold mb-3">Phương Thức <span class="text-orange-500">Thanh Toán</span></p>
+                <p class="text-xl font-semibold mb-3">Phương Thức <span class="text-orange-500">Thanh Toán</span>
+                </p>
 
                 <div class="flex gap-3 flex-col lg:flex-row">
                     <label class="flex items-center gap-3 border p-2 px-3 cursor-pointer">

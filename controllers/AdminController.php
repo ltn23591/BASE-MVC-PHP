@@ -1,5 +1,5 @@
 <?php
-
+require 'cloudinary_config.php';
 class AdminController extends BaseController
 {
     private $adminModel;
@@ -86,7 +86,7 @@ class AdminController extends BaseController
         $user = new UserModel();
         $getEmailUser = $user->getAll(['*']);
 
-        
+
         // Gắn email vào từng đơn hàng
         foreach ($orders as &$order) {
             foreach ($getEmailUser as $u) {

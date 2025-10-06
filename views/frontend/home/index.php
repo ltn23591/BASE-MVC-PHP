@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__ . '../../../../config/config_url.php';
 require_once './views/frontend/components/Hero.php';
 require './views/frontend/layouts/title.php';
 
