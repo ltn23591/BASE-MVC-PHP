@@ -98,13 +98,13 @@
 
         <!-- Submenu khuyến mãi -->
         <div id="promoMenu" class="hidden flex-col gap-2 ml-6 mt-2">
-            <a data-url="index.php?controllers=admin&action=addPromo"
+            <a data-url="index.php?controllers=admin&action=addVoucher"
                 class="cursor-pointer nav-link flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition">
                 <img class="w-5 h-5" src="<?= $assets['add_icon'] ?>" alt="">
                 <span class="hidden md:block">Thêm khuyến mãi</span>
             </a>
 
-            <a data-url="index.php?controllers=admin&action=listPromo"
+            <a data-url="index.php?controllers=admin&action=listVoucher"
                 class="cursor-pointer nav-link flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition">
                 <img class="w-5 h-5" src="<?= $assets['order_icon'] ?>" alt="">
                 <span class="hidden md:block">Danh sách khuyến mãi</span>

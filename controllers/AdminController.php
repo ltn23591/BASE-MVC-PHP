@@ -15,6 +15,7 @@ class AdminController extends BaseController
     }
 
     /** ---------------- SẢN PHẨM ---------------- */
+    #region Product
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -127,6 +128,7 @@ class AdminController extends BaseController
     }
 
     /** ---------------- ĐƠN HÀNG ---------------- */
+    #region Order
     public function orders()
     {
         if (session_status() === PHP_SESSION_NONE) session_start();
@@ -176,6 +178,7 @@ class AdminController extends BaseController
     }
 
     /** ---------------- NGƯỜI DÙNG ---------------- */
+    #region User
     public function users()
     {
         if (session_status() === PHP_SESSION_NONE) session_start();
@@ -218,5 +221,32 @@ class AdminController extends BaseController
         return $this->viewAdmin('admin.components.user.adduser');
     }
 
+    /** ---------------- VOUCHER ---------------- */
+    #region Voucher
+    public function listVoucher()
+    {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if (empty($_SESSION['admin_logged_in'])) {
+            header('Location: index.php?controllers=auth&action=login');
+            exit();
+        }
+
+        $this->loadModel('VoucherModel');
+        $voucherModel = new VoucherModel();
+        $vouchers     = $voucherModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
+
+        return $this->viewAdmin('admin.components.voucher.listvoucher', compact('vouchers'));
+    }
+    
+    public function addVoucher()
+    {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if (empty($_SESSION['admin_logged_in'])) {
+            header('Location: index.php?controllers=auth&action=login');
+            exit();
+        }
+
+        return $this->viewAdmin('admin.components.voucher.addvoucher');
+    }
 
 }
