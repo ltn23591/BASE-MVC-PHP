@@ -28,6 +28,6 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 
-<body class="container min-h-screen w-full relative">
+<body class=" min-h-screen w-full relative">
     <div class=" px-4 sm:px[5vw] md:px-[7vw] lg:px[9vw]">
         <div>
