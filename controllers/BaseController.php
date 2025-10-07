@@ -3,7 +3,7 @@ class BaseController
 {
     const VIEW_FOLDER_NAME = 'views';
     const MODEL_FOLDER_NAME = 'models';
-    protected function view($viewPath, array $data = [], bool $withLayout = true)
+    protected function view($viewPath, array $data = [])
     {
 
         foreach ($data as $key => $value) {
@@ -11,15 +11,18 @@ class BaseController
         }
         $viewPath =  self::VIEW_FOLDER_NAME . '/' . str_replace('.', '/', $viewPath) . '.php';
 
+<<<<<<< HEAD
 
         if ($withLayout) {
+=======
+      
+>>>>>>> 004d9bde9d56f5586174913d9737aeed393c6cce
             include __DIR__ . '/../views/frontend/layouts/header.php';
             include __DIR__ . '/../views/frontend/layouts/navbar.php';
             require($viewPath);
             include __DIR__ . '/../views/frontend/layouts/footer.php';
-        } else {
-            require($viewPath);
-        }
+      
+       
     }
 
     protected function loadModel($modelPath)
