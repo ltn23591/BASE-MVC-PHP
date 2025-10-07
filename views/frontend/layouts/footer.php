@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '../../../../config/config_url.php'; ?>
 <!-- Footer -->
 <div>
     <div class="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 text-sm">
@@ -39,8 +40,10 @@
 
 </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 <script src="<?= BASE_URL ?>public/assets/js/cart.js" defer></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 </body>
 
 </html>

@@ -28,14 +28,27 @@ if (!isset($orders)) {
             <div class="md:w-1/2 flex justify-between">
                 <div class="flex items-center gap-2">
                     <p class="min-w-2 h-2 rounded-full bg-green-500"></p>
-                    <p class="text-sm md:text-base"><?= htmlspecialchars($order['status']) ?></p>
+                    <p class="text-sm md:text-base">
+                        <?= htmlspecialchars($order['status']) ?>
+                    </p>
+                    <a href="index.php?controllers=orderdetail&action=detail&id=<?= $order['id'] ?>">Xem chi
+                        tiết đơn hàng</a>
                 </div>
 
-                <button class="border px-4 py-2 text-sm font-medium rounded-sm"
-                    onclick="window.location.href = window.location.href">
-                    Cập nhật trạng thái
-                </button>
 
+                <?php if ($order['status'] === 'Đã giao'): ?>
+
+                <div class=" flex flex-col gap-2">
+                    <div class="px-2 py-4 text-black border ml-4">Đánh giá sản phẩm</div>
+                    <?php else: ?>
+                    <button class="border px-4 py-2 text-sm font-medium rounded-sm"
+                        onclick="window.location.href = window.location.href">
+                        Cập nhật trạng thái
+                    </button>
+                    <?php endif; ?>
+
+
+                </div>
             </div>
         </div>
         <?php endforeach; ?>

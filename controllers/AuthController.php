@@ -103,33 +103,33 @@ class AuthController extends BaseController
             if ($this->userModel->findByEmail($email)) {
                 return $this->view('frontend.auth.login', [
                     'pageTitle' => 'Đăng ký',
-                    'toast' => "❌ Email đã tồn tại!"
+                    'toast' => " Email đã tồn tại!"
                 ]);
             }
 
-            // ✅ Kiểm tra OTP
+            // Kiểm tra OTP
             if (!isset($_SESSION['otp']) || time() > $_SESSION['otp_expire']) {
                 return $this->view('frontend.auth.login', [
                     'pageTitle' => 'Đăng ký',
-                    'toast' => "❌ OTP đã hết hạn. Vui lòng gửi lại."
+                    'toast' => " OTP đã hết hạn. Vui lòng gửi lại."
                 ]);
             }
 
             if (strtolower($email) != strtolower($_SESSION['otp_email'])) {
                 return $this->view('frontend.auth.login', [
                     'pageTitle' => 'Đăng ký',
-                    'toast' => "❌ Email không trùng với email đã gửi OTP."
+                    'toast' => " Email không trùng với email đã gửi OTP."
                 ]);
             }
 
             if ($otpInput != $_SESSION['otp']) {
                 return $this->view('frontend.auth.login', [
                     'pageTitle' => 'Đăng ký',
-                    'toast' => "❌ Mã OTP không đúng."
+                    'toast' => " Mã OTP không đúng."
                 ]);
             }
 
-            // ✅ OTP đúng ➝ Lưu tài khoản
+            //  OTP đúng ➝ Lưu tài khoản
             unset($_SESSION['otp'], $_SESSION['otp_email'], $_SESSION['otp_expire']);
 
             $this->userModel->store([
@@ -164,18 +164,18 @@ class AuthController extends BaseController
             $otpInput = $_POST['otp'] ?? '';
             $newPassword = $_POST['new_password'] ?? '';
 
-            // ✅ Kiểm tra OTP
+            //  Kiểm tra OTP
             if (!isset($_SESSION['reset_otp']) || time() > $_SESSION['reset_expire']) {
-                $toast = "❌ OTP đã hết hạn. Vui lòng gửi lại.";
+                $toast = "OTP đã hết hạn. Vui lòng gửi lại.";
             } elseif (strtolower($email) !== strtolower($_SESSION['reset_email'])) {
-                $toast = "❌ Email không trùng khớp với email đã gửi OTP.";
+                $toast = "Email không trùng khớp với email đã gửi OTP.";
             } elseif ($otpInput != $_SESSION['reset_otp']) {
-                $toast = "❌ Mã OTP không chính xác.";
+                $toast = "Mã OTP không chính xác.";
             } else {
-                // ✅ OTP đúng ➝ đổi mật khẩu
+                // OTP đúng ➝ đổi mật khẩu
                 $user = $this->userModel->findByEmail($email);
                 if (!$user) {
-                    $toast = "❌ Email không tồn tại.";
+                    $toast = "Email không tồn tại.";
                 } else {
                     // Hash mật khẩu mới trước khi lưu
                     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
@@ -277,7 +277,7 @@ class AuthController extends BaseController
             exit;
         }
 
-        // ✅ Tạo OTP
+        //  Tạo OTP
         $otp = rand(100000, 999999);
         $_SESSION['reset_otp'] = $otp;
         $_SESSION['reset_email'] = $email;
@@ -308,9 +308,9 @@ class AuthController extends BaseController
     ";
 
             $mail->send();
-            echo json_encode(["status" => "success", "msg" => "✅ OTP đặt lại mật khẩu đã gửi tới $email"]);
+            echo json_encode(["status" => "success", "msg" => " OTP đặt lại mật khẩu đã gửi tới $email"]);
         } catch (Exception $e) {
-            echo json_encode(["status" => "error", "msg" => "❌ Gửi OTP thất bại: {$mail->ErrorInfo}"]);
+            echo json_encode(["status" => "error", "msg" => " Gửi OTP thất bại: {$mail->ErrorInfo}"]);
         }
     }
 }

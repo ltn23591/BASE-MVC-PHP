@@ -20,34 +20,34 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Icons -->
     <div class="flex items-center gap-5">
         <!-- Search -->
-        <img src="<?= $assets['search_icon'] ?>"  alt="search" class="w-5 cursor-pointer" onclick="toggleSearch()">
+        <img src="<?= $assets['search_icon'] ?>" alt="search" class="w-5 cursor-pointer" onclick="toggleSearch()">
 
         <!-- Profile -->
         <div class="group relative">
             <img src="<?= $assets['profile_icon'] ?>" alt="profile" class="w-5 cursor-pointer">
 
             <?php if (!empty($_SESSION['user_id'])): ?>
-            <!-- Nếu đã đăng nhập -->
-            <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
-                <div class="flex flex-col gap-2 w-36 py-3 px-5">
-                    <p class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
-                    </p>
-                    <p onclick="window.location.href='index.php?controllers=order&action=index'"
-                        class="cursor-pointer hover:text-black">Giỏ Hàng</p>
-                    <p onclick="window.location.href='index.php?controllers=auth&action=logout'"
-                        class="cursor-pointer hover:text-black">Đăng xuất</p>
+                <!-- Nếu đã đăng nhập -->
+                <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
+                    <div class="flex flex-col gap-2 w-36 py-3 px-5">
+                        <p class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
+                        </p>
+                        <p onclick="window.location.href='index.php?controllers=order&action=index'"
+                            class="cursor-pointer hover:text-black">Đơn Hàng</p>
+                        <p onclick="window.location.href='index.php?controllers=auth&action=logout'"
+                            class="cursor-pointer hover:text-black">Đăng xuất</p>
+                    </div>
                 </div>
-            </div>
             <?php else: ?>
-            <!-- Nếu chưa đăng nhập -->
-            <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
-                <div class="flex flex-col gap-2 w-36 py-3 px-5">
-                    <p onclick="window.location.href='index.php?controllers=auth&action=login'"
-                        class="cursor-pointer hover:text-black">
-                        Đăng nhập
-                    </p>
+                <!-- Nếu chưa đăng nhập -->
+                <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
+                    <div class="flex flex-col gap-2 w-36 py-3 px-5">
+                        <p onclick="window.location.href='index.php?controllers=auth&action=login'"
+                            class="cursor-pointer hover:text-black">
+                            Đăng nhập
+                        </p>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
         </div>
 
@@ -75,15 +75,15 @@ if (session_status() === PHP_SESSION_NONE) {
 </div>
 
 <script>
-function toggleMenu(show) {
-    console.log("ok");
-    const sidebar = document.getElementById("sidebar");
-    sidebar.style.width = show ? "100%" : "0";
-}
+    function toggleMenu(show) {
+        console.log("ok");
+        const sidebar = document.getElementById("sidebar");
+        sidebar.style.width = show ? "100%" : "0";
+    }
 
-function toggleSearch() {
-    // Gọi PHP để bật search bar
-    fetch("toggleSearch.php?action=show")
-        .then(() => location.reload());
-}
+    function toggleSearch() {
+        // Gọi PHP để bật search bar
+        fetch("toggleSearch.php?action=show")
+            .then(() => location.reload());
+    }
 </script>

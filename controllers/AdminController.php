@@ -1,5 +1,5 @@
 <?php
-
+require 'cloudinary_config.php';
 class AdminController extends BaseController
 {
     private $adminModel;
@@ -73,6 +73,20 @@ class AdminController extends BaseController
 
             if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
+<<<<<<< HEAD
+
+        $this->loadModel('UserModel');
+        $user = new UserModel();
+        $getEmailUser = $user->getAll(['*']);
+
+
+        // Gắn email vào từng đơn hàng
+        foreach ($orders as &$order) {
+            foreach ($getEmailUser as $u) {
+                if ($order['user_id'] == $u['id']) {
+                    $order['email'] = $u['email'];
+                    break;
+=======
             // Có upload ảnh mới không
             if (!empty($_FILES['images']['name'][0])) {
                 foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
@@ -83,6 +97,7 @@ class AdminController extends BaseController
                             $uploadedImages[] = $targetPath;
                         }
                     }
+>>>>>>> 004d9bde9d56f5586174913d9737aeed393c6cce
                 }
             } else {
                 $product       = $this->adminModel->findById($id);
@@ -220,6 +235,8 @@ class AdminController extends BaseController
 
         return $this->viewAdmin('admin.components.user.adduser');
     }
+<<<<<<< HEAD
+=======
 
     /** ---------------- VOUCHER ---------------- */
     #region Voucher
@@ -249,4 +266,5 @@ class AdminController extends BaseController
         return $this->viewAdmin('admin.components.voucher.addvoucher');
     }
 
+>>>>>>> 004d9bde9d56f5586174913d9737aeed393c6cce
 }

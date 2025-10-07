@@ -8,11 +8,6 @@ class CartController extends BaseController
         $this->loadModel('CartModel');
         $this->CartModel = new CartModel;
     }
-    public function index()
-    {
-
-        return __METHOD__;
-    }
     public function addToCart()
     {
         if (session_status() === PHP_SESSION_NONE) {

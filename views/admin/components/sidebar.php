@@ -1,7 +1,9 @@
+<<<<<<< HEAD
+<aside class="min-w-[35%] min-h-screen border-r bg-white shadow-sm">
+=======
 <aside class="min-w-[30%] min-h-screen border-r bg-white shadow-sm">
+>>>>>>> 004d9bde9d56f5586174913d9737aeed393c6cce
     <nav class="flex flex-col pt-6 px-4 text-[15px] font-medium text-gray-700">
-
-
         <!-- Quản lý sản phẩm -->
         <div class="cursor-pointer flex items-center justify-between whitespace-nowrap gap-2 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition"
             data-toggle="productMenu">
@@ -78,7 +80,7 @@
             <a data-url="index.php?controllers=admin&action=orders"
                 class="cursor-pointer nav-link flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition">
                 <img class="w-5 h-5" src="<?= $assets['order_icon'] ?>" alt="">
-                <span class="hidden md:block text-nowrap">Danh sách đơn hàng</span>
+                <span class="hidden md:block">Danh sách đơn hàng</span>
             </a>
         </div>
 

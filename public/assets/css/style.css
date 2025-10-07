@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+/* Ẩn thanh cuộn cho trình duyệt WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Ẩn thanh cuộn cho Firefox */
+html {
+    scrollbar-width: none; /* Ẩn thanh cuộn */
+    -ms-overflow-style: none; /* Ẩn cho IE, Edge cũ */
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    color: #333;
+    line-height: 1.6;
+    background-color: #fff;
+}
+
+/* ===== HEADER ===== */
+header {
+    padding: 20px 40px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
