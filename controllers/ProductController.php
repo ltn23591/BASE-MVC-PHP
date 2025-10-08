@@ -3,6 +3,7 @@
 class ProductController extends BaseController
 {
     private $productModel;
+    private $ratingModel;
     public function __construct() //dung chung cho tat ca cac phuong thuc
     {
         $this->loadModel('ProductModel');
@@ -53,6 +54,8 @@ class ProductController extends BaseController
         if (!empty($product['image'])) {
             $product['image'] = json_decode($product['image'], true);
         }
+
+
         $related = [];
         $empty = "";
         $currentCategory = $product['category'];
@@ -66,12 +69,20 @@ class ProductController extends BaseController
                 $empty = "";
             }
         }
+
+        // Lấy danh sách đánh giá cho sản phẩm
+        $reviews = $this->ratingModel->getByProductId($id);
+        $totalReviews = count($reviews);
+
         return $this->view(
             'frontend.components.ProductDetail',
             [
                 'product' => $product,
                 'related' => $related,
-                'empty' => $empty
+                'empty' => $empty,
+                'reviews' => $reviews,
+                'totalReviews' => $totalReviews,
+
             ]
         );
     }

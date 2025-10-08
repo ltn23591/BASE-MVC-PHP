@@ -10,7 +10,8 @@ class OrderDetailModel extends BaseModel
         $sql = "
             SELECT 
                 order_items.*, 
-                products.name 
+                products.name, 
+                products.image
             FROM order_items 
             JOIN products ON order_items.product_id = products.id
             WHERE order_items.order_id = $orderId

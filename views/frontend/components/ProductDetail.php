@@ -16,9 +16,9 @@ require __DIR__ . '/ProductItem.php';
                 class="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
 
                 <?php foreach ($product['image'] as $item): ?>
-                    <img src="<?= htmlspecialchars($item) ?>" alt="thumb"
-                        class="w-[24%] sm:w-full sm:mb-3 flex shrink-0 cursor-pointer"
-                        onclick="document.getElementById('mainImage').src='<?= htmlspecialchars($item) ?>'">
+                <img src="<?= htmlspecialchars($item) ?>" alt="thumb"
+                    class="w-[24%] sm:w-full sm:mb-3 flex shrink-0 cursor-pointer"
+                    onclick="document.getElementById('mainImage').src='<?= htmlspecialchars($item) ?>'">
                 <?php endforeach; ?>
 
             </div>
@@ -35,13 +35,15 @@ require __DIR__ . '/ProductItem.php';
                 <?= htmlspecialchars($product['name']) ?>
             </h1>
 
+
             <div class="flex items-center gap-1 mt-2">
                 <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
                 <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
                 <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
                 <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
                 <img src="<?= $assets['star_dull_icon'] ?>" alt="" class="w-3.5">
-                <p class="pl-2">(122)</p>
+
+
             </div>
 
             <p class="mt-5 text-3xl font-medium">
@@ -54,9 +56,9 @@ require __DIR__ . '/ProductItem.php';
                 <p>Select Size</p>
                 <div class="flex gap-2">
                     <?php foreach ($sizes as $size): ?>
-                        <button class="size-btn border py-2 px-4 bg-gray-100" onclick="selectSize('<?= $size ?>', this)">
-                            <?= htmlspecialchars($size) ?>
-                        </button>
+                    <button class="size-btn border py-2 px-4 bg-gray-100" onclick="selectSize('<?= $size ?>', this)">
+                        <?= htmlspecialchars($size) ?>
+                    </button>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -114,21 +116,21 @@ require __DIR__ . '/ProductItem.php';
         <!-- Nội dung đánh giá -->
         <div id="content-reviews" class="tab-content hidden border px-6 py-6 text-sm text-gray-600 space-y-6">
             <?php if (!empty($reviews)): ?>
-                <?php foreach ($reviews as $review): ?>
-                    <div class="border-b pb-4">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="font-semibold text-gray-800"><?= htmlspecialchars($review['user_name']) ?></span>
-                            <span class="text-yellow-400">
-                                <?= str_repeat("★", $review['rating']) ?>
-                                <?= str_repeat("☆", 5 - $review['rating']) ?>
-                            </span>
-                        </div>
-                        <p class="text-gray-600"><?= htmlspecialchars($review['comment']) ?></p>
-                        <p class="text-xs text-gray-400 mt-1">📅 <?= date("d/m/Y", strtotime($review['created_at'])) ?></p>
-                    </div>
-                <?php endforeach; ?>
+            <?php foreach ($reviews as $review): ?>
+            <div class="border-b pb-4">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="font-semibold text-gray-800"><?= htmlspecialchars($review['user_name']) ?></span>
+                    <span class="text-yellow-400">
+                        <?= str_repeat("★", $review['rating']) ?>
+                        <?= str_repeat("☆", 5 - $review['rating']) ?>
+                    </span>
+                </div>
+                <p class="text-gray-600"><?= htmlspecialchars($review['comment']) ?></p>
+                <p class="text-xs text-gray-400 mt-1">📅 <?= date("d/m/Y", strtotime($review['created_at'])) ?></p>
+            </div>
+            <?php endforeach; ?>
             <?php else: ?>
-                <p class="text-gray-500 italic">Chưa có đánh giá nào cho sản phẩm này.</p>
+            <p class="text-gray-500 italic">Chưa có đánh giá nào cho sản phẩm này.</p>
             <?php endif; ?>
         </div>
 
@@ -137,9 +139,9 @@ require __DIR__ . '/ProductItem.php';
     <div class='my-24'>
         <div class="text-center text-3xl py-2">
             <?php if (!empty($related) && count($related) > 0): ?>
-                <?= Title("SẢN PHẨM", "LIÊN QUAN"); ?>
+            <?= Title("SẢN PHẨM", "LIÊN QUAN"); ?>
             <?php else: ?>
-                <?= $empty; ?>
+            <?= $empty; ?>
             <?php endif; ?>
 
         </div>
@@ -157,24 +159,24 @@ require __DIR__ . '/ProductItem.php';
 
 <!-- JS chuyển tab -->
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const tabDesc = document.getElementById("tab-desc");
-        const tabReviews = document.getElementById("tab-reviews");
-        const contentDesc = document.getElementById("content-desc");
-        const contentReviews = document.getElementById("content-reviews");
+document.addEventListener("DOMContentLoaded", () => {
+    const tabDesc = document.getElementById("tab-desc");
+    const tabReviews = document.getElementById("tab-reviews");
+    const contentDesc = document.getElementById("content-desc");
+    const contentReviews = document.getElementById("content-reviews");
 
-        tabDesc.addEventListener("click", () => {
-            tabDesc.classList.add("border-blue-600", "text-blue-600");
-            tabReviews.classList.remove("border-blue-600", "text-blue-600");
-            contentDesc.classList.remove("hidden");
-            contentReviews.classList.add("hidden");
-        });
-
-        tabReviews.addEventListener("click", () => {
-            tabReviews.classList.add("border-blue-600", "text-blue-600");
-            tabDesc.classList.remove("border-blue-600", "text-blue-600");
-            contentReviews.classList.remove("hidden");
-            contentDesc.classList.add("hidden");
-        });
+    tabDesc.addEventListener("click", () => {
+        tabDesc.classList.add("border-blue-600", "text-blue-600");
+        tabReviews.classList.remove("border-blue-600", "text-blue-600");
+        contentDesc.classList.remove("hidden");
+        contentReviews.classList.add("hidden");
     });
+
+    tabReviews.addEventListener("click", () => {
+        tabReviews.classList.add("border-blue-600", "text-blue-600");
+        tabDesc.classList.remove("border-blue-600", "text-blue-600");
+        contentReviews.classList.remove("hidden");
+        contentDesc.classList.add("hidden");
+    });
+});
 </script>

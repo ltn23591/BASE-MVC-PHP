@@ -66,9 +66,23 @@ class BaseModel extends Database
 
         $this->_query($sql);
     }
-    public function getByQuery($sql)
+    public function getByQuery($sql, $params = [])
     {
-        $query = $this->_query($sql);
+        if (empty($params)) {
+            $query = $this->_query($sql);
+        } else {
+            $stmt = mysqli_prepare($this->conn, $sql);
+            if ($stmt === false) {
+                die("SQL PREPARE ERROR: " . mysqli_error($this->conn) . "\nQuery: " . $sql);
+            }
+
+            $types = str_repeat('s', count($params)); // Mặc định tất cả là string, an toàn cho hầu hết trường hợp
+            mysqli_stmt_bind_param($stmt, $types, ...$params);
+
+            mysqli_stmt_execute($stmt);
+            $query = mysqli_stmt_get_result($stmt);
+        }
+
         $data = [];
         while ($row = mysqli_fetch_assoc($query)) {
             array_push($data, $row);
