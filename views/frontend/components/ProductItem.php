@@ -10,7 +10,7 @@ function ProductItem($id, $image, $name, $price)
         class="text-gray-700 cursor-pointer block">
         <div class="overflow-hidden">
             <img class="hover:scale-110 transition ease-in-out w-full h-[280px] object-cover borderImage slickHoverZoom"
-                src="<?= BASE_URL . htmlspecialchars($image[0]) ?>" alt="<?php echo htmlspecialchars($name); ?>">
+                src="<?= htmlspecialchars($image[0]) ?>" alt="<?php echo htmlspecialchars($name); ?>">
 
             <p class="pt-3 pb-1 text-sm">
                 <?php echo htmlspecialchars($name); ?>

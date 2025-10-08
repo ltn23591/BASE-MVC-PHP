@@ -1,5 +1,8 @@
 <?php
 
+use Cloudinary\Api\Upload\UploadApi;
+
+require_once __DIR__ . '/../config/cloudinary_config.php';
 class AdminController extends BaseController
 {
     private $adminModel;
@@ -18,10 +21,8 @@ class AdminController extends BaseController
         $this->loadModel('VoucherModel');
         $this->voucherModel = new VoucherModel;
 
-        $this->loadModel('OrderModel'); // Thêm dòng này
+        $this->loadModel('OrderModel'); 
         $this->orderModel = new OrderModel;
-        
-      
     }
 
     /** ---------------- SẢN PHẨM ---------------- */
@@ -29,20 +30,21 @@ class AdminController extends BaseController
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Include Cloudinary configuration and uploader
+            require_once __DIR__ . '/../config/cloudinary_config.php';
+
             $uploadedImages = [];
-            $uploadDir = 'public/uploads/';
 
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
-            // Upload ảnh
-            foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
-                if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
-                    $fileName = time() . '_' . basename($_FILES['images']['name'][$key]);
-                    $targetPath = $uploadDir . $fileName;
-                    if (move_uploaded_file($tmpName, $targetPath)) {
-                        $uploadedImages[] = $targetPath;
+            // Upload images to Cloudinary
+            if (isset($_FILES['images'])) {
+                foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
+                    if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
+                        try {
+                            $uploadResult = (new UploadApi())->upload($tmpName);
+                            $uploadedImages[] = $uploadResult['secure_url'];
+                        } catch (Exception $e) {
+                            die("Error uploading image: " . $e->getMessage());
+                        }
                     }
                 }
             }
@@ -79,22 +81,19 @@ class AdminController extends BaseController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id             = $_POST['id'];
             $uploadedImages = [];
-            $uploadDir      = 'public/uploads/';
-
-            if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
-
-            // Có upload ảnh mới không
-            if (!empty($_FILES['images']['name'][0])) {
+            if (isset($_FILES['images']) && !empty($_FILES['images']['name'][0])) {
                 foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
                     if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
-                        $fileName   = time() . '_' . basename($_FILES['images']['name'][$key]);
-                        $targetPath = $uploadDir . $fileName;
-                        if (move_uploaded_file($tmpName, $targetPath)) {
-                            $uploadedImages[] = $targetPath;
+                        try {
+                            $uploadResult = (new UploadApi())->upload($tmpName);
+                            $uploadedImages[] = $uploadResult['secure_url'];
+                        } catch (Exception $e) {
+                            // 
                         }
                     }
                 }
             } else {
+
                 $product        = $this->adminModel->findById($id);
                 $uploadedImages = json_decode($product['image'], true);
             }
