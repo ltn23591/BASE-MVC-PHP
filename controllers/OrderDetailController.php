@@ -6,12 +6,7 @@ class OrderDetailController extends BaseController
 
     public function __construct()
     {
-        // Gọi model đơn hàng
-        $this->loadModel('OrderModel');
         $this->orderModel = new OrderModel();
-
-        // Gọi model chi tiết sản phẩm của đơn hàng
-        $this->loadModel('OrderDetailModel');
         $this->orderDetailModel = new OrderDetailModel();
     }
 

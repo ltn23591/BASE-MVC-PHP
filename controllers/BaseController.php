@@ -23,12 +23,6 @@ class BaseController
         }
     }
 
-    protected function loadModel($modelPath)
-    {
-        $modelPath = self::MODEL_FOLDER_NAME . '/' . str_replace('.', '/', $modelPath) . '.php';
-        require($modelPath);
-    }
-
     // Hàm này dành cho admin nhằm để ẩn header và footer của client
     protected function viewAdmin($viewPath, array $data = [])
     {

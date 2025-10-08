@@ -1,7 +1,7 @@
-<?php
+<!-- <?php
 echo '<pre>';
 print_r($cart);
-?>
+?> -->
 <div class="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
     <form method="POST" class="flex flex-col sm:flex-row justify-between gap-4 w-full">
         <div class="flex flex-col gap-4 w-full sm:max-w-[480px]">
@@ -47,7 +47,11 @@ print_r($cart);
                         <span>Phí Vận Chuyển</span>
                         <span><?= number_format($delivery_fee ?? 0, 0, ',', '.') ?> đ</span>
                     </div>
-                    <hr />
+                    <div class="flex justify-between py-1 text-green-600">
+                        <span>Giảm giá</span>
+                        <span>- <?= number_format($discount ?? 0, 0, ',', '.') ?> đ</span>
+                    </div>
+                    <hr class="my-2" />
                     <div class="flex justify-between py-2 font-semibold">
                         <span>Tổng Cộng</span>
                         <span><?= number_format($amount ?? 0, 0, ',', '.') ?> đ</span>
@@ -55,6 +59,16 @@ print_r($cart);
                 </div>
             </div>
 
+            <div class="mt-8">
+                <label for="voucher_code" class="font-semibold">Bạn có mã giảm giá?</label>
+                <div class="flex mt-2 gap-2">
+                    <input type="text" id="voucher_code" name="voucher_code" placeholder="Nhập mã voucher tại đây"
+                        class="border p-2 w-full rounded-md focus:ring-orange-500 focus:border-orange-500">
+                    <button type="submit" name="apply_voucher"
+                        class="bg-orange-500 text-white px-6 py-2 rounded-md hover:bg-orange-600 whitespace-nowrap">Áp
+                        dụng</button>
+                </div>
+            </div>
             <div class="mt-12">
                 <p class="text-xl font-semibold mb-3">Phương Thức <span class="text-orange-500">Thanh Toán</span>
                 </p>
@@ -66,13 +80,12 @@ print_r($cart);
                     </label>
                     <label class="flex items-center gap-3 border p-2 px-3 cursor-pointer">
                         <input type="radio" name="paymentMethod" value="cod" checked />
-                        <span class="text-gray-600 text-sm">TIền Mặt</span>
+                        <span class="text-gray-600 text-sm">Tiền Mặt</span>
                     </label>
                 </div>
                 <div class=" w-full text-end mt-8">
                     <button type="submit" class="bg-black text-white px-16 py-3">Đặt Hàng</button>
                 </div>
-
             </div>
         </div>
     </form>

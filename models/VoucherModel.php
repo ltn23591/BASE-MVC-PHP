@@ -1,7 +1,7 @@
 <?php
 class VoucherModel extends BaseModel
 {
-    const TABLE = 'vouchers';
+    const TABLE = 'discount';
 
     // Lấy tất cả voucher
     public function getAll($select = ['*'], $orderBys = [], $limit = 15)
@@ -33,4 +33,3 @@ class VoucherModel extends BaseModel
         $this->delete(self::TABLE, $id);
     }
 }
-

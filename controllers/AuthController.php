@@ -4,16 +4,12 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require_once __DIR__ . '/../PHPMailer/src/PHPMailer.php';
-require_once __DIR__ . '/../PHPMailer/src/SMTP.php';
-require_once __DIR__ . '/../PHPMailer/src/Exception.php';
 class AuthController extends BaseController
 {
     private $userModel;
 
     public function __construct()
     {
-        $this->loadModel('UserModel');
         $this->userModel = new UserModel();
 
         if (session_status() === PHP_SESSION_NONE) {
@@ -72,7 +68,6 @@ class AuthController extends BaseController
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
 
-                $this->loadModel('CartModel');
                 $cartModel = new CartModel();
                 $_SESSION['cart'] = $cartModel->rowsToSessionCart(
                     $cartModel->getByUser((int)$user['id'])

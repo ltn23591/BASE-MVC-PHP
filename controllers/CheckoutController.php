@@ -8,14 +8,8 @@ class CheckoutController extends BaseController
 
     public function __construct()
     {
-        $this->loadModel('OrderModel');
         $this->orderModel = new OrderModel();
-
-        $this->loadModel('CartModel');
         $this->cartModel  = new CartModel();
-
-        // ✅ Thêm dòng này để gọi model chi tiết đơn hàng
-        $this->loadModel('OrderDetailModel');
         $this->orderDetailModel = new OrderDetailModel();
     }
 

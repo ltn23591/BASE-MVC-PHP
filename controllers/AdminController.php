@@ -1,17 +1,18 @@
 <?php
-require 'cloudinary_config.php';
+
 class AdminController extends BaseController
 {
     private $adminModel;
     private $userModel;
+    private $voucherModel;
+    private $orderModel; // Thêm orderModel vào đây
 
     public function __construct()
     {
-        $this->loadModel('AdminModel');
         $this->adminModel = new AdminModel;
-
-        $this->loadModel('UserModel');
         $this->userModel = new UserModel;
+        $this->voucherModel = new VoucherModel;
+        $this->orderModel = new OrderModel; // Khởi tạo orderModel
     }
 
     /** ---------------- SẢN PHẨM ---------------- */
@@ -67,26 +68,12 @@ class AdminController extends BaseController
     public function update()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id          = $_POST['id'];
+            $id             = $_POST['id'];
             $uploadedImages = [];
-            $uploadDir   = 'public/uploads/';
+            $uploadDir      = 'public/uploads/';
 
             if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
-<<<<<<< HEAD
-
-        $this->loadModel('UserModel');
-        $user = new UserModel();
-        $getEmailUser = $user->getAll(['*']);
-
-
-        // Gắn email vào từng đơn hàng
-        foreach ($orders as &$order) {
-            foreach ($getEmailUser as $u) {
-                if ($order['user_id'] == $u['id']) {
-                    $order['email'] = $u['email'];
-                    break;
-=======
             // Có upload ảnh mới không
             if (!empty($_FILES['images']['name'][0])) {
                 foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
@@ -97,10 +84,9 @@ class AdminController extends BaseController
                             $uploadedImages[] = $targetPath;
                         }
                     }
->>>>>>> 004d9bde9d56f5586174913d9737aeed393c6cce
                 }
             } else {
-                $product       = $this->adminModel->findById($id);
+                $product        = $this->adminModel->findById($id);
                 $uploadedImages = json_decode($product['image'], true);
             }
 
@@ -152,11 +138,9 @@ class AdminController extends BaseController
             exit();
         }
 
-        $this->loadModel('OrderModel');
-        $orderModel = new OrderModel();
-        $orders     = $orderModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
+        $orders = $this->orderModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
 
-        $users      = $this->userModel->getAll(['*']);
+        $users = $this->userModel->getAll(['*']);
 
         // Gắn email user vào order
         foreach ($orders as &$order) {
@@ -183,9 +167,7 @@ class AdminController extends BaseController
             $orderId = (int)($_POST['order_id'] ?? 0);
             $status  = $_POST['status'] ?? '';
             if ($orderId > 0 && $status !== '') {
-                $this->loadModel('OrderModel');
-                $orderModel = new OrderModel();
-                $orderModel->updateData($orderId, ['status' => $status]);
+                $this->orderModel->updateData($orderId, ['status' => $status]);
             }
         }
         header('Location: index.php?controllers=auth&action=admin');
@@ -214,11 +196,11 @@ class AdminController extends BaseController
             $name     = $_POST['name'] ?? '';
             $email    = $_POST['email'] ?? '';
             $password = password_hash($_POST['password'] ?? '', PASSWORD_BCRYPT);
-            
+
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode(['status' => 'error', 'message' => 'Email không hợp lệ']);
-            exit;
-        }
+                echo json_encode(['status' => 'error', 'message' => 'Email không hợp lệ']);
+                exit;
+            }
 
             $this->userModel->store([
                 'name'       => $name,
@@ -227,7 +209,6 @@ class AdminController extends BaseController
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
-            // Đặt flag báo thành công
             $success = true;
             header('Location: index.php?controllers=auth&action=admin');
             exit();
@@ -235,8 +216,6 @@ class AdminController extends BaseController
 
         return $this->viewAdmin('admin.components.user.adduser');
     }
-<<<<<<< HEAD
-=======
 
     /** ---------------- VOUCHER ---------------- */
     #region Voucher
@@ -248,13 +227,11 @@ class AdminController extends BaseController
             exit();
         }
 
-        $this->loadModel('VoucherModel');
-        $voucherModel = new VoucherModel();
-        $vouchers     = $voucherModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
+        $vouchers = $this->voucherModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
 
         return $this->viewAdmin('admin.components.voucher.listvoucher', compact('vouchers'));
     }
-    
+
     public function addVoucher()
     {
         if (session_status() === PHP_SESSION_NONE) session_start();
@@ -265,6 +242,43 @@ class AdminController extends BaseController
 
         return $this->viewAdmin('admin.components.voucher.addvoucher');
     }
+    public function saveVoucher()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Lấy dữ liệu từ form
+            $code = $_POST['code'] ?? '';
+            $discount = $_POST['discount'] ?? 0;
+            $start_date = $_POST['start_date'] ?? '';
+            $end_date = $_POST['end_date'] ?? '';
 
->>>>>>> 004d9bde9d56f5586174913d9737aeed393c6cce
+
+            // Kiểm tra dữ liệu cơ bản
+            if (empty($code) || empty($discount) || empty($start_date) || empty($end_date)) {
+                $_SESSION['error'] = "Vui lòng nhập đầy đủ thông tin voucher!";
+                header("Location: index.php?controller=admin&action=addVoucher");
+                exit();
+            }
+
+            // Chuẩn bị dữ liệu để lưu
+            $data = [
+                'code' => $code,
+                'discount' => $discount,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+
+            ];
+
+
+            $this->voucherModel->createVoucher($data);
+
+            // Kiểm tra kết quả
+            $_SESSION['success'] = "Thêm voucher thành công!";
+            header("Location: index.php?controllers=admin&action=listVoucher");
+            exit();
+        } else {
+            // Nếu không phải POST thì quay lại form
+            header("Location: index.php?controllers=admin&action=addVoucher");
+            exit();
+        }
+    }
 }

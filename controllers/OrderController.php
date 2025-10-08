@@ -5,7 +5,6 @@ class OrderController extends BaseController
     private $orderModel;
     public function __construct() //dung chung cho tat ca cac phuong thuc
     {
-        $this->loadModel('OrderModel');
         $this->orderModel = new OrderModel;
     }
     public function index()
