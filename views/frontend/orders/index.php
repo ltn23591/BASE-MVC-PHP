@@ -1,8 +1,3 @@
-<?php
-if (!isset($orders)) {
-    $orders = [];
-}
-?>
 <div class="border-t pt-16">
     <div class="text-2xl mb-4">
         <p class="font-bold">ĐƠN HÀNG <span class="text-orange-500">CỦA TÔI</span></p>

@@ -5,6 +5,7 @@ class ProductController extends BaseController
     private $productModel;
     public function __construct() //dung chung cho tat ca cac phuong thuc
     {
+        $this->loadModel('ProductModel');
         $this->productModel = new ProductModel;
     }
     public function index()

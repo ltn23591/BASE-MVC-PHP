@@ -8,6 +8,10 @@ class CheckoutController extends BaseController
 
     public function __construct()
     {
+        $this->loadModel('OrderModel');
+        $this->loadModel('CartModel');
+        $this->loadModel('OrderDetailModel');
+
         $this->orderModel = new OrderModel();
         $this->cartModel  = new CartModel();
         $this->orderDetailModel = new OrderDetailModel();

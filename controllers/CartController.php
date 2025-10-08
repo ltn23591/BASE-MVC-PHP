@@ -5,6 +5,7 @@ class CartController extends BaseController
     private $CartModel;
     public function __construct() //dung chung cho tat ca cac phuong thuc
     {
+        $this->loadModel('CartModel');
         $this->CartModel = new CartModel;
     }
     public function addToCart()

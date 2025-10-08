@@ -1,7 +1,7 @@
 <?php include_once __DIR__ . '/../layouts/header.php';
 include __DIR__ . '/../layouts/title.php';
 ?>
-
+<script src="https://cdn.tailwindcss.com"></script>
 <div class="container">
     <div class="text-center text-2xl"><?= Title("VỀ", "CHÚNG TÔI") ?></div>
     <div class="about">
@@ -47,7 +47,7 @@ include __DIR__ . '/../layouts/title.php';
             </div>
         </div>
     </div>
-<?php if (empty($_SESSION['user_id'])): ?>
+    <?php if (empty($_SESSION['user_id'])): ?>
     <div class="subscribe">
         <h2>Đăng ký nhận tin &amp; nhận ngay ưu đãi 20%</h2>
         <p>Đăng ký email để nhận thông tin khuyến mãi và xu hướng mới nhất từ Forever.</p>
@@ -56,5 +56,5 @@ include __DIR__ . '/../layouts/title.php';
             <button type="submit">ĐĂNG KÝ</button>
         </form>
     </div>
-<?php endif; ?>
+    <?php endif; ?>
 </div>

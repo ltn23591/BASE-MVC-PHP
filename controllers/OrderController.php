@@ -3,8 +3,9 @@
 class OrderController extends BaseController
 {
     private $orderModel;
-    public function __construct() //dung chung cho tat ca cac phuong thuc
+    public function __construct() 
     {
+        $this->loadModel('OrderModel');
         $this->orderModel = new OrderModel;
     }
     public function index()
@@ -23,8 +24,4 @@ class OrderController extends BaseController
             'orders' => $orders,
         ]);
     }
-
-
-
-    public function getAllProduct() {}
 }

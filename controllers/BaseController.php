@@ -10,10 +10,7 @@ class BaseController
             $$key = $value;
         }
         $viewPath =  self::VIEW_FOLDER_NAME . '/' . str_replace('.', '/', $viewPath) . '.php';
-
-
         if ($withLayout) {
-
             include __DIR__ . '/../views/frontend/layouts/header.php';
             include __DIR__ . '/../views/frontend/layouts/navbar.php';
             require($viewPath);
@@ -31,5 +28,11 @@ class BaseController
         }
         $viewPath = self::VIEW_FOLDER_NAME . '/' . str_replace('.', '/', $viewPath) . '.php';
         require($viewPath);
+    }
+
+    protected function loadModel($modelPath)
+    {
+        $modelPath = self::MODEL_FOLDER_NAME . '/' . str_replace('.', '/', $modelPath) . '.php';
+        require($modelPath);
     }
 }

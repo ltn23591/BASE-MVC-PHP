@@ -1,9 +1,3 @@
-<?php
-echo 'pre';
-print_r($cart);
-
-?>
-
 <div id="loadTotalCart" class="border-t pt-14 max-w-5xl mx-auto px-4">
 
     <!-- Tiêu đề -->

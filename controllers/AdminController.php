@@ -9,10 +9,19 @@ class AdminController extends BaseController
 
     public function __construct()
     {
+        $this->loadModel('AdminModel');
         $this->adminModel = new AdminModel;
+
+        $this->loadModel('UserModel');
         $this->userModel = new UserModel;
+
+        $this->loadModel('VoucherModel');
         $this->voucherModel = new VoucherModel;
-        $this->orderModel = new OrderModel; // Khởi tạo orderModel
+
+        $this->loadModel('OrderModel'); // Thêm dòng này
+        $this->orderModel = new OrderModel;
+        
+      
     }
 
     /** ---------------- SẢN PHẨM ---------------- */

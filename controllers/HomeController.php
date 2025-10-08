@@ -7,7 +7,7 @@ class HomeController extends BaseController
     public function __construct()
     {
         // Gọi model để lấy dữ liệu sản phẩm hiển thị ở trang chủ
-     
+        $this->loadModel('ProductModel');
         $this->productModel = new ProductModel();
     }
 

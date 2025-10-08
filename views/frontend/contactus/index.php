@@ -1,5 +1,6 @@
 <?php include_once __DIR__ . '/../layouts/header.php'; ?>
 <?php include __DIR__ . '/../layouts/title.php'; ?>
+<script src="https://cdn.tailwindcss.com"></script>
 <div class="container contactus">
     <div class="text-3xl text-center my-5"> <?= Title("LIÊN HỆ", "VỚI CHÚNG TÔI") ?></div>
     <div class="contactus-main">
@@ -22,13 +23,13 @@
         </div>
     </div>
     <?php if (empty($_SESSION['user_id'])): ?>
-    <div class="subscribe">
-        <h2>Đăng ký nhận tin &amp; nhận ngay ưu đãi 20%</h2>
-        <p>Nhập email để nhận thông tin khuyến mãi và xu hướng mới nhất từ Forever.</p>
-        <form>
-            <input type="email" placeholder="Nhập email của bạn..." required>
-            <button type="submit">ĐĂNG KÝ</button>
-        </form>
-    </div>
+        <div class="subscribe">
+            <h2>Đăng ký nhận tin &amp; nhận ngay ưu đãi 20%</h2>
+            <p>Nhập email để nhận thông tin khuyến mãi và xu hướng mới nhất từ Forever.</p>
+            <form>
+                <input type="email" placeholder="Nhập email của bạn..." required>
+                <button type="submit">ĐĂNG KÝ</button>
+            </form>
+        </div>
     <?php endif; ?>
 </div>

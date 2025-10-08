@@ -6,6 +6,9 @@ class OrderDetailController extends BaseController
 
     public function __construct()
     {
+        $this->loadModel('OrderModel');
+        $this->loadModel('OrderDetailModel');
+
         $this->orderModel = new OrderModel();
         $this->orderDetailModel = new OrderDetailModel();
     }

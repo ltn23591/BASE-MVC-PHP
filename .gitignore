@@ -1,5 +1,0 @@
-# Bỏ qua các thư mục của Composer
-/vendor/
-
-# File cấu hình chứa thông tin nhạy cảm (nếu có)
-# /config/database.php
