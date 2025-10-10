@@ -12,7 +12,7 @@ class VoucherModel extends BaseModel
     // Tìm voucher theo id
     public function findById($id)
     {
-        return $this->findById(self::TABLE, $id);
+        return $this->find(self::TABLE, $id);
     }
 
     // Thêm voucher mới

@@ -1,7 +1,7 @@
 <div class="container mx-auto mt-8 max-w-xl bg-white shadow-lg rounded-2xl p-6">
     <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">🎟️ Thêm Voucher Mới</h2>
 
-    <form action="index.php?controller=admin&action=saveVoucher" method="POST" class="space-y-5">
+    <form action="index.php?controllers=admin&action=saveVoucher" method="POST" class="space-y-5">
         <!-- Mã Voucher -->
         <div>
             <label class="block font-medium text-gray-700 mb-1">Mã Voucher</label>
@@ -32,14 +32,6 @@
             <input type="date" name="end_date"
                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                    required>
-        </div>
-
-        <!-- Liên kết sản phẩm -->
-        <div>
-            <label class="block font-medium text-gray-700 mb-1">ID Sản phẩm (nếu có)</label>
-            <input type="number" name="product_id"
-                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                   placeholder="Nhập ID sản phẩm áp dụng (tùy chọn)">
         </div>
 
         <!-- Nút gửi -->
