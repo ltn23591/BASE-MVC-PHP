@@ -54,7 +54,9 @@ class BaseModel extends Database
         $sql = "INSERT INTO $table($column) VALUES ($newValues)";
 
         $this->_query($sql);
+        return mysqli_insert_id($this->conn);
     }
+    // Hàm cập nhật
     public function update($table, $id, $data)
     {
         $dataSets = [];
@@ -66,6 +68,7 @@ class BaseModel extends Database
 
         $this->_query($sql);
     }
+    // Hàm lấy dữ liệu
     public function getByQuery($sql, $params = [])
     {
         if (empty($params)) {
@@ -89,6 +92,7 @@ class BaseModel extends Database
         }
         return $data;
     }
+    // Hàm xóa
     public function delete($table, $id)
     {
         $id = (int)$id; // ép kiểu an toàn
@@ -97,6 +101,7 @@ class BaseModel extends Database
             die("Lỗi SQL: " . mysqli_error($this->conn));
         }
     }
+    // Hàm kết nối với CSDL
     private function _query($sql)
     {
         $result = mysqli_query($this->conn, $sql);

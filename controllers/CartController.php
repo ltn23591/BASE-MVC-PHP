@@ -3,10 +3,17 @@
 class CartController extends BaseController
 {
     private $CartModel;
+    private $productModel;
+    private $productSizeModel;
+
     public function __construct() //dung chung cho tat ca cac phuong thuc
     {
         $this->loadModel('CartModel');
         $this->CartModel = new CartModel;
+        $this->loadModel('ProductModel');
+        $this->productModel = new ProductModel;
+        $this->loadModel('ProductSizeModel');
+        $this->productSizeModel = new ProductSizeModel;
     }
     public function addToCart()
     {
@@ -14,6 +21,7 @@ class CartController extends BaseController
             session_start();
         }
 
+        // Yêu cầu đăng nhập
         if (!isset($_SESSION['user_id'])) {
             echo json_encode([
                 'status'  => 'error',
@@ -23,7 +31,7 @@ class CartController extends BaseController
             return;
         }
 
-
+        // Khởi tạo giỏ hàng nếu chưa có
         if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
             $_SESSION['cart'] = [];
         }
@@ -36,13 +44,57 @@ class CartController extends BaseController
             $size      = $_POST['size'];
             $userId    = (int)$_SESSION['user_id'];
 
-            // Kiểm tra có sản phẩm có id hay không, nếu không thì trả về false
-            $index = array_search($productId, array_column($_SESSION['cart'], 'id'));
+            // Lấy số lượng tồn kho theo size
+            $stock = $this->productSizeModel->getTotalProductSize($productId, $size);
+            if (is_array($stock)) {
+                $stock = $stock[0]['total'] ?? 0;
+            }
 
-            if ($index !== false) {
-                $_SESSION['cart'][$index]['quantity'] += 1;
-                $this->CartModel->setQuantityByComposite($userId, $productId, $size, (int)$_SESSION['cart'][$index]['quantity']);
+            // Tính tổng số lượng đã có trong giỏ của cùng sản phẩm + size
+            $currentInCart = 0;
+            foreach ($_SESSION['cart'] as $item) {
+                if ($item['id'] == $productId && $item['size'] == $size) {
+                    $currentInCart += $item['quantity'];
+                }
+            }
+
+            // Nếu vượt tồn kho
+            if ($currentInCart >= $stock) {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => "Sản phẩm size $size chỉ còn $stock sản phẩm trong kho!"
+                ]);
+                return;
+            }
+
+            // Thêm vào giỏ hoặc tăng số lượng
+            $foundIndex = null;
+            foreach ($_SESSION['cart'] as $index => $item) {
+                if ($item['id'] == $productId && $item['size'] == $size) {
+                    $foundIndex = $index;
+                    break;
+                }
+            }
+
+            if ($foundIndex !== null) {
+                // Nếu đã có thì tăng 1, nhưng không vượt quá tồn kho
+                if ($_SESSION['cart'][$foundIndex]['quantity'] < $stock) {
+                    $_SESSION['cart'][$foundIndex]['quantity'] += 1;
+                    $this->CartModel->setQuantityByComposite(
+                        $userId,
+                        $productId,
+                        $size,
+                        (int)$_SESSION['cart'][$foundIndex]['quantity']
+                    );
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => "Không thể thêm nữa, size $size chỉ còn $stock sản phẩm!"
+                    ]);
+                    return;
+                }
             } else {
+                // Nếu chưa có thì thêm mới
                 $product = [
                     'id'       => $productId,
                     'name'     => $name,
@@ -53,7 +105,15 @@ class CartController extends BaseController
                 ];
                 $_SESSION['cart'][] = $product;
 
-                $this->CartModel->addOrIncrement($userId, $productId, $name, $image, $price, $size, 1);
+                $this->CartModel->addOrIncrement(
+                    $userId,
+                    $productId,
+                    $name,
+                    $image,
+                    $price,
+                    $size,
+                    1
+                );
             }
 
             echo json_encode([
@@ -67,6 +127,7 @@ class CartController extends BaseController
             ]);
         }
     }
+
     public function listCart()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -116,6 +177,13 @@ class CartController extends BaseController
             $newQuantity = (int)$_POST['quantity'];
             $size        = isset($_POST['size']) ? $_POST['size'] : null;
 
+            // Lấy số lượng tồn kho theo size
+            $stock = $this->productSizeModel->getTotalProductSize($id, $size);
+            if (is_array($stock)) {
+                $stock = $stock[0]['total'] ?? 0;
+            }
+
+            // Kiểm tra nếu số lượng mới vượt quá tồn kho (chỉ khi newQuantity > 0)
             $matchedSize = null; // giữ size tìm được để đồng bộ DB
             $foundIndex = null;
             foreach ($_SESSION['cart'] as $index => $item) {
@@ -123,6 +191,14 @@ class CartController extends BaseController
                     $matchedSize = $item['size'];
                     $foundIndex = $index;
                     if ($newQuantity > 0) {
+                        if ($newQuantity > $stock) {
+                            echo json_encode([
+                                'status' => 'error',
+                                'message' => "Sản phẩm size $size chỉ còn $stock sản phẩm trong kho! Không thể cập nhật số lượng $newQuantity."
+                            ]);
+                            return; 
+                        }
+                        // Cập nhật số lượng nếu hợp lệ
                         $_SESSION['cart'][$index]['quantity'] = $newQuantity;
                     } else {
                         unset($_SESSION['cart'][$index]);
@@ -155,10 +231,6 @@ class CartController extends BaseController
                 'message' => 'Yêu cầu không hợp lệ'
             ]);
         }
-        return $this->view('frontend.cart.loadTotal', [
-            'totalQuantity' => $totalQuantity,
-            'totalPrice'    => $totalPrice,
-        ]);
     }
 
     public function loadTotal()

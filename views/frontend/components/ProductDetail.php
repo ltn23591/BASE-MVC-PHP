@@ -53,26 +53,42 @@ require __DIR__ . '/ProductItem.php';
 
             <?php $sizes = !empty($product['sizes']) ? json_decode($product['sizes'], true) : []; ?>
             <div class="flex flex-col gap-4 my-8">
-                <p>Select Size</p>
+                <p>Chọn kích thước</p>
                 <div class="flex gap-2">
-                    <?php foreach ($sizes as $size): ?>
-                    <button class="size-btn border py-2 px-4 bg-gray-100" onclick="selectSize('<?= $size ?>', this)">
-                        <?= htmlspecialchars($size) ?>
+                    <?php if (!empty($productSizes)): ?>
+                    <?php foreach ($productSizes as $row): ?>
+                    <button class="size-btn border py-2 px-4 bg-gray-100"
+                        onclick="selectSize('<?= $row['size'] ?>', this)">
+                        <?= htmlspecialchars($row['size']) ?> (<?= (int)$row['quantity'] ?>)
+
                     </button>
                     <?php endforeach; ?>
+                    <?php else: ?>
+                    <p class="text-gray-500 italic">Sản phẩm này hiện chưa có size nào.</p>
+                    <?php endif; ?>
                 </div>
             </div>
 
-            <button
-                onclick="addToCartt(<?= $product['id'] ?>,'<?= $product['name'] ?>','<?= $product['image'][0] ?>', <?= $product['price'] ?>)"
-                class="bg-black text-white px-2 py-3 text-sm active:bg-gray-700">
-                THÊM VÀO GIỎ HÀNG
-            </button>
-            <button
-                onclick="buyNow(<?= $product['id'] ?>,'<?= $product['name'] ?>','<?= $product['image'][0] ?>', <?= $product['price'] ?>)"
-                class="bg-orange-400 text-white px-2 py-3 text-sm active:bg-gray-700">
-                MUA NGAY
-            </button>
+
+            <p class="text-sm text-gray-600 mt-4">Số lượng tồn kho: <span class="font-bold"><?= $totalProduct ?></span>
+            </p>
+
+            <div class="mt-4">
+                <?php if ((int)($totalProduct ?? 0) > 0): ?>
+                <button
+                    onclick="addToCartt(<?= $product['id'] ?>,'<?= $product['name'] ?>','<?= $product['image'][0] ?>', <?= $product['price'] ?>)"
+                    class="bg-black text-white px-2 py-3 text-sm active:bg-gray-700 hover:bg-gray-800 transition">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+                <button
+                    onclick="buyNow(<?= $product['id'] ?>,'<?= $product['name'] ?>','<?= $product['image'][0] ?>', <?= $product['price'] ?>)"
+                    class="bg-orange-400 text-white px-2 py-3 text-sm active:bg-gray-700 hover:bg-orange-500 transition">
+                    MUA NGAY
+                </button>
+                <?php else: ?>
+                <button class="bg-gray-400 text-white px-4 py-3 text-sm cursor-not-allowed" disabled>HẾT HÀNG</button>
+                <?php endif; ?>
+            </div>
 
 
 

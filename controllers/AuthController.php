@@ -203,6 +203,8 @@ class AuthController extends BaseController
             ]);
         }
     }
+
+    // Gửi OTP
     public function sendOtp()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -265,6 +267,7 @@ class AuthController extends BaseController
         }
     }
 
+    // Gửi OTP đặt lại mật khẩu
     public function resetOtp()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -273,7 +276,8 @@ class AuthController extends BaseController
 
         $email = $_POST['email'] ?? null;
         if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode(["status" => "error", "msg" => " Email không hợp lệ"]);
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(["status" => "error", "msg" => "Email không hợp lệ"]);
             exit;
         }
 

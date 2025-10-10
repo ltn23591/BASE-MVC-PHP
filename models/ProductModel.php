@@ -13,11 +13,6 @@ class ProductModel extends BaseModel
     }
     public function findById($id)
     {
-        // return [
-        //     'id' => $id,
-        //     'name' => 'Iphone 14 Pro Max',
-        //     'price' => '30000000'
-        // ];
         return $this->find(self::TABLE, $id);
     }
     public function updateData($id, $data)
@@ -28,5 +23,4 @@ class ProductModel extends BaseModel
     {
         $this->delete(self::TABLE, $id);
     }
-   
 }

@@ -3,7 +3,7 @@
 class OrderController extends BaseController
 {
     private $orderModel;
-    public function __construct() 
+    public function __construct()
     {
         $this->loadModel('OrderModel');
         $this->orderModel = new OrderModel;

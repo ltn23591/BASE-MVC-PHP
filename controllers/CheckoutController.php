@@ -1,20 +1,28 @@
 <?php
 
+use LDAP\Result;
+
 class CheckoutController extends BaseController
 {
     private $orderModel;
     private $cartModel;
     private $orderDetailModel;
+    private $productModel;
+    private $productSizeModel;
 
     public function __construct()
     {
         $this->loadModel('OrderModel');
         $this->loadModel('CartModel');
         $this->loadModel('OrderDetailModel');
+        $this->loadModel('ProductModel');
+        $this->loadModel('ProductSizeModel');
 
         $this->orderModel = new OrderModel();
         $this->cartModel  = new CartModel();
         $this->orderDetailModel = new OrderDetailModel();
+        $this->productModel = new ProductModel();
+        $this->productSizeModel = new ProductSizeModel();
     }
 
     public function index()
@@ -105,6 +113,8 @@ class CheckoutController extends BaseController
                         'price'      => (float)$item['price'],
                         'size'       => $item['size'],
                     ]);
+
+                  
                 }
 
                 //  Xóa giỏ hàng

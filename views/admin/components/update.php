@@ -34,15 +34,19 @@
           </select>
           <input name="price" value="<?= $product['price'] ?>" type="number" class="px-3 py-2 border rounded-lg">
       </div>
-      <div class="flex gap-3">
-          <?php foreach (['S', 'M', 'L', 'XL', 'XXL'] as $size): ?>
-          <label class="cursor-pointer">
-              <input type="checkbox" name="sizes[]" value="<?= $size ?>" class="hidden peer">
-              <p class="peer-checked:bg-blue-600 peer-checked:text-white bg-slate-200 px-4 py-2 rounded-lg transition">
-                  <?= $size ?>
-              </p>
-          </label>
-          <?php endforeach; ?>
+      <!-- Sizes -->
+      <div class="w-full">
+          <p class="mb-2 font-medium text-gray-700"><i class="fa-solid fa-ruler"></i> Kích Thước & Số Lượng</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+              <?php foreach (['S', 'M', 'L', 'XL', 'XXL'] as $size): ?>
+                  <div class="flex flex-col items-start border rounded-lg p-3 shadow-sm">
+                      <label class="font-medium text-gray-700 mb-1"><?= $size ?></label>
+                      <input type="number" name="sizes[<?= $size ?>]" value="<?= $productSizes[$size] ?? 0 ?>" min="0"
+                          class="w-full border px-2 py-1 rounded focus:ring-2 focus:ring-blue-400"
+                          placeholder="Số lượng <?= $size ?>">
+                  </div>
+              <?php endforeach; ?>
+          </div>
       </div>
       <!-- Submit -->
       <button type="submit"

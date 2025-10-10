@@ -1,6 +1,7 @@
 <?php
 
 use Cloudinary\Api\Upload\UploadApi;
+use LDAP\Result;
 
 require_once __DIR__ . '/../config/cloudinary_config.php';
 class AdminController extends BaseController
@@ -9,6 +10,7 @@ class AdminController extends BaseController
     private $userModel;
     private $voucherModel;
     private $orderModel; // Thêm orderModel vào đây
+    private $productSizeModel;
 
     public function __construct()
     {
@@ -21,8 +23,11 @@ class AdminController extends BaseController
         $this->loadModel('VoucherModel');
         $this->voucherModel = new VoucherModel;
 
-        $this->loadModel('OrderModel'); 
+        $this->loadModel('OrderModel');
         $this->orderModel = new OrderModel;
+
+        $this->loadModel('ProductSizeModel');
+        $this->productSizeModel = new ProductSizeModel;
     }
 
     /** ---------------- SẢN PHẨM ---------------- */
@@ -30,12 +35,9 @@ class AdminController extends BaseController
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Include Cloudinary configuration and uploader
+            // Upload ảnh lên Cloudinary
             require_once __DIR__ . '/../config/cloudinary_config.php';
-
             $uploadedImages = [];
-
-            // Upload images to Cloudinary
             if (isset($_FILES['images'])) {
                 foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
                     if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
@@ -57,12 +59,27 @@ class AdminController extends BaseController
                 'image'       => json_encode($uploadedImages),
                 'category'    => $_POST['category'],
                 'subCategory' => $_POST['subCategory'],
-                'sizes'       => json_encode($_POST['sizes'] ?? []),
                 'bestseller'  => isset($_POST['bestseller']) ? 1 : 0,
                 'date'        => time()
             ];
+            $productId = $this->adminModel->store($data);
 
-            $this->adminModel->store($data);
+            // Lưu số lượng cho từng size
+            if (isset($_POST['sizes']) && is_array($_POST['sizes'])) {
+                foreach ($_POST['sizes'] as $size => $quantity) {
+                    if ((int)$quantity > 0) {
+                        $dataSize = [
+                            'product_id' => $productId,
+                            'size' => $size,
+                            'quantity' => (int)$quantity
+                        ];
+                        $this->productSizeModel->store($dataSize);
+                    }
+                }
+            }
+
+
+
             header('Location: index.php?controllers=auth&action=admin');
             exit();
         }
@@ -105,11 +122,13 @@ class AdminController extends BaseController
                 'image'       => json_encode($uploadedImages),
                 'category'    => $_POST['category'],
                 'subCategory' => $_POST['subCategory'],
-                'sizes'       => json_encode($_POST['sizes'] ?? []),
                 'bestseller'  => isset($_POST['bestseller']) ? 1 : 0,
             ];
 
             $this->adminModel->updateData($id, $data);
+
+
+
             header('Location: index.php?controllers=auth&action=admin');
             exit();
         }
@@ -121,7 +140,15 @@ class AdminController extends BaseController
         }
 
         $product = $this->adminModel->findById($id);
-        return $this->viewAdmin('admin.components.update', compact('product'));
+        $sizesData = $this->productSizeModel->getByProductId($id);
+
+        // Chuyển đổi dữ liệu size để dễ dùng trong view
+        $productSizes = [];
+        foreach ($sizesData as $row) {
+            $productSizes[$row['size']] = $row['quantity'];
+        }
+
+        return $this->viewAdmin('admin.components.update', compact('product', 'productSizes'));
     }
 
     public function delete()
@@ -134,6 +161,46 @@ class AdminController extends BaseController
             echo json_encode(['success' => false]);
         }
         exit;
+    }
+
+    /** ---------------- DOANH THU ---------------- */
+    #region Revenue
+    public function revenue()
+    {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if (empty($_SESSION['admin_logged_in'])) {
+            header('Location: index.php?controllers=auth&action=login');
+            exit();
+        }
+
+        // Lấy tổng doanh thu từ các đơn hàng đã giao
+        $totalRevenue = $this->orderModel->getTotalRevenue('amount', "status = 'Đã giao'");
+
+        // Lấy doanh thu theo từng trạng thái và chuẩn bị dữ liệu
+        $revenueByStatusRaw = $this->orderModel->getRevenueByStatus();
+        $statusRevenues = [
+            'Chờ xác nhận' => 0,
+            'Đang giao' => 0,
+            'Đã hủy' => 0,
+        ];
+        foreach ($revenueByStatusRaw as $row) {
+            if (array_key_exists($row['status'], $statusRevenues)) {
+                $statusRevenues[$row['status']] = (float)$row['total_revenue'];
+            }
+        }
+
+        $monthlyData = $this->orderModel->getMonthlyRevenue();
+
+        // Chuẩn bị dữ liệu cho biểu đồ
+        $chartData = [
+            'categories' => [],
+            'series' => []
+        ];
+        foreach ($monthlyData as $data) {
+            $chartData['categories'][] = "Tháng {$data['month']}/{$data['year']}";
+            $chartData['series'][] = (float)$data['total_revenue'];
+        }
+        return $this->viewAdmin('admin.components.revenue', compact('chartData', 'totalRevenue', 'statusRevenues'));
     }
 
     /** ---------------- ĐƠN HÀNG ---------------- */

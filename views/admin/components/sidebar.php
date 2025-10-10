@@ -110,7 +110,26 @@
             </a>
         </div>
 
-
+        <!-- Quản lý doanh thu -->
+        <div class="cursor-pointer flex items-center justify-between whitespace-nowrap gap-2 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition"
+            data-toggle="revenueMenu">
+            <div class="flex items-center gap-3">
+                <img class="w-5 h-5" src="<?= $assets['parcel_icon'] ?>" alt="">
+                <span class="hidden md:block">Quản lý doanh thu</span>
+            </div>
+            <svg class="w-4 h-4 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </div>
+        <!-- Submenu doanh thu -->
+        <div id="revenueMenu" class="hidden flex-col gap-2 ml-6 mt-2">
+            <a data-url="index.php?controllers=admin&action=revenue"
+                class="cursor-pointer nav-link flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition">
+                <img class="w-5 h-5" src="<?= $assets['order_icon'] ?>" alt="">
+                <span class="hidden md:block">Thống kê</span>
+            </a>
+        </div>
     </nav>
 </aside>
 

@@ -3,11 +3,15 @@
 class ProductController extends BaseController
 {
     private $productModel;
-    private $ratingModel;
+    private $productSizeModel;
+
     public function __construct() //dung chung cho tat ca cac phuong thuc
     {
         $this->loadModel('ProductModel');
         $this->productModel = new ProductModel;
+
+        $this->loadModel('ProductSizeModel');
+        $this->productSizeModel = new ProductSizeModel;
     }
     public function index()
     {
@@ -30,9 +34,6 @@ class ProductController extends BaseController
 
         ]);
     }
-
-
-
     public function detail()
     {
         // Lấy tất cả sản phẩm
@@ -43,12 +44,6 @@ class ProductController extends BaseController
             ['column' => 'id', 'order' => 'desc']
 
         );
-
-
-        if (!isset($_GET['id'])) {
-            die('Thiếu ID sản phẩm');
-        }
-
         $id = $_GET['id'];
         $product = $this->productModel->findById($id);
         if (!empty($product['image'])) {
@@ -70,9 +65,13 @@ class ProductController extends BaseController
             }
         }
 
-        // Lấy danh sách đánh giá cho sản phẩm
-        $reviews = $this->ratingModel->getByProductId($id);
-        $totalReviews = count($reviews);
+        // Tồn kho
+        $totalProductResult = $this->productSizeModel->getTotalProduct($id);
+        $totalProduct = $totalProductResult[0]['total'] ?? 0;
+
+        // Lấy danh sách size còn hàng
+        $productSizes = $this->productSizeModel->getSizeByProductId($id);
+
 
         return $this->view(
             'frontend.components.ProductDetail',
@@ -80,22 +79,11 @@ class ProductController extends BaseController
                 'product' => $product,
                 'related' => $related,
                 'empty' => $empty,
-                'reviews' => $reviews,
-                'totalReviews' => $totalReviews,
-
+                'totalInventory' => $product['quantity'] ?? 0,
+                'totalProduct' => $totalProduct,
+                'productSizes' => $productSizes
             ]
         );
-    }
-
-    public function store()
-    {
-        $data = [
-            'name'          => 'Iphone 12',
-            'price'         => '12000000',
-            'image'         => NULL,
-            'category_id'   => 2
-        ];
-        $this->productModel->store($data);
     }
     public function update()
     {
@@ -130,5 +118,4 @@ class ProductController extends BaseController
             ],
         );
     }
-    public function getAllProduct() {}
 }
