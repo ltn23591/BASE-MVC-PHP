@@ -2,6 +2,11 @@
 include './public/assets/img/frontend_assets/assets.php';
 include __DIR__ . '/../layouts/title.php';
 require __DIR__ . '/ProductItem.php';
+
+// 
+$emptyStars  = 5 - $averageRating;
+
+
 ?>
 
 <div class="border-t-2 pt-10 transition-opacity ease-in-out duration-500 opacity-100">
@@ -37,12 +42,13 @@ require __DIR__ . '/ProductItem.php';
 
 
             <div class="flex items-center gap-1 mt-2">
-                <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
-                <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
-                <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
-                <img src="<?= $assets['star_icon'] ?>" alt="" class="w-3.5">
+                <!-- Sao vàng -->
+                <?php for ($i = 0; $i < $averageRating; $i++): ?>
+                <img src="<?= $assets['star_icon'] ?>" alt="⭐" class="w-3.5">
+                <?php endfor; ?>
+                <?php for ($i = 0; $i < $emptyStars; $i++): ?>
                 <img src="<?= $assets['star_dull_icon'] ?>" alt="" class="w-3.5">
-
+                <?php endfor; ?>
 
             </div>
 
@@ -103,8 +109,7 @@ require __DIR__ . '/ProductItem.php';
     </div>
 
     <!-- Description & Reviews -->
-    <div class="mt-20 w-full max-w-4xl mx-auto">
-
+    <div class="mt-20 w-full max-w mx-auto">
         <!-- Tabs -->
         <div class="flex border-b text-sm font-medium text-gray-600">
             <button id="tab-desc"
@@ -113,7 +118,7 @@ require __DIR__ . '/ProductItem.php';
             </button>
             <button id="tab-reviews"
                 class="tab-btn border-b-2 border-transparent hover:border-blue-400 hover:text-blue-600 px-5 py-3 focus:outline-none transition">
-                ⭐ Đánh giá (<?= htmlspecialchars($totalReviews ?? 122) ?>)
+                ⭐ Đánh giá <?= $totalReviewsResult ?>
             </button>
         </div>
 
@@ -129,26 +134,69 @@ require __DIR__ . '/ProductItem.php';
             </ul>
         </div>
 
+
         <!-- Nội dung đánh giá -->
         <div id="content-reviews" class="tab-content hidden border px-6 py-6 text-sm text-gray-600 space-y-6">
-            <?php if (!empty($reviews)): ?>
-            <?php foreach ($reviews as $review): ?>
-            <div class="border-b pb-4">
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="font-semibold text-gray-800"><?= htmlspecialchars($review['user_name']) ?></span>
-                    <span class="text-yellow-400">
-                        <?= str_repeat("★", $review['rating']) ?>
-                        <?= str_repeat("☆", 5 - $review['rating']) ?>
-                    </span>
+
+            <?php if (!empty($getAllRatings)): ?>
+            <?php foreach ($getAllRatings as $review): ?>
+            <div class="border-b border-gray-200 pb-5">
+                <div class="flex items-start gap-4">
+                    <!-- Avatar -->
+                    <div class="flex-shrink-0">
+                        <div
+                            class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-semibold">
+                            <?= strtoupper(substr($review['name'], 0, 1)) ?>
+                        </div>
+                    </div>
+
+                    <!-- Nội dung đánh giá -->
+                    <div class="flex-1">
+                        <!-- Tên & số sao -->
+                        <div class="flex items-center justify-between">
+                            <p class="font-medium text-gray-800"><?= htmlspecialchars($review['name']) ?></p>
+                            <p class="text-xs text-gray-400"><?= date('d/m/Y H:i', strtotime($review['created_at'])) ?>
+                            </p>
+                        </div>
+
+                        <!-- Hiển thị sao -->
+                        <div class="flex items-center gap-0.5 mt-1">
+                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="<?= $i <= $review['rating'] ? '#facc15' : '#e5e7eb' ?>" class="w-5 h-5">
+                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l1.624 3.904
+                                        4.216.345c1.164.095 1.636 1.545.747 2.305l-3.203 2.713
+                                        1.007 4.062c.275 1.11-.934 1.986-1.897 1.384L12 16.347
+                                        8.294 17.923c-.963.602-2.172-.273-1.897-1.384l1.007-4.062
+                                        -3.203-2.713c-.889-.76-.417-2.21.747-2.305l4.216-.345
+                                        1.624-3.904z" clip-rule="evenodd" />
+                            </svg>
+                            <?php endfor; ?>
+                        </div>
+
+                        <!-- Bình luận -->
+                        <p class="mt-2 text-gray-700 leading-relaxed">
+                            <?= nl2br(htmlspecialchars($review['comment'])) ?>
+                        </p>
+
+                        <!-- (Tuỳ chọn) ảnh review nếu thêm cột image_review -->
+                        <!--
+                        <div class="flex gap-2 mt-3">
+                            <img src="link_anh.jpg" alt="" class="w-20 h-20 object-cover rounded border">
+                            <img src="link_anh2.jpg" alt="" class="w-20 h-20 object-cover rounded border">
+                        </div>
+                        -->
+
+                    </div>
                 </div>
-                <p class="text-gray-600"><?= htmlspecialchars($review['comment']) ?></p>
-                <p class="text-xs text-gray-400 mt-1">📅 <?= date("d/m/Y", strtotime($review['created_at'])) ?></p>
             </div>
             <?php endforeach; ?>
             <?php else: ?>
             <p class="text-gray-500 italic">Chưa có đánh giá nào cho sản phẩm này.</p>
             <?php endif; ?>
+
         </div>
+
 
     </div>
     <!-- Sản phẩm liên quan -->

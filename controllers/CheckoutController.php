@@ -114,7 +114,12 @@ class CheckoutController extends BaseController
                         'size'       => $item['size'],
                     ]);
 
-                  
+                    // Trừ số lượng tồn kho
+                    $this->productSizeModel->decreaseStock(
+                        (int)$item['id'],
+                        $item['size'],
+                        (int)$item['quantity']
+                    );
                 }
 
                 //  Xóa giỏ hàng

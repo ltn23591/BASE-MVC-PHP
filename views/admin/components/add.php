@@ -60,12 +60,12 @@
         <p class="mb-2 font-medium text-gray-700"><i class="fa-solid fa-ruler"></i> Kích Thước & Số Lượng</p>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
             <?php foreach (['S', 'M', 'L', 'XL', 'XXL'] as $size): ?>
-                <div class="flex flex-col items-start border rounded-lg p-3 shadow-sm">
-                    <label class="font-medium text-gray-700 mb-1"><?= $size ?></label>
-                    <input type="number" name="sizes[<?= $size ?>]" value="0" min="0"
-                        class="w-full border px-2 py-1 rounded focus:ring-2 focus:ring-blue-400"
-                        placeholder="Số lượng <?= $size ?>">
-                </div>
+            <div class="flex flex-col items-start border rounded-lg p-3 shadow-sm">
+                <label class="font-medium text-gray-700 mb-1"><?= $size ?></label>
+                <input type="number" name="sizes[<?= $size ?>]" value="0" min="0"
+                    class="w-full border px-2 py-1 rounded focus:ring-2 focus:ring-blue-400"
+                    placeholder="Số lượng <?= $size ?>">
+            </div>
             <?php endforeach; ?>
         </div>
     </div>
@@ -83,3 +83,5 @@
         ➕ Thêm
     </button>
 </form>
+
+

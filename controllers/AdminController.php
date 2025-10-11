@@ -31,7 +31,6 @@ class AdminController extends BaseController
     }
 
     /** ---------------- SẢN PHẨM ---------------- */
-    #region Product
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -126,8 +125,6 @@ class AdminController extends BaseController
             ];
 
             $this->adminModel->updateData($id, $data);
-
-
 
             header('Location: index.php?controllers=auth&action=admin');
             exit();

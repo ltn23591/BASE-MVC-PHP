@@ -102,7 +102,7 @@ class BaseModel extends Database
         }
     }
     // Hàm kết nối với CSDL
-    private function _query($sql)
+    protected function _query($sql)
     {
         $result = mysqli_query($this->conn, $sql);
         if ($result === false) {

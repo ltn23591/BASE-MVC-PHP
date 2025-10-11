@@ -4,6 +4,7 @@ class ProductController extends BaseController
 {
     private $productModel;
     private $productSizeModel;
+    private $ratingModel;
 
     public function __construct() //dung chung cho tat ca cac phuong thuc
     {
@@ -12,6 +13,9 @@ class ProductController extends BaseController
 
         $this->loadModel('ProductSizeModel');
         $this->productSizeModel = new ProductSizeModel;
+
+        $this->loadModel('RatingModel');
+        $this->ratingModel = new RatingModel();
     }
     public function index()
     {
@@ -36,6 +40,7 @@ class ProductController extends BaseController
     }
     public function detail()
     {
+
         // Lấy tất cả sản phẩm
         $column =  ['id', 'name', 'price'];
         $orderBy =  ['id', 'asc'];
@@ -72,6 +77,18 @@ class ProductController extends BaseController
         // Lấy danh sách size còn hàng
         $productSizes = $this->productSizeModel->getSizeByProductId($id);
 
+        // Lấy danh sách đánh giá
+        $getAllRatings = $this->ratingModel->getAllRatings($id);
+
+        // Tổng số đánh giá
+        $total = $this->ratingModel->totalRatings($id);
+        $totalReviewsResult = $total[0]['total_reviews'] ?? 0;
+
+        // trung bình số sao
+        $average = $this->ratingModel->averageRatings($id);
+        $averageRating = (int)$average[0]['avg_rating'] ?? 0;
+
+
 
         return $this->view(
             'frontend.components.ProductDetail',
@@ -81,7 +98,10 @@ class ProductController extends BaseController
                 'empty' => $empty,
                 'totalInventory' => $product['quantity'] ?? 0,
                 'totalProduct' => $totalProduct,
-                'productSizes' => $productSizes
+                'productSizes' => $productSizes,
+                'getAllRatings' => $getAllRatings,
+                'totalReviewsResult' => $totalReviewsResult,
+                'averageRating' => $averageRating
             ]
         );
     }

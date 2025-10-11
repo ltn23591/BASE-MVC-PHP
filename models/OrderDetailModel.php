@@ -17,7 +17,7 @@ class OrderDetailModel extends BaseModel
             WHERE order_items.order_id = $orderId
         ";
 
-        return $this->getByQuery($sql); // dùng hàm getByQuery() đã có sẵn trong BaseModel
+        return $this->getByQuery($sql); 
     }
     public function store($data)
     {

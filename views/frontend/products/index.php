@@ -18,13 +18,13 @@
         <div class="border border-gray-300 pl-5 py-3 mt-6 sm:block">
             <p class="mb-3 text-sm font-medium">DANH MỤC</p>
             <label class="flex gap-2">
-                <input type="checkbox" class="w-3" name="category[]" value="Men"> Nam
+                <input type="checkbox" class="w-3" name="category[]" value="Nam"> Nam
             </label>
             <label class="flex gap-2">
-                <input type="checkbox" class="w-3" name="category[]" value="Women"> Nữ
+                <input type="checkbox" class="w-3" name="category[]" value="Nữ"> Nữ
             </label>
             <label class="flex gap-2">
-                <input type="checkbox" class="w-3" name="category[]" value="Kids"> Trẻ em
+                <input type="checkbox" class="w-3" name="category[]" value="Trẻ em"> Trẻ em
             </label>
         </div>
 
@@ -56,59 +56,59 @@
 
         <div id="post_list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
             <?php foreach ($products as $item): ?>
-            <div class="text-center border p-2 product-item" data-category="<?= htmlspecialchars($item['category']) ?>"
-                data-subcategory="<?= htmlspecialchars($item['subCategory']) ?>"
-                data-price="<?= htmlspecialchars($item['price']) ?>" data-name="<?= htmlspecialchars($item['name']) ?>">
-                <?php ProductItem($item['id'], $item['image'], $item['name'], $item['price']); ?>
-            </div>
+                <div class="text-center border p-2 product-item" data-category="<?= htmlspecialchars($item['category']) ?>"
+                    data-subcategory="<?= htmlspecialchars($item['subCategory']) ?>"
+                    data-price="<?= htmlspecialchars($item['price']) ?>" data-name="<?= htmlspecialchars($item['name']) ?>">
+                    <?php ProductItem($item['id'], $item['image'], $item['name'], $item['price']); ?>
+                </div>
             <?php endforeach; ?>
         </div>
     </div>
 </form>
 
 <script>
-function filterProducts() {
-    const selectedCategories = [...document.querySelectorAll('input[name="category[]"]:checked')].map(el => el.value);
-    const selectedSubCategories = [...document.querySelectorAll('input[name="subCategory[]"]:checked')].map(el => el
-        .value);
-    const sortType = document.querySelector('select[name="sort"]').value;
-    const searchText = document.getElementById('searchInput').value.toLowerCase();
+    function filterProducts() {
+        const selectedCategories = [...document.querySelectorAll('input[name="category[]"]:checked')].map(el => el.value);
+        const selectedSubCategories = [...document.querySelectorAll('input[name="subCategory[]"]:checked')].map(el => el
+            .value);
+        const sortType = document.querySelector('select[name="sort"]').value;
+        const searchText = document.getElementById('searchInput').value.toLowerCase();
 
-    const products = [...document.querySelectorAll('.product-item')];
+        const products = [...document.querySelectorAll('.product-item')];
 
-    products.forEach(p => {
-        const cat = p.dataset.category;
-        const sub = p.dataset.subcategory;
-        const name = p.dataset.name.toLowerCase();
+        products.forEach(p => {
+            const cat = p.dataset.category;
+            const sub = p.dataset.subcategory;
+            const name = p.dataset.name.toLowerCase();
 
-        const matchCat = selectedCategories.length === 0 || selectedCategories.includes(cat);
-        const matchSub = selectedSubCategories.length === 0 || selectedSubCategories.includes(sub);
-        const matchSearch = name.includes(searchText);
+            const matchCat = selectedCategories.length === 0 || selectedCategories.includes(cat);
+            const matchSub = selectedSubCategories.length === 0 || selectedSubCategories.includes(sub);
+            const matchSearch = name.includes(searchText);
 
-        if (matchCat && matchSub && matchSearch) {
-            p.classList.remove('hidden');
-        } else {
-            p.classList.add('hidden');
+            if (matchCat && matchSub && matchSearch) {
+                p.classList.remove('hidden');
+            } else {
+                p.classList.add('hidden');
+            }
+        });
+
+        if (sortType !== 'relavent') {
+            const sorted = products
+                .filter(p => !p.classList.contains('hidden'))
+                .sort((a, b) => {
+                    const priceA = parseFloat(a.dataset.price);
+                    const priceB = parseFloat(b.dataset.price);
+                    return sortType === 'low-high' ? priceA - priceB : priceB - priceA;
+                });
+
+            const list = document.getElementById('post_list');
+            sorted.forEach(item => list.appendChild(item));
         }
-    });
-
-    if (sortType !== 'relavent') {
-        const sorted = products
-            .filter(p => !p.classList.contains('hidden'))
-            .sort((a, b) => {
-                const priceA = parseFloat(a.dataset.price);
-                const priceB = parseFloat(b.dataset.price);
-                return sortType === 'low-high' ? priceA - priceB : priceB - priceA;
-            });
-
-        const list = document.getElementById('post_list');
-        sorted.forEach(item => list.appendChild(item));
     }
-}
 
-// Gán sự kiện lọc realtime
-document.querySelectorAll('input[name="category[]"], input[name="subCategory[]"], select[name="sort"]').forEach(el => {
-    el.addEventListener('change', filterProducts);
-});
-document.getElementById('searchInput').addEventListener('input', filterProducts);
+    // Gán sự kiện lọc realtime
+    document.querySelectorAll('input[name="category[]"], input[name="subCategory[]"], select[name="sort"]').forEach(el => {
+        el.addEventListener('change', filterProducts);
+    });
+    document.getElementById('searchInput').addEventListener('input', filterProducts);
 </script>

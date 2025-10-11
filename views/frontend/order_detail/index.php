@@ -27,11 +27,11 @@
         </div>
 
         <?php if ($order['status'] == 'Đã giao'): ?>
-        <div></div>
+            <div></div>
         <?php else: ?>
-        <div class="text-center mt-4"> <button class="px-4 py-2 border rounded text-sm hover:bg-gray-100">Hủy đơn
-                hàng</button>
-        </div>
+            <div class="text-center mt-4"> <button class="px-4 py-2 border rounded text-sm hover:bg-gray-100">Hủy đơn
+                    hàng</button>
+            </div>
         <?php endif; ?>
     </div>
 
@@ -40,49 +40,50 @@
         <h2 class="text-xl font-semibold mb-6">🛒 Sản phẩm trong đơn hàng</h2>
 
         <?php if (!empty($items)): ?>
-        <div class="divide-y">
-            <?php foreach ($items as $item): ?>
-            <?php
+            <div class="divide-y">
+                <?php foreach ($items as $item): ?>
+                    <?php
 
                     $images = json_decode($item['image'], true);
                     $first_image = !empty($images) ? $images[0] : '';
                     ?>
-            <div class="py-4 grid grid-cols-[4fr_1fr_1fr_1fr_1fr] items-center gap-4">
-                <div class="flex items-start gap-5">
-                    <?php if ($first_image): ?>
-                    <img class="w-20 h-20 object-cover border" src="<?= htmlspecialchars($first_image) ?>"
-                        alt="<?= htmlspecialchars($item['name']) ?>">
-                    <?php endif; ?>
-                    <div>
-                        <p class="font-medium"><?= htmlspecialchars($item['name']) ?></p>
-                        <p class="text-sm text-gray-500">Size: <?= htmlspecialchars($item['size']) ?></p>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <?= number_format($item['price'], 0, ',', '.') ?> VND
-                </div>
-                <div class="text-center">
-                    <?= htmlspecialchars($item['quantity']) ?>
-                </div>
-                <div class="text-right font-semibold">
-                    <?= number_format($item['price'] * $item['quantity'], 0, ',', '.') ?> VND
-                </div>
-                <?php if ($order['status'] == 'Đã giao'): ?>
-                <div class="text-center">
-                    <button class="px-4 py-2 border rounded text-sm hover:bg-gray-100">Đánh giá</button>
-                </div>
+                    <div class="py-4 grid grid-cols-[4fr_1fr_1fr_1fr_1fr] items-center gap-4">
+                        <div class="flex items-start gap-5">
+                            <?php if ($first_image): ?>
+                                <img class="w-20 h-20 object-cover border" src="<?= htmlspecialchars($first_image) ?>"
+                                    alt="<?= htmlspecialchars($item['name']) ?>">
+                            <?php endif; ?>
+                            <div>
+                                <p class="font-medium"><?= htmlspecialchars($item['name']) ?></p>
+                                <p class="text-sm text-gray-500">Size: <?= htmlspecialchars($item['size']) ?></p>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <?= number_format($item['price'], 0, ',', '.') ?> VND
+                        </div>
+                        <div class="text-center">
+                            <?= htmlspecialchars($item['quantity']) ?>
+                        </div>
+                        <div class="text-right font-semibold">
+                            <?= number_format($item['price'] * $item['quantity'], 0, ',', '.') ?> VND
+                        </div>
+                        <?php if ($order['status'] == 'Đã giao'): ?>
+                            <div class="text-center">
+                                <a href="index.php?controllers=rating&action=index&id=<?= $item['product_id']  ?>"> <button
+                                        class="px-4 py-2 border rounded text-sm hover:bg-gray-100">Đánh giá</button></a>
+                            </div>
 
-                <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+
+                <?php endforeach; ?>
             </div>
 
-            <?php endforeach; ?>
-        </div>
-
-        <div class="text-right mt-8 text-lg font-semibold">
-            Tổng cộng: <span class="text-orange-600"><?= number_format($order['amount'], 0, ',', '.') ?> VND</span>
-        </div>
+            <div class="text-right mt-8 text-lg font-semibold">
+                Tổng cộng: <span class="text-orange-600"><?= number_format($order['amount'], 0, ',', '.') ?> VND</span>
+            </div>
         <?php else: ?>
-        <p class="text-gray-500">Không có sản phẩm nào trong đơn hàng này.</p>
+            <p class="text-gray-500">Không có sản phẩm nào trong đơn hàng này.</p>
         <?php endif; ?>
     </div>
 

@@ -16,15 +16,10 @@ class OrderModel extends BaseModel
     public function store($data)
     {
         $this->create(self::TABLE, $data);
-        return mysqli_insert_id($this->conn);
+        return mysqli_insert_id($this->conn); // trả về id của đơn hàng vừa tạo
     }
     public function findById($id)
     {
-        // return [
-        //     'id' => $id,
-        //     'name' => 'Iphone 14 Pro Max',
-        //     'price' => '30000000'
-        // ];
         return $this->find(self::TABLE, $id);
     }
     public function updateData($id, $data)
