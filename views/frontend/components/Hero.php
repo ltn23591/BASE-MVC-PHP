@@ -1,3 +1,6 @@
+<marquee behavior="scroll" direction="left" scrollamount="5">
+    🔥 Giảm giá 50% tất cả sản phẩm thời trang nam trong tuần này! 🔥
+</marquee>
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
 
@@ -86,17 +89,17 @@ Swiper JS -->
 
 <!-- Swiper Init -->
 <script>
-var swiper = new Swiper(".mySwiper", {
-    spaceBetween: 30,
-    centeredSlides: true,
-    loop: true,
-    autoplay: {
-        delay: 4000,
-        disableOnInteraction: false,
-    },
-    pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-    },
-});
+    var swiper = new Swiper(".mySwiper", {
+        spaceBetween: 30,
+        centeredSlides: true,
+        loop: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
 </script>
