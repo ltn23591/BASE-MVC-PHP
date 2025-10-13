@@ -111,7 +111,7 @@
         </div>
 
         <!-- Quản lý doanh thu -->
-        <div class="cursor-pointer flex items-center justify-between whitespace-nowrap gap-2 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition"
+        <div class="cursor-pointer flex items-center justify-between px-3 py-2 mt-4 rounded-md hover:bg-blue-50 hover:text-blue-600 transition"
             data-toggle="revenueMenu">
             <div class="flex items-center gap-3">
                 <img class="w-5 h-5" src="<?= $assets['parcel_icon'] ?>" alt="">

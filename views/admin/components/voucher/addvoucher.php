@@ -34,7 +34,13 @@
                 required>
         </div>
 
-
+        <!-- Liên kết sản phẩm -->
+        <div>
+            <label class="block font-medium text-gray-700 mb-1">ID Sản phẩm (nếu có)</label>
+            <input type="number" name="product_id"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                   placeholder="Nhập ID sản phẩm áp dụng (tùy chọn)">
+        </div>
 
         <!-- Nút gửi -->
         <div class="text-center mt-6">
