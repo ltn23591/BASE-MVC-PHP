@@ -24,7 +24,7 @@
                 <input type="checkbox" class="w-3" name="category[]" value="Nữ"> Nữ
             </label>
             <label class="flex gap-2">
-                <input type="checkbox" class="w-3" name="category[]" value="Trẻ em"> Trẻ em
+                <input type="checkbox" class="w-3" name="category[]" value="Trẻ Em"> Trẻ em
             </label>
         </div>
 
@@ -42,7 +42,7 @@
             </label>
         </div>
     </div>
-
+    
     <!-- Danh sách sản phẩm -->
     <div class="flex-1">
         <div class="flex justify-between text-base sm:text-2xl mb-4">
@@ -53,16 +53,22 @@
                 <option value="high-low">Giá giảm dần</option>
             </select>
         </div>
-
-        <div id="post_list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-            <?php foreach ($products as $item): ?>
-                <div class="text-center border p-2 product-item" data-category="<?= htmlspecialchars($item['category']) ?>"
-                    data-subcategory="<?= htmlspecialchars($item['subCategory']) ?>"
-                    data-price="<?= htmlspecialchars($item['price']) ?>" data-name="<?= htmlspecialchars($item['name']) ?>">
-                    <?php ProductItem($item['id'], $item['image'], $item['name'], $item['price']); ?>
+            <!-- Danh sách sản phẩm -->
+            <div id="post_list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6 mt-6">
+                <?php foreach ($products as $item): ?>
+                    <div class="text-center border p-2 product-item" 
+                        data-category="<?= htmlspecialchars($item['category']) ?>"
+                        data-subcategory="<?= htmlspecialchars($item['subCategory']) ?>"
+                        data-price="<?= htmlspecialchars($item['price']) ?>" 
+                        data-name="<?= htmlspecialchars($item['name']) ?>">
+                        <?php ProductItem($item['id'], $item['image'], $item['name'], $item['price']); ?>
+                    </div>
+                <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
-        </div>
+            <!-- Phân trang -->
+            <div class="flex justify-center mt-8 mb-10">
+                <?php include __DIR__ . '/../components/pagination.php'; ?>
+            </div>
     </div>
 </form>
 

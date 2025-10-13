@@ -18,26 +18,36 @@ class ProductController extends BaseController
         $this->ratingModel = new RatingModel();
     }
     public function index()
-    {
+{   
+    $limit = 16;
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $offset = ($page - 1) * $limit;
 
-        $products = $this->productModel->getAll(
-            ['*'],
-            ['column' => 'id', 'order' => 'desc']
-        );
+    // Lấy tổng số sản phẩm
+    $totalProduct = $this->productModel->countAll();
+    $totalPages = ceil($totalProduct / $limit);
 
+    // Lấy danh sách sản phẩm có phân trang
+    $products = $this->productModel->getPaginated(
+        $limit,
+        $offset,
+        ['column' => 'id', 'order' => 'DESC']
+    );
 
-        $categories = $_GET['category'] ?? [];
-        $subCategories = $_GET['subCategory'] ?? [];
-        $sortType = $_GET['sort'] ?? 'relavent';
+    $categories = $_GET['category'] ?? [];
+    $subCategories = $_GET['subCategory'] ?? [];
+    $sortType = $_GET['sort'] ?? 'relavent';
 
-        return $this->view('frontend.products.index', [
-            'products' => $products,
-            'categories' => $categories,
-            'subCategories' => $subCategories,
-            'sortType' => $sortType
+    return $this->view('frontend.products.index', [
+        'products' => $products,
+        'categories' => $categories,
+        'subCategories' => $subCategories,
+        'sortType' => $sortType,
+        'currentPage' => $page,
+        'totalPages' => $totalPages
+    ]);
+}
 
-        ]);
-    }
     public function detail()
     {
 
