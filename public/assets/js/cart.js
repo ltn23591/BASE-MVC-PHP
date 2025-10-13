@@ -88,11 +88,11 @@ function buyNow(id, name, image, price) {
         return;
     }
 
-    // ✅ Tạo form ẩn gửi sang trang checkout
+    // Tạo form ẩn gửi sang trang checkout
     const form = document.createElement('form');
     form.method = 'POST';
     form.action =
-        'http://localhost/BASE_MVC/index.php?controllers=checkout&action=index';
+        'index.php?controllers=checkout&action=index';
 
     const fields = [
         { name: 'product_id', value: id },
