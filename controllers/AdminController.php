@@ -314,42 +314,110 @@ class AdminController extends BaseController
 
         return $this->viewAdmin('admin.components.voucher.addvoucher');
     }
+
     public function saveVoucher()
     {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if (empty($_SESSION['admin_logged_in'])) {
+            header('Location: index.php?controllers=auth&action=login');
+            exit();
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Lấy dữ liệu từ form
-            $code = $_POST['code'] ?? '';
-            $discount = $_POST['discount'] ?? 0;
+            $code       = $_POST['code'] ?? '';
+            $discount   = (int)($_POST['discount'] ?? 0);
             $start_date = $_POST['start_date'] ?? '';
-            $end_date = $_POST['end_date'] ?? '';
+            $end_date   = $_POST['end_date'] ?? '';
 
-
-            // Kiểm tra dữ liệu cơ bản
-            if (empty($code) || empty($discount) || empty($start_date) || empty($end_date)) {
-                $_SESSION['error'] = "Vui lòng nhập đầy đủ thông tin voucher!";
-                header("Location: index.php?controller=admin&action=addVoucher");
+            if ($code === '' || $discount <= 0 || $start_date === '' || $end_date === '') {
+                echo '<script>alert("Vui lòng điền đầy đủ thông tin"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
                 exit();
             }
 
-            // Chuẩn bị dữ liệu để lưu
-            $data = [
-                'code' => $code,
-                'discount' => $discount,
+            $this->loadModel('VoucherModel');
+            $voucherModel = new VoucherModel();
+            $voucherModel->createVoucher([
+                'code'       => $code,
+                'discount'   => $discount,
                 'start_date' => $start_date,
-                'end_date' => $end_date,
+                'end_date'   => $end_date
+            ]);
+            if ($voucherModel) {
+                echo '<script>alert("Thêm khuyến mãi thành công"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+                exit();
+            } else {
+                echo '<script>alert("Thêm khuyến mãi thất bại"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+                exit();
+            }
+        }
+        echo '<script>alert("Thêm khuyến mãi thất bại"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+        exit();
+    }
 
-            ];
-
-
-            $this->voucherModel->createVoucher($data);
-
-            // Kiểm tra kết quả
-            $_SESSION['success'] = "Thêm voucher thành công!";
-            header("Location: index.php?controllers=admin&action=listVoucher");
+    public function updateVoucher()
+    {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if (empty($_SESSION['admin_logged_in'])) {
+            header('Location: index.php?controllers=auth&action=login');
             exit();
+        }
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            echo '<script>alert("Không tìm thấy ID voucher"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+            exit();
+        }
+
+        $this->loadModel('VoucherModel');
+        $voucherModel = new VoucherModel();
+        $voucher      = $voucherModel->findById($id);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $code       = $_POST['code'] ?? '';
+            $discount   = (int)($_POST['discount'] ?? 0);
+            $start_date = $_POST['start_date'] ?? '';
+            $end_date   = $_POST['end_date'] ?? '';
+
+            $voucherModel->updateVoucher($id, [
+                'code'       => $code,
+                'discount'   => $discount,
+                'start_date' => $start_date,
+                'end_date'   => $end_date
+            ]);
+            if ($voucherModel) {
+                echo '<script>alert("Cập nhật thành công"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+                exit();
+            } else {
+                echo '<script>alert("Cập nhật thất bại"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+                exit();
+            }
+        }
+
+        return $this->viewAdmin('admin.components.voucher.updatevoucher', compact('voucher'));
+    }
+
+    public function deleteVoucher()
+    {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        if (empty($_SESSION['admin_logged_in'])) {
+            header('Location: index.php?controllers=auth&action=login');
+            exit();
+        }
+
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            $this->loadModel('VoucherModel');
+            $voucherModel = new VoucherModel();
+            $voucherModel->deleteVoucher($id);
+            if ($voucherModel) {
+                echo '<script>alert("Xóa thành công"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+                exit();
+            } else {
+                echo '<script>alert("Xóa thất bại"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+                exit();
+            }
         } else {
-            // Nếu không phải POST thì quay lại form
-            header("Location: index.php?controllers=admin&action=addVoucher");
+            echo '<script>alert("Không tìm thấy ID voucher"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
             exit();
         }
     }
