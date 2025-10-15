@@ -25,7 +25,7 @@ class UserModel extends BaseModel
     // Thêm user mới (đăng ký)
     public function store($data)
     {
-      
+
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         $this->create(self::TABLE, $data);
     }
@@ -40,5 +40,19 @@ class UserModel extends BaseModel
     public function destroy($id)
     {
         $this->delete(self::TABLE, $id);
+    }
+
+    // Tài khoản bị khóa
+    public function lockAccount($id)
+    {
+        // Cập nhật trạng thái thành 'locked'
+        $this->updateData($id, ['status' => 'locked']);
+    }
+
+
+    public function unlockAccount($id)
+    {
+        // Cập nhật trạng thái thành 'active'
+        $this->updateData($id, ['status' => 'active']);
     }
 }

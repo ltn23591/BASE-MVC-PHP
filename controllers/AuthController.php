@@ -69,17 +69,23 @@ class AuthController extends BaseController
                     ]);
                 }
 
-                //  Đăng nhập thành công
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_name'] = $user['name'];
-                $this->loadModel('CartModel');
-                $cartModel = new CartModel();
-                $_SESSION['cart'] = $cartModel->rowsToSessionCart(
-                    $cartModel->getByUser((int)$user['id'])
-                );
+                if ($user['status'] === 'locked') {
+                    return $this->view('frontend.auth.login', [
+                        'toast' => "Tài khoản đã bị khóa!"
+                    ]);
+                } else {
+                    //  Đăng nhập thành công
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['user_name'] = $user['name'];
+                    $this->loadModel('CartModel');
+                    $cartModel = new CartModel();
+                    $_SESSION['cart'] = $cartModel->rowsToSessionCart(
+                        $cartModel->getByUser((int)$user['id'])
+                    );
 
-                header('Location: index.php');
-                exit();
+                    header('Location: index.php');
+                    exit();
+                }
             }
         } catch (Exception $e) {
             $toast = $e->getMessage();
@@ -135,7 +141,8 @@ class AuthController extends BaseController
             $this->userModel->store([
                 'name' => $name,
                 'email' => $email,
-                'password' => $password
+                'password' => $password,
+                'status' => 'active'
             ]);
 
             $_SESSION['toast_success'] = " Đăng ký thành công! Bạn có thể đăng nhập ngay.";
