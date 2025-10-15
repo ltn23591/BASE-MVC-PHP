@@ -47,7 +47,7 @@
     <div class="flex-1">
         <div class="flex justify-between text-base sm:text-2xl mb-4">
             <h2 class="font-bold text-xl">TẤT CẢ <span class="text-gray-600">SẢN PHẨM</span></h2>
-            <select name="sort" class="border-2 border-gray-300 text-sm px-2 cursor-pointer">
+            <select name="sort" class="border-2 border-gray-300 text-sm pl-2 pr-8 cursor-pointer">
                 <option value="relavent">Sắp xếp: Mặc định</option>
                 <option value="low-high">Giá tăng dần</option>
                 <option value="high-low">Giá giảm dần</option>

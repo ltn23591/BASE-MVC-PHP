@@ -17,7 +17,7 @@ class HomeController extends BaseController
         // Lấy tất cả sản phẩm
         $products = $this->productModel->getAll(
             ['*'],
-            ['column' => 'id', 'order' => 'desc']
+            ['column' => 'id', 'order' => 'desc'],100
         );
 
         // Giải mã JSON ảnh

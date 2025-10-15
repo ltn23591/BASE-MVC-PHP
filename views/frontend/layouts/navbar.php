@@ -20,8 +20,12 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Icons -->
     <div class="flex items-center gap-5">
         <!-- Search -->
-        <img src="<?= $assets['search_icon'] ?>" alt="search" class="w-5 cursor-pointer" onclick="toggleSearch()">
-
+        <img 
+            src="<?= $assets['search_icon'] ?>" 
+            alt="search" 
+            class="w-5 cursor-pointer"
+            onclick="window.location.href='index.php?controllers=product&searchFocus=1';"
+        />
         <!-- Profile -->
         <div class="group relative">
             <img src="<?= $assets['profile_icon'] ?>" alt="profile" class="w-5 cursor-pointer">
@@ -101,4 +105,15 @@ function toggleSearch() {
     fetch("toggleSearch.php?action=show")
         .then(() => location.reload());
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("searchFocus") === "1") {
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) {
+            searchInput.focus();
+        }
+    }
+});
+
 </script>
