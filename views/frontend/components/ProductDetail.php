@@ -79,9 +79,12 @@ $emptyStars  = 5 - $averageRating;
                     class="bg-orange-400 text-white px-2 py-3 text-sm active:bg-gray-700 hover:bg-orange-500 transition">
                     MUA NGAY
                 </button>
+                <!-- Phần nút yêu thích -->
                 <button onclick="addToFavorites(<?= $product['id'] ?>)"
                     class="w-10 h-10 flex items-center justify-center border border-red-500 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition">
-                    <i class="fa fa-heart text-lg"></i>
+                    <i id="favorite-icon-<?= $product['id'] ?>" 
+                    class="<?php echo $isFavorited ? 'fa fa-heart text-lg' : 'fa-regular fa-heart'; ?>">
+                    </i>
                 </button>
                 <?php else: ?>
                 <button class="bg-gray-400 text-white px-4 py-3 text-sm cursor-not-allowed" disabled>HẾT HÀNG</button>
@@ -207,7 +210,96 @@ $emptyStars  = 5 - $averageRating;
     </div>
 </div>
 
-<script src="./public/assets/js/favorite.js"></script>
+<script>
+// Khai báo biến toàn cục - SỬA LẠI PHẦN NÀY
+const userId = <?= isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null' ?>;
+const productId = <?= $product['id'] ?? 0 ?>;
+
+// Hàm kiểm tra trạng thái yêu thích
+function checkFavoriteStatus() {
+    // Nếu chưa đăng nhập, không cần kiểm tra
+    if (!userId || userId === 'null') {
+        return;
+    }
+
+    fetch(`index.php?controllers=favorite&action=check&product_id=${productId}`)
+    .then(res => res.json())
+    .then(data => {
+        const icon = document.getElementById('favorite-icon-' + productId);
+        
+        if (data.error === 'not_logged_in') {
+            return;
+        }
+        
+        // Cập nhật icon dựa trên kết quả từ server
+        if (data.isFavorite) {
+            icon.classList.remove('fa-regular');
+            icon.classList.add('fa', 'text-lg');
+        } else {
+            icon.classList.remove('fa', 'text-lg');
+            icon.classList.add('fa-regular');
+        }
+    })
+    .catch(err => console.error('Lỗi kiểm tra yêu thích:', err));
+}
+
+// Hàm thêm/xóa yêu thích
+function addToFavorites(productId) {
+    if (!userId || userId === 'null') {
+        Toastify({
+            text: 'Vui lòng đăng nhập để sử dụng tính năng này.',
+            duration: 3000,
+            gravity: 'top',
+            position: 'right',
+            style: {
+                background: 'linear-gradient(to right, #ff416c, #ff4b2b)',
+            },
+        }).showToast();
+        return;
+    }
+
+    fetch('index.php?controllers=favorite&action=toggle', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'product_id=' + encodeURIComponent(productId)
+    })
+    .then(res => res.json())
+    .then(data => {
+        const icon = document.getElementById('favorite-icon-' + productId);
+        
+        if (data.status === 'added') {
+            Toastify({
+                text: '✅ Đã thêm vào danh sách yêu thích!',
+                duration: 1500,
+                gravity: 'top',
+                position: 'right',
+            }).showToast();
+            icon.classList.remove('fa-regular');
+            icon.classList.add('fa', 'text-lg');
+        } else if (data.status === 'removed') {
+            Toastify({
+                text: '❌ Đã xóa khỏi danh sách yêu thích!',
+                duration: 1500,
+                gravity: 'top',
+                position: 'right',
+            }).showToast();
+            icon.classList.remove('fa', 'text-lg');       
+            icon.classList.add('fa-regular');
+        } else if (data.status === 'error') {
+            alert(data.message);
+            window.location.href = 'index.php?controllers=auth&action=login';
+        }
+    })
+    .catch(err => console.error('Lỗi yêu thích:', err));
+}
+
+// Kiểm tra trạng thái yêu thích khi trang tải xong
+document.addEventListener('DOMContentLoaded', function() {
+    checkFavoriteStatus();
+});
+</script>
 
 <!-- JS chuyển tab -->
 <script>

@@ -54,6 +54,14 @@ class ProductController extends BaseController
 
     public function detail()
     {
+        // Lấy ID từ URL parameter
+        $id = $_GET['id'] ?? null;
+        
+        if (!$id) {
+            // Xử lý khi không có ID
+            header('Location: index.php?controllers=product&action=index');
+            exit();
+        }
 
         // Lấy tất cả sản phẩm
         $column =  ['id', 'name', 'price'];
@@ -61,23 +69,29 @@ class ProductController extends BaseController
         $relatedProducts = $this->productModel->getAll(
             ['*'],
             ['column' => 'id', 'order' => 'desc']
-
         );
-        $id = $_GET['id'];
+
         $product = $this->productModel->findById($id);
+        
+        // Kiểm tra sản phẩm có tồn tại không
+        if (!$product) {
+            // Xử lý khi sản phẩm không tồn tại
+            header('Location: index.php?controllers=product&action=index');
+            exit();
+        }
+
         if (!empty($product['image'])) {
             $product['image'] = json_decode($product['image'], true);
         }
-
 
         $related = [];
         $empty = "";
         $currentCategory = $product['category'];
         $currentSubCategory = $product['subCategory'];
+        
         foreach ($relatedProducts as $p) {
             if ($p['id'] != $product['id'] && $p['category'] == $currentCategory && $p['subCategory'] ==  $currentSubCategory) {
                 array_push($related, $p);
-
                 if (count($related) >= 5) break; // chỉ lấy tối đa 5 sản phẩm
             } else {
                 $empty = "";
@@ -102,7 +116,11 @@ class ProductController extends BaseController
         $average = $this->ratingModel->averageRatings($id);
         $averageRating = (int)$average[0]['avg_rating'] ?? 0;
 
-
+        // Kiểm tra trạng thái yêu thích
+        $isFavorited = false;
+        if (isset($_SESSION['user_id'])) {
+            $isFavorited = $this->favoriteModel->isFavorite($_SESSION['user_id'], $id);
+        }
 
         return $this->view(
             'frontend.components.ProductDetail',
@@ -115,10 +133,12 @@ class ProductController extends BaseController
                 'productSizes' => $productSizes,
                 'getAllRatings' => $getAllRatings,
                 'totalReviewsResult' => $totalReviewsResult,
-                'averageRating' => $averageRating
+                'averageRating' => $averageRating,
+                'isFavorited' => $isFavorited // Thêm biến này
             ]
         );
-    }
+    }   
+    
     public function update()
     {
         $id = $_GET['id'];
