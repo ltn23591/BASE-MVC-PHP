@@ -18,7 +18,6 @@ function ProductItem($id, $image, $name, $price)
 
         <p class="text-sm font-medium">
             <?php echo number_format(htmlspecialchars($price), 0, ',', '.'); ?> VND
-
         </p>
     </div>
 </a>
