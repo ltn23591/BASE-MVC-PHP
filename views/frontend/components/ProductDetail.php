@@ -79,6 +79,10 @@ $emptyStars  = 5 - $averageRating;
                     class="bg-orange-400 text-white px-2 py-3 text-sm active:bg-gray-700 hover:bg-orange-500 transition">
                     MUA NGAY
                 </button>
+                <button onclick="addToFavorites(<?= $product['id'] ?>)"
+                    class="w-10 h-10 flex items-center justify-center border border-red-500 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition">
+                    <i class="fa fa-heart text-lg"></i>
+                </button>
                 <?php else: ?>
                 <button class="bg-gray-400 text-white px-4 py-3 text-sm cursor-not-allowed" disabled>HẾT HÀNG</button>
                 <?php endif; ?>

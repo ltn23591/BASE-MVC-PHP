@@ -16,7 +16,15 @@ function selectSize(size, el) {
 function addToCartt(id, name, image, price) {
     let formData = new FormData();
     if (!selectedSize) {
-        console.log('Chưa chọn size!');
+        Toastify({
+            text: 'Vui lòng chọn size trước khi mua!',
+            duration: 3000,
+            gravity: 'top',
+            position: 'right',
+            style: {
+                background: 'linear-gradient(to right, #ff416c, #ff4b2b)',
+            },
+        }).showToast();
         return;
     }
     console.log(id, name, image, price, selectedSize);
