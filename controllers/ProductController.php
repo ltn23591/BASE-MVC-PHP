@@ -5,6 +5,7 @@ class ProductController extends BaseController
     private $productModel;
     private $productSizeModel;
     private $ratingModel;
+    
 
     public function __construct() //dung chung cho tat ca cac phuong thuc
     {
@@ -16,6 +17,9 @@ class ProductController extends BaseController
 
         $this->loadModel('RatingModel');
         $this->ratingModel = new RatingModel();
+
+        $this->loadModel('FavoriteModel');
+        $this->favoriteModel = new FavoriteModel();
     }
     public function index()
 {   

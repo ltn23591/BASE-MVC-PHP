@@ -3,23 +3,17 @@ include './public/assets/img/frontend_assets/assets.php';
 include __DIR__ . '/../layouts/title.php';
 require __DIR__ . '/ProductItem.php';
 
-// 
 $emptyStars  = 5 - $averageRating;
-
-
 ?>
-
 <div class="border-t-2 pt-10 transition-opacity ease-in-out duration-500 opacity-100">
 
     <!-- Product Data -->
     <div class="flex gap-12 sm:gap-12 flex-col sm:flex-row">
-
         <!-- Product Images -->
         <div class="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
             <!-- Thumbnail list -->
             <div
                 class="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
-
                 <?php foreach ($product['image'] as $item): ?>
                 <img src="<?= htmlspecialchars($item) ?>" alt="thumb"
                     class="w-[24%] sm:w-full sm:mb-3 flex shrink-0 cursor-pointer"
@@ -39,8 +33,6 @@ $emptyStars  = 5 - $averageRating;
             <h1 class="font-medium text-2xl mt-2">
                 <?= htmlspecialchars($product['name']) ?>
             </h1>
-
-
             <div class="flex items-center gap-1 mt-2">
                 <!-- Sao vàng -->
                 <?php for ($i = 0; $i < $averageRating; $i++): ?>
@@ -49,14 +41,12 @@ $emptyStars  = 5 - $averageRating;
                 <?php for ($i = 0; $i < $emptyStars; $i++): ?>
                 <img src="<?= $assets['star_dull_icon'] ?>" alt="" class="w-3.5">
                 <?php endfor; ?>
-
             </div>
-
+            <!-- Giá -->
             <p class="mt-5 text-3xl font-medium">
                 <?= number_format(htmlspecialchars($product['price']), 0, ',', '.') ?> VND
             </p>
-
-
+            <!-- Mô tả ngắn -->
             <?php $sizes = !empty($product['sizes']) ? json_decode($product['sizes'], true) : []; ?>
             <div class="flex flex-col gap-4 my-8">
                 <p>Chọn kích thước</p>
@@ -66,7 +56,6 @@ $emptyStars  = 5 - $averageRating;
                     <button class="size-btn border py-2 px-4 bg-gray-100"
                         onclick="selectSize('<?= $row['size'] ?>', this)">
                         <?= htmlspecialchars($row['size']) ?> (<?= (int)$row['quantity'] ?>)
-
                     </button>
                     <?php endforeach; ?>
                     <?php else: ?>
@@ -74,12 +63,10 @@ $emptyStars  = 5 - $averageRating;
                     <?php endif; ?>
                 </div>
             </div>
-
-
             <p class="text-sm text-gray-600 mt-4">Số lượng tồn kho: <span class="font-bold"><?= $totalProduct ?></span>
             </p>
 
-            <div class="mt-4">
+            <div class="mt-4 flex items-center gap-3">
                 <?php if ((int)($totalProduct ?? 0) > 0): ?>
                 <button
                     onclick="addToCartt(<?= $product['id'] ?>,'<?= $product['name'] ?>','<?= $product['image'][0] ?>', <?= $product['price'] ?>)"
@@ -91,19 +78,20 @@ $emptyStars  = 5 - $averageRating;
                     class="bg-orange-400 text-white px-2 py-3 text-sm active:bg-gray-700 hover:bg-orange-500 transition">
                     MUA NGAY
                 </button>
+                <button onclick="addToFavorites(<?= $product['id'] ?>)"
+                    class="w-10 h-10 flex items-center justify-center border border-red-500 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition">
+                    <i class="fa fa-heart text-lg"></i>
+                </button>
                 <?php else: ?>
                 <button class="bg-gray-400 text-white px-4 py-3 text-sm cursor-not-allowed" disabled>HẾT HÀNG</button>
                 <?php endif; ?>
             </div>
 
-
-
             <hr class="mt-8 sm:w-4/5">
-
             <div class="text-sm text-gray-500 mt-5 flex flex-col gap-1">
-                <p>100% Original product</p>
-                <p>Cash on delivery is available on this product.</p>
-                <p>Easy return and exchange policy within 7 days</p>
+                <p>Sản phẩm chính hãng 100%</p>
+                <p>Hỗ trợ thanh toán khi nhận hàng (COD)</p>
+                <p>Chính sách đổi trả dễ dàng trong vòng 7 ngày</p>
             </div>
         </div>
     </div>
@@ -134,10 +122,8 @@ $emptyStars  = 5 - $averageRating;
             </ul>
         </div>
 
-
         <!-- Nội dung đánh giá -->
         <div id="content-reviews" class="tab-content hidden border px-6 py-6 text-sm text-gray-600 space-y-6">
-
             <?php if (!empty($getAllRatings)): ?>
             <?php foreach ($getAllRatings as $review): ?>
             <div class="border-b border-gray-200 pb-5">
@@ -219,7 +205,7 @@ $emptyStars  = 5 - $averageRating;
     </div>
 </div>
 
-
+<script src="./public/assets/js/favorite.js"></script>
 
 <!-- JS chuyển tab -->
 <script>
@@ -243,4 +229,5 @@ document.addEventListener("DOMContentLoaded", () => {
         contentDesc.classList.add("hidden");
     });
 });
-</script>
+</>
+
