@@ -32,13 +32,13 @@
         <div class="border border-gray-300 pl-5 py-3 mt-6 sm:block">
             <p class="mb-3 text-sm font-medium">LOẠI</p>
             <label class="flex gap-2">
-                <input type="checkbox" class="w-3" name="subCategory[]" value="Topwear"> Áo
+                <input type="checkbox" class="w-3" name="subCategory[]" value="Áo"> Áo
             </label>
             <label class="flex gap-2">
-                <input type="checkbox" class="w-3" name="subCategory[]" value="Bottomwear"> Quần
+                <input type="checkbox" class="w-3" name="subCategory[]" value="Quần"> Quần
             </label>
             <label class="flex gap-2">
-                <input type="checkbox" class="w-3" name="subCategory[]" value="Winterwear"> Đồ mùa đông
+                <input type="checkbox" class="w-3" name="subCategory[]" value="Đồ mùa đông"> Đồ mùa đông
             </label>
         </div>
     </div>
@@ -67,54 +67,9 @@
                 </div>
             <!-- Phân trang -->
             <div class="flex justify-center mt-8 mb-10">
-                <?php include __DIR__ . '/../components/pagination.php'; ?>
+                <div class="flex justify-center mt-8 mb-10 pagination"></div>
             </div>
     </div>
 </form>
 
-<script>
-    function filterProducts() {
-        const selectedCategories = [...document.querySelectorAll('input[name="category[]"]:checked')].map(el => el.value);
-        const selectedSubCategories = [...document.querySelectorAll('input[name="subCategory[]"]:checked')].map(el => el
-            .value);
-        const sortType = document.querySelector('select[name="sort"]').value;
-        const searchText = document.getElementById('searchInput').value.toLowerCase();
-
-        const products = [...document.querySelectorAll('.product-item')];
-
-        products.forEach(p => {
-            const cat = p.dataset.category;
-            const sub = p.dataset.subcategory;
-            const name = p.dataset.name.toLowerCase();
-
-            const matchCat = selectedCategories.length === 0 || selectedCategories.includes(cat);
-            const matchSub = selectedSubCategories.length === 0 || selectedSubCategories.includes(sub);
-            const matchSearch = name.includes(searchText);
-
-            if (matchCat && matchSub && matchSearch) {
-                p.classList.remove('hidden');
-            } else {
-                p.classList.add('hidden');
-            }
-        });
-
-        if (sortType !== 'relavent') {
-            const sorted = products
-                .filter(p => !p.classList.contains('hidden'))
-                .sort((a, b) => {
-                    const priceA = parseFloat(a.dataset.price);
-                    const priceB = parseFloat(b.dataset.price);
-                    return sortType === 'low-high' ? priceA - priceB : priceB - priceA;
-                });
-
-            const list = document.getElementById('post_list');
-            sorted.forEach(item => list.appendChild(item));
-        }
-    }
-
-    // Gán sự kiện lọc realtime
-    document.querySelectorAll('input[name="category[]"], input[name="subCategory[]"], select[name="sort"]').forEach(el => {
-        el.addEventListener('change', filterProducts);
-    });
-    document.getElementById('searchInput').addEventListener('input', filterProducts);
-</script>
+<script src="public/assets/js/product_filter.js"></script>

@@ -23,7 +23,7 @@ class ProductController extends BaseController
     }
     public function index()
 {   
-    $limit = 16;
+    $limit = 10000;
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $offset = ($page - 1) * $limit;
 

@@ -3,12 +3,12 @@
 class ProductModel extends BaseModel
 {
     const TABLE = 'products';
-    public function getAll($select = ['*'], $orderBys = [], $limit = 15)
+    public function getAll($select = ['*'], $orderBys = [], $limit = 33)
     {
         return $this->all(self::TABLE, $select, $orderBys, $limit);
     }
 
-    public function getPaginated($limit = 16, $offset = 0, $orderBys = [])
+    public function getPaginated($limit = 1000, $offset = 0, $orderBys = [])
     {
         $orderColumn = $orderBys['column'] ?? 'id';
         $orderDirection = $orderBys['order'] ?? 'DESC';
