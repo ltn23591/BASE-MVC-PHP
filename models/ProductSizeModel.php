@@ -8,8 +8,6 @@ class ProductSizeModel extends BaseModel
     public function getByProductId($id)
     {
         return $this->find(self::TABLE, $id);
-
-        
     }
     public function store($data)
     {
