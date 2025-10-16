@@ -34,16 +34,35 @@ class FavoriteController extends BaseController
     // Danh sách yêu thích của user
     public function list()
     {
-        session_start();
+        // Kiểm tra đăng nhập
         if (!isset($_SESSION['user_id'])) {
-            header('Location: index.php?controllers=auth&action=login');
-            exit();
+            // Trả về view với thông báo chưa đăng nhập
+            return $this->view('frontend.favorites.index', [
+                'favorites' => [],
+                'title' => 'Sản phẩm yêu thích',
+                'isLoggedIn' => false
+            ]);
         }
 
         $userId = $_SESSION['user_id'];
+        
+        // Lấy danh sách sản phẩm yêu thích
         $favorites = $this->favoriteModel->getFavoritesByUser($userId);
-        require_once './views/frontend/favorites.php';
+        
+        // Xử lý hình ảnh nếu cần
+        foreach ($favorites as &$product) {
+            if (!empty($product['image'])) {
+                $product['image'] = json_decode($product['image'], true);
+            }
+        }
+
+        return $this->view('frontend.favorites.index', [
+            'favorites' => $favorites,
+            'title' => 'Sản phẩm yêu thích',
+            'isLoggedIn' => true
+        ]);
     }
+
     public function check()
     {
         if (session_status() === PHP_SESSION_NONE) session_start();

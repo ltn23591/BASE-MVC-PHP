@@ -253,6 +253,11 @@ function addToFavorites(productId) {
             position: 'right',
             style: {
                 background: 'linear-gradient(to right, #ff416c, #ff4b2b)',
+                minWidth: '300px',
+                maxWidth: '350px',
+                padding: '12px 16px',
+                fontSize: '14px',
+                borderRadius: '8px'
             },
         }).showToast();
         return;
@@ -269,21 +274,40 @@ function addToFavorites(productId) {
     .then(data => {
         const icon = document.getElementById('favorite-icon-' + productId);
         
+        const toastStyle = {
+            padding: '12px 100px',
+            fontSize: '14px',
+            borderRadius: '8px'
+        };
+
         if (data.status === 'added') {
             Toastify({
-                text: '✅ Đã thêm vào danh sách yêu thích!',
+                text: 'Đã thêm vào danh sách yêu thích!',
                 duration: 1500,
                 gravity: 'top',
                 position: 'right',
+                style: { 
+                    background: 'linear-gradient(to right, #00b09b, #96c93d)',
+                    minWidth: '240px',
+                    padding: '12px 16px',
+                    fontSize: '14px',
+                    borderRadius: '8px' },
             }).showToast();
             icon.classList.remove('fa-regular');
             icon.classList.add('fa', 'text-lg');
         } else if (data.status === 'removed') {
             Toastify({
-                text: '❌ Đã xóa khỏi danh sách yêu thích!',
+                text: 'Đã xóa khỏi danh sách yêu thích!',
                 duration: 1500,
                 gravity: 'top',
                 position: 'right',
+                style: toastStyle,
+                style: { background: 'linear-gradient(to right, #ff416c, #ff4b2b)',
+                    minWidth: '240px',
+                    padding: '12px 16px',
+                    fontSize: '14px',
+                    borderRadius: '8px'
+                 },
             }).showToast();
             icon.classList.remove('fa', 'text-lg');       
             icon.classList.add('fa-regular');
