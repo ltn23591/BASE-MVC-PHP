@@ -25,25 +25,10 @@
                     <div>
                         <label class="block mb-2 font-semibold text-gray-700">📚 Danh mục</label>
                         <select name="category" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
-                            <option value="Nam" <?= $product['category'] == 'Men' ? 'selected' : '' ?>>Nam</option>
-                            <option value="Nữ" <?= $product['category'] == 'Women' ? 'selected' : '' ?>>Nữ</option>
-                            <option value="Trẻ Em" <?= $product['category'] == 'Kid' ? 'selected' : '' ?>>Trẻ em</option>
+                            <option value="Nam" <?= $product['category'] == 'Nam' ? 'selected' : '' ?>>Nam</option>
+                            <option value="Nữ" <?= $product['category'] == 'Nữ' ? 'selected' : '' ?>>Nữ</option>
+                            <option value="Trẻ Em" <?= $product['category'] == 'Trẻ Em' ? 'selected' : '' ?>>Trẻ em</option>
                         </select>
-                    </div>
-
-                    <!-- Sizes -->
-                    <div>
-                        <label class="block mb-2 font-semibold text-gray-700">📏 Kích cỡ</label>
-                        <div class="flex flex-nowrap gap-3">
-                            <?php foreach (['S', 'M', 'L', 'XL', 'XXL'] as $size): ?>
-                            <label class="cursor-pointer">
-                                <input type="checkbox" name="sizes[]" value="<?= $size ?>" class="hidden peer" <?= in_array($size, json_decode($product['sizes'], true) ?? []) ? 'checked' : '' ?>>
-                                <span class="peer-checked:bg-blue-600 peer-checked:text-white bg-gray-200 px-4 py-2 rounded-lg transition font-medium hover:bg-gray-300">
-                                    <?= $size ?>
-                                </span>
-                            </label>
-                            <?php endforeach; ?>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -31,6 +31,7 @@ class AdminController extends BaseController
     }
 
     /** ---------------- SẢN PHẨM ---------------- */
+    #region Product
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -142,7 +143,9 @@ class AdminController extends BaseController
         // Chuyển đổi dữ liệu size để dễ dùng trong view
         $productSizes = [];
         foreach ($sizesData as $row) {
-            $productSizes[$row['size']] = $row['quantity'];
+            if (is_array($row) && isset($row['size'], $row['quantity'])) {
+                $productSizes[$row['size']] = $row['quantity'];
+            }
         }
 
         return $this->viewAdmin('admin.components.update', compact('product', 'productSizes'));
