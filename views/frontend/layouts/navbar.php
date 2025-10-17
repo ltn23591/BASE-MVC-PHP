@@ -20,16 +20,11 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Icons -->
     <div class="flex items-center gap-5">
         <!-- Search -->
-        <img 
-            src="<?= $assets['search_icon'] ?>" 
-            alt="search" 
-            class="w-5 cursor-pointer"
-            onclick="window.location.href='index.php?controllers=product&searchFocus=1';"
-        />
+        <img src="<?= $assets['search_icon'] ?>" alt="search" class="w-5 cursor-pointer"
+            onclick="window.location.href='index.php?controllers=product&searchFocus=1';" />
         <!-- Profile -->
         <div class="group relative">
             <img src="<?= $assets['profile_icon'] ?>" alt="profile" class="w-5 cursor-pointer">
-
             <?php if (!empty($_SESSION['user_id'])): ?>
             <!-- Nếu đã đăng nhập -->
             <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
@@ -57,6 +52,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
         <!-- Cart -->
         <?php include __DIR__ . '/cart.php'; ?>
+
 
         <!-- Menu icon (mobile) -->
         <img onclick="toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu"
@@ -115,5 +111,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
-
 </script>
