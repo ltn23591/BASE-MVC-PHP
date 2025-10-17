@@ -25,4 +25,4 @@
     </div>
     <hr>
     <div class="flex w-full">
-        <div class="w-[70%] mx-auto ml-[max(5vw,25px)] my-8 text-base">
+        <div class="w-full mx-auto ml-[max(5vw,25px)] my-8 text-base">

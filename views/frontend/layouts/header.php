@@ -1,5 +1,4 @@
 <?php include './public/assets/img/frontend_assets/assets.php';
-// require_once __DIR__ . '../../../../config/config_url.php';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -29,6 +28,11 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MorphSVGPlugin.min.js"></script>
+
 
 </head>
 

@@ -72,6 +72,7 @@ $emptyStars  = 5 - $averageRating;
                 <button
                     onclick="addToCartt(<?= $product['id'] ?>,'<?= $product['name'] ?>','<?= $product['image'][0] ?>', <?= $product['price'] ?>)"
                     class="bg-black text-white px-2 py-3 text-sm active:bg-gray-700 hover:bg-gray-800 transition">
+                    <i class="fa-solid fa-cart-shopping mr-1"></i>
                     THÊM VÀO GIỎ HÀNG
                 </button>
                 <button
@@ -82,8 +83,8 @@ $emptyStars  = 5 - $averageRating;
                 <!-- Phần nút yêu thích -->
                 <button onclick="addToFavorites(<?= $product['id'] ?>)"
                     class="w-10 h-10 flex items-center justify-center border border-red-500 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition">
-                    <i id="favorite-icon-<?= $product['id'] ?>" 
-                    class="<?php echo $isFavorited ? 'fa fa-heart text-lg' : 'fa-regular fa-heart'; ?>">
+                    <i id="favorite-icon-<?= $product['id'] ?>"
+                        class="<?php echo $isFavorited ? 'fa fa-heart text-lg' : 'fa-regular fa-heart'; ?>">
                     </i>
                 </button>
                 <?php else: ?>
@@ -223,24 +224,24 @@ function checkFavoriteStatus() {
     }
 
     fetch(`index.php?controllers=favorite&action=check&product_id=${productId}`)
-    .then(res => res.json())
-    .then(data => {
-        const icon = document.getElementById('favorite-icon-' + productId);
-        
-        if (data.error === 'not_logged_in') {
-            return;
-        }
-        
-        // Cập nhật icon dựa trên kết quả từ server
-        if (data.isFavorite) {
-            icon.classList.remove('fa-regular');
-            icon.classList.add('fa', 'text-lg');
-        } else {
-            icon.classList.remove('fa', 'text-lg');
-            icon.classList.add('fa-regular');
-        }
-    })
-    .catch(err => console.error('Lỗi kiểm tra yêu thích:', err));
+        .then(res => res.json())
+        .then(data => {
+            const icon = document.getElementById('favorite-icon-' + productId);
+
+            if (data.error === 'not_logged_in') {
+                return;
+            }
+
+            // Cập nhật icon dựa trên kết quả từ server
+            if (data.isFavorite) {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa', 'text-lg');
+            } else {
+                icon.classList.remove('fa', 'text-lg');
+                icon.classList.add('fa-regular');
+            }
+        })
+        .catch(err => console.error('Lỗi kiểm tra yêu thích:', err));
 }
 
 // Hàm thêm/xóa yêu thích
@@ -264,59 +265,61 @@ function addToFavorites(productId) {
     }
 
     fetch('index.php?controllers=favorite&action=toggle', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: 'product_id=' + encodeURIComponent(productId)
-    })
-    .then(res => res.json())
-    .then(data => {
-        const icon = document.getElementById('favorite-icon-' + productId);
-        
-        const toastStyle = {
-            padding: '12px 100px',
-            fontSize: '14px',
-            borderRadius: '8px'
-        };
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'product_id=' + encodeURIComponent(productId)
+        })
+        .then(res => res.json())
+        .then(data => {
+            const icon = document.getElementById('favorite-icon-' + productId);
 
-        if (data.status === 'added') {
-            Toastify({
-                text: 'Đã thêm vào danh sách yêu thích!',
-                duration: 1500,
-                gravity: 'top',
-                position: 'right',
-                style: { 
-                    background: 'linear-gradient(to right, #00b09b, #96c93d)',
-                    minWidth: '240px',
-                    padding: '12px 16px',
-                    fontSize: '14px',
-                    borderRadius: '8px' },
-            }).showToast();
-            icon.classList.remove('fa-regular');
-            icon.classList.add('fa', 'text-lg');
-        } else if (data.status === 'removed') {
-            Toastify({
-                text: 'Đã xóa khỏi danh sách yêu thích!',
-                duration: 1500,
-                gravity: 'top',
-                position: 'right',
-                style: toastStyle,
-                style: { background: 'linear-gradient(to right, #ff416c, #ff4b2b)',
-                    minWidth: '240px',
-                    padding: '12px 16px',
-                    fontSize: '14px',
-                    borderRadius: '8px'
-                 },
-            }).showToast();
-            icon.classList.remove('fa', 'text-lg');       
-            icon.classList.add('fa-regular');
-        } else if (data.status === 'error') {
-            alert(data.message);
-            window.location.href = 'index.php?controllers=auth&action=login';
-        }
-    })
-    .catch(err => console.error('Lỗi yêu thích:', err));
+            const toastStyle = {
+                padding: '12px 100px',
+                fontSize: '14px',
+                borderRadius: '8px'
+            };
+
+            if (data.status === 'added') {
+                Toastify({
+                    text: 'Đã thêm vào danh sách yêu thích!',
+                    duration: 1500,
+                    gravity: 'top',
+                    position: 'right',
+                    style: {
+                        background: 'linear-gradient(to right, #00b09b, #96c93d)',
+                        minWidth: '240px',
+                        padding: '12px 16px',
+                        fontSize: '14px',
+                        borderRadius: '8px'
+                    },
+                }).showToast();
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa', 'text-lg');
+            } else if (data.status === 'removed') {
+                Toastify({
+                    text: 'Đã xóa khỏi danh sách yêu thích!',
+                    duration: 1500,
+                    gravity: 'top',
+                    position: 'right',
+                    style: toastStyle,
+                    style: {
+                        background: 'linear-gradient(to right, #ff416c, #ff4b2b)',
+                        minWidth: '240px',
+                        padding: '12px 16px',
+                        fontSize: '14px',
+                        borderRadius: '8px'
+                    },
+                }).showToast();
+                icon.classList.remove('fa', 'text-lg');
+                icon.classList.add('fa-regular');
+            } else if (data.status === 'error') {
+                alert(data.message);
+                window.location.href = 'index.php?controllers=auth&action=login';
+            }
+        })
+        .catch(err => console.error('Lỗi yêu thích:', err));
 }
 
 // Kiểm tra trạng thái yêu thích khi trang tải xong

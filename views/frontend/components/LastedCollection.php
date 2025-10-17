@@ -1,7 +1,5 @@
 <?php
-require_once './views/frontend/components/LastedCollection.php';
 require_once __DIR__ . '/ProductItem.php';
-// require  './views/frontend/layouts/title.php';
 
 ?>
 <div class="my-10">

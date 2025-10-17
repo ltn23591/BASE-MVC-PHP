@@ -2,6 +2,8 @@
 $assets = [
     "logo_icon"           => "public/assets/img/frontend_assets/logo_icon.png",
     "hero_img"       => "public/assets/img/frontend_assets/hero_img.png",
+    "hero_img_2"     => "public/assets/img/frontend_assets/hero_img_2.jpg",
+    "hero_img_3"     => "public/assets/img/frontend_assets/hero_img_3.jpg",
     "cart_icon"      => "public/assets/img/frontend_assets/cart_icon.png",
     "dropdown_icon"  => "public/assets/img/frontend_assets/dropdown_icon.png",
     "exchange_icon"  => "public/assets/img/frontend_assets/exchange_icon.png",

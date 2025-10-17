@@ -5,7 +5,7 @@ class ProductController extends BaseController
     private $productModel;
     private $productSizeModel;
     private $ratingModel;
-    
+    private $favoriteModel;
 
     public function __construct() //dung chung cho tat ca cac phuong thuc
     {
@@ -22,41 +22,41 @@ class ProductController extends BaseController
         $this->favoriteModel = new FavoriteModel();
     }
     public function index()
-{   
-    $limit = 10000;
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $offset = ($page - 1) * $limit;
+    {
+        $limit = 10000;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
 
-    // Lấy tổng số sản phẩm
-    $totalProduct = $this->productModel->countAll();
-    $totalPages = ceil($totalProduct / $limit);
+        // Lấy tổng số sản phẩm
+        $totalProduct = $this->productModel->countAll();
+        $totalPages = ceil($totalProduct / $limit);
 
-    // Lấy danh sách sản phẩm có phân trang
-    $products = $this->productModel->getPaginated(
-        $limit,
-        $offset,
-        ['column' => 'id', 'order' => 'DESC']
-    );
+        // Lấy danh sách sản phẩm có phân trang
+        $products = $this->productModel->getPaginated(
+            $limit,
+            $offset,
+            ['column' => 'id', 'order' => 'DESC']
+        );
 
-    $categories = $_GET['category'] ?? [];
-    $subCategories = $_GET['subCategory'] ?? [];
-    $sortType = $_GET['sort'] ?? 'relavent';
+        $categories = $_GET['category'] ?? [];
+        $subCategories = $_GET['subCategory'] ?? [];
+        $sortType = $_GET['sort'] ?? 'relavent';
 
-    return $this->view('frontend.products.index', [
-        'products' => $products,
-        'categories' => $categories,
-        'subCategories' => $subCategories,
-        'sortType' => $sortType,
-        'currentPage' => $page,
-        'totalPages' => $totalPages
-    ]);
-}
+        return $this->view('frontend.products.index', [
+            'products' => $products,
+            'categories' => $categories,
+            'subCategories' => $subCategories,
+            'sortType' => $sortType,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
+        ]);
+    }
 
     public function detail()
     {
         // Lấy ID từ URL parameter
         $id = $_GET['id'] ?? null;
-        
+
         if (!$id) {
             // Xử lý khi không có ID
             header('Location: index.php?controllers=product&action=index');
@@ -72,7 +72,7 @@ class ProductController extends BaseController
         );
 
         $product = $this->productModel->findById($id);
-        
+
         // Kiểm tra sản phẩm có tồn tại không
         if (!$product) {
             // Xử lý khi sản phẩm không tồn tại
@@ -88,7 +88,7 @@ class ProductController extends BaseController
         $empty = "";
         $currentCategory = $product['category'];
         $currentSubCategory = $product['subCategory'];
-        
+
         foreach ($relatedProducts as $p) {
             if ($p['id'] != $product['id'] && $p['category'] == $currentCategory && $p['subCategory'] ==  $currentSubCategory) {
                 array_push($related, $p);
@@ -134,11 +134,11 @@ class ProductController extends BaseController
                 'getAllRatings' => $getAllRatings,
                 'totalReviewsResult' => $totalReviewsResult,
                 'averageRating' => $averageRating,
-                'isFavorited' => $isFavorited // Thêm biến này
+                'isFavorited' => $isFavorited 
             ]
         );
-    }   
-    
+    }
+
     public function update()
     {
         $id = $_GET['id'];

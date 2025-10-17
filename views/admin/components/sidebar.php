@@ -1,4 +1,4 @@
-<aside class="min-w-[30%] min-h-screen border-r bg-white shadow-sm">
+<aside class="w-full md:w-64 lg:w-72 bg-white shadow-md md:min-h-screen flex-shrink-0">
 
     <nav class="flex flex-col pt-6 px-4 text-[15px] font-medium text-gray-700">
         <!-- Quản lý sản phẩm -->

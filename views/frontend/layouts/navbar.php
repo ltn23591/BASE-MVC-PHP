@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 ?>
 
-<div class="mb-2 flex items-center justify-between py-5 font-medium">
+<div class="sticky top-0 z-50 bg-white mb-2 flex items-center justify-between py-5 font-medium">
     <!-- Logo -->
     <?php include __DIR__ . '/logo.php'; ?>
 

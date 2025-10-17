@@ -7,20 +7,22 @@
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày tạo</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày tạo
+                    </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 <?php foreach ($users as $user): ?>
-                    <tr class="hover:bg-blue-50 transition">
-                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-700"><?= $user['id'] ?></td>
-                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-700"><?= $user['name'] ?></td>
-                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-700"><?= $user['email'] ?></td>
-                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-700">
-                            <?= !empty($user['created_at']) ? date('d-m-Y H:i:s', strtotime($user['created_at'])) : '' ?>
-                        </td>
-                    </tr>
+                <tr class="hover:bg-blue-50 transition">
+                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-700"><?= $user['id'] ?></td>
+                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-700"><?= $user['name'] ?></td>
+                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-700"><?= $user['email'] ?></td>
+                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-700">
+                        <?= !empty($user['created_at']) ? date('d-m-Y H:i:s', strtotime($user['created_at'])) : '' ?>
+                    </td>
+                </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>

@@ -13,7 +13,7 @@ function applyFilters() {
 
     const allProducts = [...document.querySelectorAll('.product-item')];
 
-    // 1️⃣ LỌC & TÌM KIẾM
+    //  LỌC & TÌM KIẾM
     const filtered = allProducts.filter(p => {
         const cat = p.dataset.category;
         const sub = p.dataset.subcategory;
@@ -26,7 +26,7 @@ function applyFilters() {
         return matchCat && matchSub && matchSearch;
     });
 
-    // 2️⃣ SẮP XẾP
+    // SẮP XẾP
     let sorted = [...filtered];
     if (sortType !== 'relavent') {
         sorted.sort((a, b) => {
