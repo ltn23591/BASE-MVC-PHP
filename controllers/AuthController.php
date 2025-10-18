@@ -82,6 +82,7 @@ class AuthController extends BaseController
                     $_SESSION['cart'] = $cartModel->rowsToSessionCart(
                         $cartModel->getByUser((int)$user['id'])
                     );
+                    $_SESSION['toast_success'] = "Chào mừng " . htmlspecialchars($user['name']) . " quay trở lại!";
 
                     header('Location: index.php');
                     exit();

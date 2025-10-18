@@ -47,6 +47,31 @@
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+<?php
+// Kiểm tra và hiển thị toast từ session
+$toastMsg = $_SESSION['toast_success'] ?? null;
+if ($toastMsg) {
+    unset($_SESSION['toast_success']); // Xóa ngay để không hiển thị lại
+    echo "
+    <script>
+        Toastify({
+            text: '" . addslashes($toastMsg) . "',
+            duration: 3000,
+            gravity: 'top',
+            position: 'right',
+            close: true,
+            style: {
+                background: 'linear-gradient(to right, #00b09b, #96c93d)',
+                minWidth: '300px',
+                padding: '12px 16px',
+                fontSize: '14px',
+                borderRadius: '8px',
+            }
+        }).showToast();
+    </script>
+    ";
+}
+?>
 <!-- AOS -->
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
