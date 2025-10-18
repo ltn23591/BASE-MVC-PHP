@@ -1,5 +1,4 @@
 <?php
-// if (session_status() === PHP_SESSION_NONE) session_start();
 $toastMsg = $_SESSION['toast_success'] ?? null;
 unset($_SESSION['toast_success']);
 

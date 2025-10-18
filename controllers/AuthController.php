@@ -225,7 +225,7 @@ class AuthController extends BaseController
 
         //  Giới hạn gửi OTP mỗi 60 giây
         if (isset($_SESSION['last_otp_time']) && time() - $_SESSION['last_otp_time'] < 60) {
-            echo json_encode(["status" => "error", "msg" => "⚠️ Vui lòng đợi 1 phút trước khi gửi lại OTP"]);
+            echo json_encode(["status" => "error", "msg" => " Vui lòng đợi 1 phút trước khi gửi lại OTP"]);
             exit;
         }
         $_SESSION['last_otp_time'] = time();

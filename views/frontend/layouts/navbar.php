@@ -22,16 +22,36 @@ if (session_status() === PHP_SESSION_NONE) {
         <!-- Search -->
         <img src="<?= $assets['search_icon'] ?>" alt="search" class="w-5 cursor-pointer"
             onclick="window.location.href='index.php?controllers=product&searchFocus=1';" />
+        <!-- Cart -->
+        <?php include __DIR__ . '/cart.php'; ?>
+
         <!-- Profile -->
         <div class="group relative">
+            <?php if (!isset($_SESSION['user_id'])): ?>
             <img src="<?= $assets['profile_icon'] ?>" alt="profile" class="w-5 cursor-pointer">
+            <?php endif; ?>
+            <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="index.php?controllers=profile" class="flex gap-2 items-center ml-5">
+
+                <img src="https://ui-avatars.com/api/?name=<?= htmlspecialchars($_SESSION['user_name']) ?>" alt="Avatar"
+                    class="w-8 h-8 rounded-full mx-auto border-4 object-cover" />
+                <p><?= htmlspecialchars($_SESSION['user_name']) ?></p>
+
+            </a>
+            <?php endif; ?>
             <?php if (!empty($_SESSION['user_id'])): ?>
             <!-- Nếu đã đăng nhập -->
             <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
                 <div class="flex flex-col gap-2 w-36 py-3 px-5">
+<<<<<<< Updated upstream
                     <p onclick="window.location.href='index.php?controllers=profile&action=index'" 
                     class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
                     </p>
+=======
+                    <a href="index.php?controllers=profile" class="cursor-pointer hover:text-black">Xin chào,
+                        <?= htmlspecialchars($_SESSION['user_name']) ?>
+                    </a>
+>>>>>>> Stashed changes
                     <p onclick="window.location.href='index.php?controllers=order&action=index'"
                         class="cursor-pointer hover:text-black">Đơn Hàng</p>
                     <p onclick="window.location.href='index.php?controllers=auth&action=logout'"
@@ -51,12 +71,12 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php endif; ?>
         </div>
 
-        <!-- Cart -->
-        <?php include __DIR__ . '/cart.php'; ?>
+
+
 
 
         <!-- Menu icon (mobile) -->
-        <img onclick="toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu"
+        <img onclick=" toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu"
             class="w-5 cursor-pointer sm:hidden">
     </div>
 
