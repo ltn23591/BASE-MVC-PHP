@@ -55,4 +55,36 @@ class UserModel extends BaseModel
         // Cập nhật trạng thái thành 'active'
         $this->updateData($id, ['status' => 'active']);
     }
+
+    // TotalSpent
+    public function totalSpent($userId, $amount)
+    {
+        $sql = "UPDATE users 
+            SET total_spent = total_spent + $amount 
+            WHERE id = $userId";
+        $this->_query($sql);
+
+        // Gọi hàm cập nhật rank sau khi cộng
+        $this->updateRank($userId);
+    }
+
+    public function updateRank($userId)
+    {
+        $sql = "SELECT total_spent FROM users WHERE id = $userId";
+        $result = $this->_query($sql);
+        $row = mysqli_fetch_assoc($result);
+        $total = $row['total_spent'];
+
+        $rank = 'Đồng';
+        if ($total >= 1000000 && $total < 2000000) {
+            $rank = 'Bạc';
+        } elseif ($total >= 2000000 && $total < 3000000) {
+            $rank = 'Vàng';
+        } elseif ($total >= 3000000) {
+            $rank = 'Kim Cương';
+        }
+
+        $sqlUpdate = "UPDATE users SET rank = '$rank' WHERE id = $userId";
+        $this->_query($sqlUpdate);
+    }
 }

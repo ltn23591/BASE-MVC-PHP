@@ -20,6 +20,10 @@ $assets = [
     "razorpay_logo"  => "public/assets/img/frontend_assets/razorpay_logo.png",
     "stripe_logo"    => "public/assets/img/frontend_assets/stripe_logo.png",
     "cross_icon"     => "public/assets/img/frontend_assets/cross_icon.png",
+    "bronze"     => "public/assets/img/frontend_assets/bronze.png",
+    "silver"     => "public/assets/img/frontend_assets/silver.png",
+    "gold"     => "public/assets/img/frontend_assets/gold.png",
+    "diamond"     => "public/assets/img/frontend_assets/diamond.png",
 ];
 
 // $products = [

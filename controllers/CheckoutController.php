@@ -9,6 +9,7 @@ class CheckoutController extends BaseController
     private $orderDetailModel;
     private $productModel;
     private $productSizeModel;
+    private $userModel;
 
     public function __construct()
     {
@@ -17,7 +18,10 @@ class CheckoutController extends BaseController
         $this->loadModel('OrderDetailModel');
         $this->loadModel('ProductModel');
         $this->loadModel('ProductSizeModel');
+        $this->loadModel('UserModel');
 
+
+        $this->userModel = new UserModel();
         $this->orderModel = new OrderModel();
         $this->cartModel  = new CartModel();
         $this->orderDetailModel = new OrderDetailModel();
@@ -126,6 +130,7 @@ class CheckoutController extends BaseController
                     );
                 }
 
+                $this->userModel->totalSpent((int)$_SESSION['user_id'], $amount);
                 //  Xóa giỏ hàng
                 if (isset($_POST['buy_now'])) {
                     unset($_SESSION['cart']);

@@ -6,7 +6,7 @@ class OrderDetailModel extends BaseModel
     //  Hàm lấy toàn bộ sản phẩm theo order_id
     public function getByOrderId($orderId)
     {
-        $orderId = (int)$orderId; // Ép kiểu an toàn
+        $orderId = (int)$orderId; 
         $sql = "
             SELECT 
                 order_items.*, 

@@ -21,7 +21,7 @@ class ProfileController extends BaseController
         $id = $_SESSION['user_id'];
 
         $getInfor = $this->userModel->findById($id);
-
+      
         return $this->view('frontend.profile.index', ['getInfor' =>  $getInfor]);
     }
 
