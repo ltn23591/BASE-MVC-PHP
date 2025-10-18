@@ -29,7 +29,8 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Nếu đã đăng nhập -->
             <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
                 <div class="flex flex-col gap-2 w-36 py-3 px-5">
-                    <p class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
+                    <p onclick="window.location.href='index.php?controllers=profile&action=index'" 
+                    class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
                     </p>
                     <p onclick="window.location.href='index.php?controllers=order&action=index'"
                         class="cursor-pointer hover:text-black">Đơn Hàng</p>

@@ -23,14 +23,34 @@ if (isset($getInfor) && is_array($getInfor)) {
             </p>
         </div>
 
-        <nav class="mt-8 space-y-2 text-gray-700">
-            <a href="#" class="block py-1 hover:text-yellow-500 font-medium">Thông tin cá nhân</a>
-            <a href="index.php?controllers=order&action=index"
-                class="mt-5 text-sm font-semibold text-gray-400 uppercase">
-                Đơn hàng của tôi
+        <nav class="mt-8 flex flex-col gap-3 text-[15px] font-medium text-gray-700">
+            <!-- Thông tin cá nhân -->
+            <a href="#"
+            class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition">
+                <i class="fa-solid fa-user text-500"></i>
+                <span>Thông tin cá nhân</span>
             </a>
-            <a href="#" class="block py-1 hover:text-yellow-500">Danh sách quà tặng</a>
-            <a href="#" class="block py-1 hover:text-yellow-500">Điều khoản sử dụng</a>
+
+            <!-- Đơn hàng của tôi -->
+            <a href="index.php?controllers=order&action=index"
+            class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition">
+                <i class="fa-solid fa-box text-500"></i>
+                <span>Đơn hàng của tôi</span>
+            </a>
+
+            <!-- Danh sách quà tặng -->
+            <a href="#"
+            class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition">
+                <i class="fa-solid fa-gift text-500"></i>
+                <span>Danh sách quà tặng</span>
+            </a>
+
+            <!-- Điều khoản sử dụng -->
+            <a href="#"
+            class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition">
+                <i class="fa-solid fa-file-contract text-500"></i>
+                <span>Điều khoản sử dụng</span>
+            </a>
         </nav>
     </aside>
 
