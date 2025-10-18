@@ -27,7 +27,7 @@
                             <a href="index.php?controllers=product&action=filter&category=men"
                                 class="px-5 py-2 border border-gray-800 rounded-md hover:bg-gray-900 hover:text-white transition">Xem
                                 ngay</a>
-                            <a href="#"
+                            <a href="index.php?controllers=product&action=filter&category=men"
                                 class="inline-flex items-center gap-2 text-orange-500 font-medium hover:underline">Chi
                                 tiết
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -69,7 +69,7 @@
                             <p class="text-gray-600 mt-2">Thiết kế giới hạn – dành riêng cho những ai yêu sự khác biệt.
                             </p>
                         </div>
-                        <a href="index.php?controllers=product&action=filter&category=limited"
+                        <a href="index.php?controllers=product"
                             class="text-orange-500 font-medium hover:underline mt-4 inline-flex items-center gap-2">Xem
                             thêm
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -114,10 +114,10 @@
                         <p class="text-gray-600">Cập nhật phong cách mới nhất – bắt đầu hành trình thời trang của bạn.
                         </p>
                         <div class="flex gap-4 mt-2">
-                            <a href="index.php?controllers=product&action=filter&category=new"
+                            <a href="index.php?controllers=product"
                                 class="px-6 py-2 border border-gray-800 rounded-md hover:bg-gray-900 hover:text-white transition">Khám
                                 phá</a>
-                            <a href="index.php?controllers=product&action=list"
+                            <a href="index.php?controllers=product"
                                 class="inline-flex items-center gap-2 text-orange-500 font-medium hover:underline">Tất
                                 cả sản phẩm
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"

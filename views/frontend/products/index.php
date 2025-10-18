@@ -1,4 +1,21 @@
-<?php require_once __DIR__ . '/../components/ProductItem.php'; ?>
+<?php require_once __DIR__ . '/../components/ProductItem.php'; 
+// Lấy tham số category từ URL
+$categoryFromUrl = $_GET['category'] ?? '';
+$subCategoryFromUrl = $_GET['subcategory'] ?? '';
+
+// Map category từ URL sang giá trị checkbox
+$categoryMapping = [
+    'men' => 'Nam',
+    'women' => 'Nữ', 
+    'kids' => 'Trẻ Em',
+    'new' => 'New'
+];
+
+$autoCheckCategory = '';
+if ($categoryFromUrl && isset($categoryMapping[$categoryFromUrl])) {
+    $autoCheckCategory = $categoryMapping[$categoryFromUrl];
+}
+?>
 
 <!-- THANH TÌM KIẾM -->
 <div class="container">
@@ -19,13 +36,16 @@
             <div class="border border-gray-300 pl-5 py-3 mt-6 sm:block">
                 <p class="mb-3 text-sm font-medium">DANH MỤC</p>
                 <label class="flex gap-2">
-                    <input type="checkbox" class="w-3" name="category[]" value="Nam"> Nam
+                    <input type="checkbox" class="w-3" name="category[]" value="Nam"
+                    <?= $autoCheckCategory === 'Nam' ? 'checked' : '' ?>> Nam
                 </label>
                 <label class="flex gap-2">
-                    <input type="checkbox" class="w-3" name="category[]" value="Nữ"> Nữ
+                    <input type="checkbox" class="w-3" name="category[]" value="Nữ"
+                    <?= $autoCheckCategory === 'Nữ' ? 'checked' : '' ?>> Nữ
                 </label>
                 <label class="flex gap-2">
-                    <input type="checkbox" class="w-3" name="category[]" value="Trẻ Em"> Trẻ em
+                    <input type="checkbox" class="w-3" name="category[]" value="Trẻ Em"
+                    <?= $autoCheckCategory === 'Trẻ Em' ? 'checked' : '' ?>> Trẻ em
                 </label>
             </div>
 

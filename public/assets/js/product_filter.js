@@ -4,6 +4,33 @@
 const ITEMS_PER_PAGE = 8;
 let currentPage = 1;
 
+// Tự động check filter từ URL khi trang load
+function autoCheckFiltersFromUrl() {
+    const categoryFromUrl = getUrlParameter('category');
+    
+    if (categoryFromUrl) {
+        const categoryMapping = {
+            'men': 'Nam',
+            'women': 'Nữ',
+            'kids': 'Trẻ Em',
+            'new': 'New'
+        };
+        
+        const categoryValue = categoryMapping[categoryFromUrl];
+        if (categoryValue) {
+            // Tìm và check checkbox tương ứng
+            const checkboxes = document.querySelectorAll(`input[name="category[]"][value="${categoryValue}"]`);
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        }
+    }
+}
+// Gọi hàm tự động check khi trang load
+function getUrlParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
 // ======== ÁP DỤNG LỌC, TÌM KIẾM, SẮP XẾP, PHÂN TRANG ========
 function applyFilters() {
     const selectedCategories = [...document.querySelectorAll('input[name="category[]"]:checked')].map(el => el.value);
@@ -81,6 +108,8 @@ function renderPagination(totalPages) {
 
 // ======== GÁN SỰ KIỆN ========
 document.addEventListener('DOMContentLoaded', () => {
+    autoCheckFiltersFromUrl();
+
     const filterInputs = document.querySelectorAll('input[name="category[]"], input[name="subCategory[]"], select[name="sort"]');
     const searchInput = document.getElementById('searchInput');
 
@@ -99,5 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Gọi ban đầu khi trang load
-    applyFilters();
+    setTimeout(() => {
+        applyFilters();
+    }, 100);
 });

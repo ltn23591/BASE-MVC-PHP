@@ -27,6 +27,23 @@ class ProductController extends BaseController
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $offset = ($page - 1) * $limit;
 
+        // Lấy tham số category từ URL (nếu có)
+        $categoryFromUrl = $_GET['category'] ?? '';
+        
+        // Map category từ URL sang giá trị checkbox
+        $categoryMapping = [
+            'men' => 'Nam',
+            'women' => 'Nữ', 
+            'kids' => 'Trẻ Em',
+            'limited' => 'Limited',
+            'new' => 'New'
+        ];
+
+        $autoCheckCategory = '';
+        if ($categoryFromUrl && isset($categoryMapping[$categoryFromUrl])) {
+            $autoCheckCategory = $categoryMapping[$categoryFromUrl];
+        }
+
         // Lấy tổng số sản phẩm
         $totalProduct = $this->productModel->countAll();
         $totalPages = ceil($totalProduct / $limit);
@@ -48,7 +65,8 @@ class ProductController extends BaseController
             'subCategories' => $subCategories,
             'sortType' => $sortType,
             'currentPage' => $page,
-            'totalPages' => $totalPages
+            'totalPages' => $totalPages,
+            'autoCheckCategory' => $autoCheckCategory // Truyền biến này sang view
         ]);
     }
 
@@ -171,5 +189,53 @@ class ProductController extends BaseController
                 'products' => $products
             ],
         );
+    }
+    public function filter()
+    {
+        $limit = 10000;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
+
+        // Lấy tham số category từ URL
+        $categoryFromUrl = $_GET['category'] ?? '';
+        
+        // Map category từ URL sang giá trị checkbox
+        $categoryMapping = [
+            'men' => 'Nam',
+            'women' => 'Nữ', 
+            'kids' => 'Trẻ Em',
+            'new' => 'New'
+        ];
+
+        $autoCheckCategory = '';
+        if ($categoryFromUrl && isset($categoryMapping[$categoryFromUrl])) {
+            $autoCheckCategory = $categoryMapping[$categoryFromUrl];
+        }
+
+        // Lấy tổng số sản phẩm
+        $totalProduct = $this->productModel->countAll();
+        $totalPages = ceil($totalProduct / $limit);
+
+        // Lấy danh sách sản phẩm có phân trang
+        $products = $this->productModel->getPaginated(
+            $limit,
+            $offset,
+            ['column' => 'id', 'order' => 'DESC']
+        );
+
+        $categories = $_GET['category'] ?? [];
+        $subCategories = $_GET['subCategory'] ?? [];
+        $sortType = $_GET['sort'] ?? 'relavent';
+
+        return $this->view('frontend.products.index', [
+            'products' => $products,
+            'categories' => $categories,
+            'subCategories' => $subCategories,
+            'sortType' => $sortType,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'autoCheckCategory' => $autoCheckCategory, // Truyền biến này sang view
+            'categoryFromUrl' => $categoryFromUrl // Có thể cần dùng
+        ]);
     }
 }
