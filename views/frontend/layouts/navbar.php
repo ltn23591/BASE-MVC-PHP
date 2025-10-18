@@ -22,6 +22,9 @@ if (session_status() === PHP_SESSION_NONE) {
         <!-- Search -->
         <img src="<?= $assets['search_icon'] ?>" alt="search" class="w-5 cursor-pointer"
             onclick="window.location.href='index.php?controllers=product&searchFocus=1';" />
+        <!-- Favorite -->
+        <a href="index.php?controllers=favorite&action=list">
+            <img src="<?= $assets['heart_icon'] ?>" alt="favorite" class="w-5 cursor-pointer" />
         <!-- Cart -->
         <?php include __DIR__ . '/cart.php'; ?>
 
@@ -44,14 +47,9 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Nếu đã đăng nhập -->
             <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
                 <div class="flex flex-col gap-2 w-36 py-3 px-5">
-<<<<<<< Updated upstream
-=======
                     <p onclick="window.location.href='index.php?controllers=profile&action=index'"
                         class="cursor-pointer hover:text-black text-nowrap">Trang Cá Nhân
                     </p>
-
-
->>>>>>> Stashed changes
                     <p onclick="window.location.href='index.php?controllers=order&action=index'"
                         class="cursor-pointer hover:text-black">Đơn Hàng</p>
                     <p onclick="window.location.href='index.php?controllers=auth&action=logout'"

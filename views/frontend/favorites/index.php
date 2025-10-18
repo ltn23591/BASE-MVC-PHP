@@ -1,6 +1,6 @@
 <?php
 include './public/assets/img/frontend_assets/assets.php';
-include __DIR__ . '/../../layouts/title.php';
+include __DIR__ . '/../layouts/title.php';
 require __DIR__ . '/../components/ProductItem.php';
 ?>
 

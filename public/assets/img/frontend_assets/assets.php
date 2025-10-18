@@ -24,6 +24,7 @@ $assets = [
     "silver"     => "public/assets/img/frontend_assets/silver.png",
     "gold"     => "public/assets/img/frontend_assets/gold.png",
     "diamond"     => "public/assets/img/frontend_assets/diamond.png",
+    "heart_icon"     => "public/assets/img/frontend_assets/heart_icon.png",
 ];
 
 // $products = [
