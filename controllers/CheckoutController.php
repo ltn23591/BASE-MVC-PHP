@@ -78,13 +78,17 @@ class CheckoutController extends BaseController
             $city      = trim($_POST['city'] ?? '');
             $country   = trim($_POST['country'] ?? '');
             $phone     = trim($_POST['phone'] ?? '');
-            $paymentMethod = $_POST['paymentMethod'] ?? 'cod';
+            // $paymentMethod = $_POST['paymentMethod'] ?? 'cod';
+            $discount = $_SESSION['discount'] ?? 0;
 
             if ($firstName === '' || $lastName === '' || $street === '' || $city === '' || $country === '' || $phone === '') {
                 $errors[] = 'Vui lòng nhập đầy đủ thông tin.';
             }
             if ($amount <= 0) {
                 $errors[] = 'Giỏ hàng trống.';
+            }
+            if ($discount > 0) {
+                $amount -= $discount;
             }
 
             if (empty($errors)) {
@@ -99,7 +103,7 @@ class CheckoutController extends BaseController
                     'country'       => $country,
                     'phone'         => $phone,
                     'status'        => 'Chờ xác nhận',
-                    'paymentMethod' => $paymentMethod,
+                    // 'paymentMethod' => $paymentMethod,
                     'date'          => date('Y-m-d H:i:s'),
                     'user_id'       => (int)$_SESSION['user_id'],
                 ]);

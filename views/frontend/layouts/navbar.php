@@ -43,15 +43,6 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Nếu đã đăng nhập -->
             <div class="z-50 group-hover:block hidden absolute right-0 bg-white shadow-lg rounded-lg pt-4">
                 <div class="flex flex-col gap-2 w-36 py-3 px-5">
-<<<<<<< Updated upstream
-                    <p onclick="window.location.href='index.php?controllers=profile&action=index'" 
-                    class="cursor-pointer hover:text-black">Xin chào, <?= htmlspecialchars($_SESSION['user_name']) ?>
-                    </p>
-=======
-                    <a href="index.php?controllers=profile" class="cursor-pointer hover:text-black">Xin chào,
-                        <?= htmlspecialchars($_SESSION['user_name']) ?>
-                    </a>
->>>>>>> Stashed changes
                     <p onclick="window.location.href='index.php?controllers=order&action=index'"
                         class="cursor-pointer hover:text-black">Đơn Hàng</p>
                     <p onclick="window.location.href='index.php?controllers=auth&action=logout'"
@@ -70,16 +61,10 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
             <?php endif; ?>
         </div>
-
-
-
-
-
         <!-- Menu icon (mobile) -->
         <img onclick=" toggleMenu(true)" src="<?= $assets['menu_icon'] ?>" alt="menu"
             class="w-5 cursor-pointer sm:hidden">
     </div>
-
     <!-- Sidebar menu for small screen -->
     <div id="sidebar"
         class="fixed top-0 right-[-100%] bottom-0 z-50 w-full max-w-xs bg-white shadow-xl transition-all duration-300 ease-in-out">

@@ -18,18 +18,31 @@ class VoucherModel extends BaseModel
     // Thêm voucher mới
     public function createVoucher($data)
     {
-        $this->create(self::TABLE, $data);
+        return $this->create(self::TABLE, $data);
     }
 
-    // Cập nhật thông tin voucher
+    // Cập nhật voucher
     public function updateVoucher($id, $data)
     {
-        $this->update(self::TABLE, $id, $data);
+        return $this->update(self::TABLE, $id, $data);
     }
 
     // Xóa voucher
     public function deleteVoucher($id)
     {
-        $this->delete(self::TABLE, $id);
+        return $this->delete(self::TABLE, $id);
+    }
+
+    // ✅ Tìm voucher theo code (dùng cho chức năng ÁP DỤNG MÃ GIẢM GIÁ)
+    public function findByCode($code)
+    {
+        $sql = "SELECT * FROM " . self::TABLE . " WHERE code = ? LIMIT 1";
+        $result = $this->getByQuery($sql, [$code]);
+
+        if (!empty($result)) {
+            return $result[0];
+        }
+
+        return null;
     }
 }
