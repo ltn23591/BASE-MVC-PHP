@@ -36,9 +36,7 @@
                     <p class="mt-1">
                         Ngày đặt: <span class="text-gray-500"><?= htmlspecialchars($order['date']) ?></span>
                     </p>
-                    <p class="mt-1">
-                        Thanh toán: <span class="text-gray-500"><?= htmlspecialchars($order['paymentMethod']) ?></span>
-                    </p>
+
                 </div>
 
                 <!-- Trạng thái & nút -->

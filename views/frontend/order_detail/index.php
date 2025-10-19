@@ -68,14 +68,17 @@
                         <!-- Thông tin sản phẩm -->
                         <div class="flex items-start gap-4 sm:gap-6">
                             <?php if ($first_image): ?>
-                                <img class="w-20 h-20 object-cover border rounded-md" src="<?= htmlspecialchars($first_image) ?>"
-                                    alt="<?= htmlspecialchars($item['name']) ?>">
+                                <a href="index.php?controllers=product&action=detail&id=<?= $item['product_id'] ?>">
+                                    <img class="w-20 h-20 object-cover border rounded-md"
+                                        src="<?= htmlspecialchars($first_image) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
+                                </a>
                             <?php endif; ?>
 
                             <div>
-                                <p class="font-medium text-gray-800 leading-snug">
+                                <a href="index.php?controllers=product&action=detail&id=<?= $item['product_id'] ?>" class="
+                            font-medium text-gray-800 leading-snug">
                                     <?= htmlspecialchars($item['name']) ?>
-                                </p>
+                                </a>
                                 <p class="text-sm text-gray-500">Size: <?= htmlspecialchars($item['size']) ?></p>
 
                                 <!-- Mobile hiển thị thêm -->
