@@ -1,15 +1,15 @@
 <?php
 
 use Cloudinary\Api\Upload\UploadApi;
-use LDAP\Result;
 
 require_once __DIR__ . '/../config/cloudinary_config.php';
+
 class AdminController extends BaseController
 {
     private $adminModel;
     private $userModel;
     private $voucherModel;
-    private $orderModel; // Thêm orderModel vào đây
+    private $orderModel;
     private $productSizeModel;
 
     public function __construct()
@@ -30,13 +30,10 @@ class AdminController extends BaseController
         $this->productSizeModel = new ProductSizeModel;
     }
 
-    /** ---------------- SẢN PHẨM ---------------- */
-    #region Product
+  
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Upload ảnh lên Cloudinary
-            require_once __DIR__ . '/../config/cloudinary_config.php';
             $uploadedImages = [];
             if (isset($_FILES['images'])) {
                 foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
@@ -51,7 +48,6 @@ class AdminController extends BaseController
                 }
             }
 
-            // Dữ liệu sản phẩm
             $data = [
                 'name'        => $_POST['name'],
                 'description' => $_POST['description'],
@@ -62,23 +58,20 @@ class AdminController extends BaseController
                 'bestseller'  => isset($_POST['bestseller']) ? 1 : 0,
                 'date'        => time()
             ];
+
             $productId = $this->adminModel->store($data);
 
-            // Lưu số lượng cho từng size
             if (isset($_POST['sizes']) && is_array($_POST['sizes'])) {
                 foreach ($_POST['sizes'] as $size => $quantity) {
                     if ((int)$quantity > 0) {
-                        $dataSize = [
+                        $this->productSizeModel->store([
                             'product_id' => $productId,
                             'size' => $size,
                             'quantity' => (int)$quantity
-                        ];
-                        $this->productSizeModel->store($dataSize);
+                        ]);
                     }
                 }
             }
-
-
 
             header('Location: index.php?controllers=auth&action=admin');
             exit();
@@ -96,8 +89,9 @@ class AdminController extends BaseController
     public function update()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id             = $_POST['id'];
+            $id = $_POST['id'];
             $uploadedImages = [];
+
             if (isset($_FILES['images']) && !empty($_FILES['images']['name'][0])) {
                 foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
                     if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
@@ -105,13 +99,11 @@ class AdminController extends BaseController
                             $uploadResult = (new UploadApi())->upload($tmpName);
                             $uploadedImages[] = $uploadResult['secure_url'];
                         } catch (Exception $e) {
-                            // 
                         }
                     }
                 }
             } else {
-
-                $product        = $this->adminModel->findById($id);
+                $product = $this->adminModel->findById($id);
                 $uploadedImages = json_decode($product['image'], true);
             }
 
@@ -126,7 +118,6 @@ class AdminController extends BaseController
             ];
 
             $this->adminModel->updateData($id, $data);
-
             header('Location: index.php?controllers=auth&action=admin');
             exit();
         }
@@ -140,7 +131,6 @@ class AdminController extends BaseController
         $product = $this->adminModel->findById($id);
         $sizesData = $this->productSizeModel->getByProductId($id);
 
-        // Chuyển đổi dữ liệu size để dễ dùng trong view
         $productSizes = [];
         foreach ($sizesData as $row) {
             if (is_array($row) && isset($row['size'], $row['quantity'])) {
@@ -173,10 +163,14 @@ class AdminController extends BaseController
             exit();
         }
 
-        // Lấy tổng doanh thu từ các đơn hàng đã giao
+        // Tổng doanh thu
         $totalRevenue = $this->orderModel->getTotalRevenue('amount', "status = 'Đã giao'");
 
-        // Lấy doanh thu theo từng trạng thái và chuẩn bị dữ liệu
+        // Doanh thu hôm nay
+        $today = date('Y-m-d');
+        $todayRevenue = $this->orderModel->getDayRevenue($today);
+
+        // Doanh thu theo trạng thái
         $revenueByStatusRaw = $this->orderModel->getRevenueByStatus();
         $statusRevenues = [
             'Chờ xác nhận' => 0,
@@ -189,20 +183,16 @@ class AdminController extends BaseController
             }
         }
 
-        $monthlyData = $this->orderModel->getMonthlyRevenue();
+        // Lấy 10 đơn hàng gần nhất để hiển thị
+        $recentOrders = $this->orderModel->getRecentOrdersWithUserDetails(10);
 
-        // Chuẩn bị dữ liệu cho biểu đồ
-        $chartData = [
-            'categories' => [],
-            'series' => []
-        ];
-        foreach ($monthlyData as $data) {
-            $chartData['categories'][] = "Tháng {$data['month']}/{$data['year']}";
-            $chartData['series'][] = (float)$data['total_revenue'];
-        }
-        return $this->viewAdmin('admin.components.revenue', compact('chartData', 'totalRevenue', 'statusRevenues'));
+        return $this->viewAdmin('admin.components.revenue', compact(
+            'totalRevenue',
+            'todayRevenue',
+            'statusRevenues',
+            'recentOrders'
+        ));
     }
-
     /** ---------------- ĐƠN HÀNG ---------------- */
     #region Order
     public function orders()
@@ -214,10 +204,8 @@ class AdminController extends BaseController
         }
 
         $orders = $this->orderModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
-
         $users = $this->userModel->getAll(['*']);
 
-        // Gắn email user vào order
         foreach ($orders as &$order) {
             foreach ($users as $u) {
                 if ($order['user_id'] == $u['id']) {
@@ -245,6 +233,7 @@ class AdminController extends BaseController
                 $this->orderModel->updateData($orderId, ['status' => $status]);
             }
         }
+
         header('Location: index.php?controllers=auth&action=admin');
         exit();
     }
@@ -265,11 +254,9 @@ class AdminController extends BaseController
 
     public function adduser()
     {
-        $success = false;
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name     = $_POST['name'] ?? '';
-            $email    = $_POST['email'] ?? '';
+            $name = $_POST['name'] ?? '';
+            $email = $_POST['email'] ?? '';
             $password = password_hash($_POST['password'] ?? '', PASSWORD_BCRYPT);
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -284,7 +271,6 @@ class AdminController extends BaseController
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
-            $success = true;
             header('Location: index.php?controllers=auth&action=admin');
             exit();
         }
@@ -292,8 +278,7 @@ class AdminController extends BaseController
         return $this->viewAdmin('admin.components.user.adduser');
     }
 
-    /** ---------------- VOUCHER ---------------- */
-    #region Voucher
+
     public function listVoucher()
     {
         if (session_status() === PHP_SESSION_NONE) session_start();
@@ -303,7 +288,6 @@ class AdminController extends BaseController
         }
 
         $vouchers = $this->voucherModel->getAll(['*'], ['column' => 'id', 'order' => 'desc'], 100);
-
         return $this->viewAdmin('admin.components.voucher.listvoucher', compact('vouchers'));
     }
 
@@ -327,18 +311,26 @@ class AdminController extends BaseController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $code       = $_POST['code'] ?? '';
-            $discount   = (int)($_POST['discount'] ?? 0);
+            $code = $_POST['code'] ?? '';
+            $discount = (int)($_POST['discount'] ?? 0);
             $start_date = $_POST['start_date'] ?? '';
-            $end_date   = $_POST['end_date'] ?? '';
+            $end_date = $_POST['end_date'] ?? '';
 
             if ($code === '' || $discount <= 0 || $start_date === '' || $end_date === '') {
-                echo '<script>alert("Vui lòng điền đầy đủ thông tin"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+                $_SESSION['toast_message'] = [
+                    'type' => 'error',
+                    'message' => 'Vui lòng điền đầy đủ thông tin'
+                ];
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
                 exit();
             }
-            // Kiểm tra ngày kết thúc phải sau ngày bắt đầu
+
             if (strtotime($end_date) <= strtotime($start_date)) {
-                echo '<script>alert("Vui lòng nhập lại! Ngày kết thúc phải sau ngày bắt đầu"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+                $_SESSION['toast_message'] = [
+                    'type' => 'error',
+                    'message' => 'Ngày kết thúc phải sau ngày bắt đầu'
+                ];
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
                 exit();
             }
 
@@ -349,11 +341,13 @@ class AdminController extends BaseController
                 'end_date'   => $end_date
             ]);
 
-            echo '<script>alert("Thêm khuyến mãi thành công"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+            $_SESSION['toast_message'] = [
+                'type' => 'success',
+                'message' => 'Thêm khuyến mãi thành công'
+            ];
+            header('Location: index.php?controllers=auth&action=admin');
             exit();
         }
-        echo '<script>alert("Thêm khuyến mãi thất bại"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
-        exit();
     }
 
     public function updateVoucher()
@@ -366,40 +360,60 @@ class AdminController extends BaseController
 
         $id = $_GET['id'] ?? null;
         if (!$id) {
-            echo '<script>alert("Không tìm thấy ID voucher"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+            $_SESSION['toast_message'] = ['type' => 'error', 'message' => 'Không tìm thấy ID voucher'];
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit();
         }
 
         $voucher = $this->voucherModel->findById($id);
-        if(!$voucher) {
-            echo '<script>alert("Voucher không tồn tại"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+        if (!$voucher) {
+            $_SESSION['toast_message'] = [
+                'type' => 'error',
+                'message' => 'Voucher không tồn tại'
+            ];
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit();
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $code       = $_POST['code'] ?? '';
-            $discount   = (int)($_POST['discount'] ?? 0);
+            $code = $_POST['code'] ?? '';
+            $discount = (int)($_POST['discount'] ?? 0);
             $start_date = $_POST['start_date'] ?? '';
-            $end_date   = $_POST['end_date'] ?? '';
-            // Validate dữ liệu
+            $end_date = $_POST['end_date'] ?? '';
+
             if (empty($code) || $discount <= 0 || empty($start_date) || empty($end_date)) {
-                echo '<script>alert("Vui lòng điền đầy đủ thông tin"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+                $_SESSION['toast_message'] = [
+                    'type' => 'error',
+                    'message' => 'Vui lòng điền đầy đủ thông tin'
+                ];
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
                 exit();
             }
-            // Kiểm tra ngày kết thúc phải sau ngày bắt đầu
+
             if (strtotime($end_date) <= strtotime($start_date)) {
-                echo '<script>alert("Vui lòng nhập lại! Ngày kết thúc phải sau ngày bắt đầu"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+                $_SESSION['toast_message'] = [
+                    'type' => 'error',
+                    'message' => 'Ngày kết thúc phải sau ngày bắt đầu'
+                ];
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
                 exit();
             }
-            $result=$this->voucherModel->updateVoucher($id, [
+
+            $this->voucherModel->updateVoucher($id, [
                 'code'       => $code,
                 'discount'   => $discount,
                 'start_date' => $start_date,
                 'end_date'   => $end_date
             ]);
-            echo '<script>alert("Cập nhật khuyến mãi thành công"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
+
+            $_SESSION['toast_message'] = [
+                'type' => 'success',
+                'message' => 'Cập nhật khuyến mãi thành công'
+            ];
+            header('Location: index.php?controllers=auth&action=admin');
             exit();
         }
+
         return $this->viewAdmin('admin.components.voucher.updatevoucher', compact('voucher'));
     }
 
@@ -414,13 +428,12 @@ class AdminController extends BaseController
         $id = $_GET['id'] ?? null;
         if ($id) {
             $this->voucherModel->deleteVoucher($id);
-        
-            echo '<script>alert("Xóa thành công"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
-            exit();
-            
+            $_SESSION['toast_message'] = ['type' => 'success', 'message' => 'Xóa thành công'];
+            header('Location: index.php?controllers=auth&action=admin');
         } else {
-        echo '<script>alert("Không tìm thấy voucher"); window.location.href = "index.php?controllers=auth&action=admin";</script>';
-        exit();
+            $_SESSION['toast_message'] = ['type' => 'error', 'message' => 'Không tìm thấy voucher'];
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
         }
+        exit();
     }
 }

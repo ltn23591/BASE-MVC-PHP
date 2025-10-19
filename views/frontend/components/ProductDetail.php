@@ -168,17 +168,7 @@ $emptyStars  = 5 - $averageRating;
                         <!-- Bình luận -->
                         <p class="mt-2 text-gray-700 leading-relaxed">
                             <?= nl2br(htmlspecialchars($review['comment'])) ?>
-                            <i class="fa-solid fa-ellipsis-vertical text-right"></i>
                         </p>
-
-                        <!-- (Tuỳ chọn) ảnh review nếu thêm cột image_review -->
-                        <!--
-                        <div class="flex gap-2 mt-3">
-                            <img src="link_anh.jpg" alt="" class="w-20 h-20 object-cover rounded border">
-                            <img src="link_anh2.jpg" alt="" class="w-20 h-20 object-cover rounded border">
-                        </div>
-                        -->
-
                     </div>
                 </div>
             </div>

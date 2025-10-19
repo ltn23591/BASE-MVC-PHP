@@ -49,33 +49,50 @@
 
 <?php
 // Kiểm tra và hiển thị toast từ session
-$toastMsg = $_SESSION['toast_success'] ?? null;
-if ($toastMsg) {
-    unset($_SESSION['toast_success']); // Xóa ngay để không hiển thị lại
-    echo "
+$toastSuccess = $_SESSION['toast_success'] ?? null;
+$toastError = $_SESSION['toast_error'] ?? null;
+
+$toastMessage = '';
+$toastBackground = '';
+
+if ($toastSuccess) {
+    $toastMessage = addslashes($toastSuccess);
+    $toastBackground = 'linear-gradient(to right, #00b09b, #96c93d)'; // Green
+    unset($_SESSION['toast_success']);
+} elseif ($toastError) {
+    $toastMessage = addslashes($toastError);
+    $toastBackground = 'linear-gradient(to right, #ff416c, #ff4b2b)'; // Red
+    unset($_SESSION['toast_error']);
+}
+
+if ($toastMessage) {
+    echo <<<HTML
     <script>
-        Toastify({
-            text: '" . addslashes($toastMsg) . "',
-            duration: 3000,
-            gravity: 'top',
-            position: 'right',
-            close: true,
-            style: {
-                background: 'linear-gradient(to right, #00b09b, #96c93d)',
-                minWidth: '300px',
-                padding: '12px 16px',
-                fontSize: '14px',
-                borderRadius: '8px',
-            }
-        }).showToast();
+        document.addEventListener('DOMContentLoaded', function() {
+            Toastify({
+                text: "{$toastMessage}",
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                close: true,
+                style: {
+                    background: "{$toastBackground}",
+                    minWidth: '300px',
+                    padding: '12px 16px',
+                    fontSize: '14px',
+                    borderRadius: '8px',
+                    fontWeight: '500'
+                }
+            }).showToast();
+        });
     </script>
-    ";
+HTML;
 }
 ?>
 <!-- AOS -->
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
-AOS.init();
+    AOS.init();
 </script>
 <!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>

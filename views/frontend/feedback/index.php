@@ -9,7 +9,7 @@ include __DIR__ . '/../layouts/title.php';
     <!-- Header -->
     <div class="text-center mb-10">
         <?= Title("ĐÁNH GIÁ", "SẢN PHẨM") ?>
-        <p class="text-gray-600 mt-2 text-sm">Chia sẻ trải nghiệm của bạn để giúp người khác chọn mua dễ dàng hơn 💬</p>
+        <p class="text-gray-600 mt-2 text-sm">Chia sẻ trải nghiệm của bạn để giúp người khác chọn mua dễ dàng hơn </p>
     </div>
 
     <!-- Product Info -->
@@ -33,7 +33,7 @@ include __DIR__ . '/../layouts/title.php';
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star"></i>
-                <i class="fa-regular fa-star"></i>
+                <i class="fa-solid fa-star"></i>
             </div>
         </div>
     </div>

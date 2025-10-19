@@ -29,11 +29,11 @@ class ProductController extends BaseController
 
         // Lấy tham số category từ URL (nếu có)
         $categoryFromUrl = $_GET['category'] ?? '';
-        
+
         // Map category từ URL sang giá trị checkbox
         $categoryMapping = [
             'men' => 'Nam',
-            'women' => 'Nữ', 
+            'women' => 'Nữ',
             'kids' => 'Trẻ Em',
             'limited' => 'Limited',
             'new' => 'New'
@@ -152,7 +152,7 @@ class ProductController extends BaseController
                 'getAllRatings' => $getAllRatings,
                 'totalReviewsResult' => $totalReviewsResult,
                 'averageRating' => $averageRating,
-                'isFavorited' => $isFavorited 
+                'isFavorited' => $isFavorited
             ]
         );
     }
@@ -198,11 +198,11 @@ class ProductController extends BaseController
 
         // Lấy tham số category từ URL
         $categoryFromUrl = $_GET['category'] ?? '';
-        
+
         // Map category từ URL sang giá trị checkbox
         $categoryMapping = [
             'men' => 'Nam',
-            'women' => 'Nữ', 
+            'women' => 'Nữ',
             'kids' => 'Trẻ Em',
             'new' => 'New'
         ];

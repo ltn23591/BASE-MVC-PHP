@@ -37,5 +37,48 @@
 </head>
 
 <body class=" min-h-screen w-full relative">
+    <?php
+    // Kiểm tra xem có thông báo trong session không
+    if (isset($_SESSION['toast_message'])) {
+        $toast = $_SESSION['toast_message'];
+        $type = $toast['type']; // 'success', 'error', 'warning'
+        $message = addslashes($toast['message']); // Dùng addslashes để tránh lỗi JS nếu message có dấu nháy
+
+        // Chọn màu nền dựa trên loại thông báo
+        $backgroundColor = '';
+        switch ($type) {
+            case 'success':
+                $backgroundColor = "linear-gradient(to right, #00b09b, #96c93d)";
+                break;
+            case 'error':
+                $backgroundColor = "linear-gradient(to right, #ff5f6d, #ffc371)";
+                break;
+            case 'warning':
+                $backgroundColor = "linear-gradient(to right, #f7b733, #fc4a1a)";
+                break;
+            default:
+                $backgroundColor = "#333";
+                break;
+        }
+
+        // In ra mã JavaScript để hiển thị Toast
+        echo "<script>
+            Toastify({
+                text: \"{$message}\",
+                duration: 3000,
+                close: true,
+                gravity: \"top\", // `top` or `bottom`
+                position: \"right\", // `left`, `center` or `right`
+                stopOnFocus: true, // Giữ toast hiển thị khi di chuột vào
+                style: {
+                    background: \"{$backgroundColor}\",
+                }
+            }).showToast();
+        </script>";
+
+        // Xóa thông báo khỏi session sau khi đã lấy ra để hiển thị
+        unset($_SESSION['toast_message']);
+    }
+    ?>
     <div class=" px-4 sm:px[5vw] md:px-[7vw] lg:px[9vw]">
         <div>
