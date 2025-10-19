@@ -1,4 +1,8 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $toastMsg = $_SESSION['toast_success'] ?? null;
 unset($_SESSION['toast_success']);
 
@@ -14,7 +18,8 @@ $action = $currentState === 'Sign up' ? 'register' : ($currentState === 'reset' 
         <hr class="border-none h-[1.5px] w-8 bg-gray-800" />
     </div>
 
-    <form method="POST" action="index.php?controllers=auth&action=<?= $action ?>" class="w-full flex flex-col gap-4">
+    <form method="POST" action="index.php?controllers=auth&action=<?= $action ?>" class="w-full flex flex-col gap-4"
+        id="authForm">
         <!-- Sign up -->
         <?php if ($currentState === "Sign up"): ?>
         <input name="name" class="w-full px-3 py-2 border border-gray-800" type="text" placeholder="Tên" required />
@@ -43,7 +48,7 @@ $action = $currentState === 'Sign up' ? 'register' : ($currentState === 'reset' 
         <input name="otp" class="w-full px-3 py-2 border border-gray-800 mt-2" type="text" placeholder="Nhập OTP"
             required />
         <input name="new_password" class="w-full px-3 py-2 border border-gray-800 mt-2" type="password"
-            placeholder="Nhập mật khẩu mới" required />
+            placeholder="Nhập mật khẩu mới (ít nhất 8 ký tự)" minlength="8" required />
         <?php else: ?>
         <input name="email" class="w-full px-3 py-2 border border-gray-800" type="email" placeholder="Email"
             value="<?= $email ?? '' ?>" required />
@@ -51,12 +56,20 @@ $action = $currentState === 'Sign up' ? 'register' : ($currentState === 'reset' 
 
         <!-- Mật khẩu -->
         <?php if ($currentState === "Login" || $currentState === "Sign up"): ?>
-        <input name="password" class="w-full px-3 py-2 border border-gray-800" type="password" placeholder="Mật khẩu"
-            required />
+        <input name="password" class="w-full px-3 py-2 border border-gray-800" type="password"
+            placeholder="Mật khẩu (ít nhất 8 ký tự)" minlength="8" required />
+        <?php endif; ?>
+
+        <!-- Remember Me -->
+        <?php if ($currentState === "Login"): ?>
+        <div class="flex items-center gap-2">
+            <input type="checkbox" name="remember_me" id="remember_me" class="w-4 h-4">
+            <label for="remember_me" class="text-sm cursor-pointer">Ghi nhớ tôi</label>
+        </div>
         <?php endif; ?>
 
         <!-- Liên kết điều hướng -->
-        <div onclick="preventDefault()" class="w-full flex justify-between text-sm -mt-2">
+        <div class="w-full flex justify-between text-sm -mt-2">
             <?php if ($currentState === "Login"): ?>
             <a href="?controllers=auth&action=login&state=reset" class="cursor-pointer hover:underline">Quên Mật
                 Khẩu?</a>
@@ -97,89 +110,3 @@ Toastify({
 }).showToast();
 </script>
 <?php endif; ?>
-
-<!-- SCRIPT DÙNG CHUNG -->
-<script>
-function startCountdown(button, seconds) {
-    let remaining = seconds;
-    button.disabled = true;
-    button.style.opacity = "0.7";
-    button.style.cursor = "not-allowed";
-    button.innerText = `Gửi lại sau ${remaining}s`;
-
-    const interval = setInterval(() => {
-        remaining--;
-        button.innerText = `Gửi lại sau ${remaining}s`;
-        if (remaining <= 0) {
-            clearInterval(interval);
-            resetButton(button);
-        }
-    }, 1000);
-}
-
-function resetButton(button) {
-    button.disabled = false;
-    button.style.opacity = "1";
-    button.style.cursor = "pointer";
-    button.innerText = "Gửi OTP";
-}
-
-function sendOtp() {
-    const email = document.querySelector('input[name="email"]').value.trim();
-    const button = document.querySelector('button[onclick="sendOtp()"]');
-
-    if (!email) {
-        alert(" Vui lòng nhập email trước khi gửi OTP!");
-        return;
-    }
-
-    startCountdown(button, 60);
-
-    fetch("index.php?controllers=auth&action=sendOtp", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "email=" + encodeURIComponent(email)
-        })
-        .then(res => res.text())
-        .then(txt => {
-            try {
-                const data = JSON.parse(txt);
-                alert(data.msg);
-            } catch (e) {
-                alert("Không đọc được phản hồi từ server:\n\n" + txt);
-            }
-        })
-        .catch(err => {
-            alert("Gửi OTP thất bại. Kiểm tra kết nối hoặc cấu hình email.\n" + err);
-            resetButton(button);
-        });
-}
-
-function sendResetOtp() {
-    const email = document.querySelector('input[name="email"]').value.trim();
-    const btn = document.querySelector('button[onclick="sendResetOtp()"]');
-
-    if (!email) {
-        alert(" Vui lòng nhập email trước khi gửi OTP!");
-        return;
-    }
-
-    startCountdown(btn, 60);
-
-    fetch("index.php?controllers=auth&action=resetOtp", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "email=" + encodeURIComponent(email)
-        })
-        .then(res => res.json())
-        .then(data => alert(data.msg))
-        .catch(err => {
-            alert(" Gửi OTP thất bại.");
-            resetButton(btn);
-        });
-}
-</script>

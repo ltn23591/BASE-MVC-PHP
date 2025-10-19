@@ -44,7 +44,7 @@ class AuthController extends BaseController
                 $password = $_POST['password'];
 
                 // Trường hợp admin
-                if ($email === 'admin@gmail.com' && $password === '123') {
+                if ($email === 'admin@gmail.com' && $password === '12345678') {
                     $_SESSION['admin_logged_in'] = true;
                     $_SESSION['admin_email'] = $email;
 
@@ -82,6 +82,17 @@ class AuthController extends BaseController
                     $_SESSION['cart'] = $cartModel->rowsToSessionCart(
                         $cartModel->getByUser((int)$user['id'])
                     );
+
+                    // Xử lý "Remember Me"
+                    if (isset($_POST['remember_me'])) {
+                        // Tạo token đơn giản
+                        $token = bin2hex(random_bytes(32));
+                        // Lưu token vào DB
+                        $this->userModel->updateData($user['id'], ['remember_token' => $token]);
+                        // Tạo cookie (user_id:token) - hết hạn sau 30 ngày
+                        setcookie('remember_me', $user['id'] . ':' . $token, time() + (86400 * 30), "/");
+                    }
+
                     $_SESSION['toast_success'] = "Chào mừng " . htmlspecialchars($user['name']) . " quay trở lại!";
 
                     header('Location: index.php');
@@ -159,6 +170,11 @@ class AuthController extends BaseController
     // Đăng xuất
     public function logout()
     {
+        // Xóa cookie "remember_me" nếu có
+        if (isset($_COOKIE['remember_me'])) {
+            setcookie('remember_me', '', time() - 3600, '/');
+        }
+
         session_destroy();
         header('Location: index.php?controllers=auth&action=login');
         exit();
